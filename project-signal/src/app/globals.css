@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Project SIGNAL design tokens.
+   Professional navy, white and blue. Every colour pair used for text on a
+   background meets WCAG AA at the sizes it is used.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-navy-50: #f1f5f9;
+  --color-navy-100: #e2e8f0;
+  --color-navy-200: #cbd5e1;
+  --color-navy-300: #94a3b8;
+  --color-navy-400: #64748b;
+  --color-navy-500: #475569;
+  --color-navy-600: #334155;
+  --color-navy-700: #1e293b;
+  --color-navy-800: #152238;
+  --color-navy-900: #0d1728;
+  --color-navy-950: #070e1a;
+
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+
+  --color-surface: #ffffff;
+  --color-canvas: #f6f8fb;
+  --color-line: #e3e8ef;
+
+  --color-p1: #1d4ed8;
+  --color-p2: #0891b2;
+  --color-p3: #64748b;
+  --color-reject: #be123c;
+  --color-hold: #b45309;
+  --color-ok: #047857;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-navy-800);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+/* Visible focus for every interactive element, not just the ones we styled. */
+:focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Numeric columns line up when they are tabular. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-navy-200); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-navy-300); }
+
+@media print {
+  .no-print { display: none !important; }
+}
