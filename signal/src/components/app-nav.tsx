@@ -74,3 +74,40 @@ export function AppNav({ role }: { role: UserRole }) {
     </nav>
   );
 }
+
+/**
+ * Below the md breakpoint the sidebar is hidden, so navigation moves into a
+ * horizontally scrollable bar. Same capability filtering as the sidebar.
+ */
+export function MobileNav({ role }: { role: UserRole }) {
+  const pathname = usePathname();
+  const allowed = new Set(PERMISSIONS[role]);
+  const items = NAV.filter((item) => allowed.has(item.capability));
+
+  return (
+    <nav
+      aria-label="Main"
+      className="sticky top-14 z-30 border-b border-navy-200 bg-card md:hidden"
+    >
+      <ul className="flex gap-1 overflow-x-auto px-3 py-2">
+        {items.map((item) => {
+          const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+          return (
+            <li key={item.href} className="shrink-0">
+              <Link
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className={cn(
+                  'block whitespace-nowrap rounded-md px-2.5 py-1.5 text-xs transition-colors',
+                  active ? 'bg-navy-900 font-medium text-white' : 'text-navy-800 hover:bg-navy-100',
+                )}
+              >
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}

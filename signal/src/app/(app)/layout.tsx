@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { requireUser } from '@/lib/auth';
-import { AppNav } from '@/components/app-nav';
+import { AppNav, MobileNav } from '@/components/app-nav';
 import { logoutAction } from '@/lib/actions/auth-actions';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +38,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </header>
+
+      <MobileNav role={user.role} />
 
       <div className="flex">
         <AppNav role={user.role} />

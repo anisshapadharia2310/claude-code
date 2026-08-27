@@ -224,7 +224,7 @@ export function scoreContact(input: ScoringInput): ScoringResult {
     points: isDirectOwner ? rw.directOwner : 0,
     max: rw.directOwner,
     reason: isDirectOwner
-      ? `Classified as direct owner on ${affinity.evidenceCount} independent signals (${describeAffinity(affinity)}).`
+      ? `Classified as direct owner on ${affinity.evidenceCount} independent signals (${describeAffinity(affinity, contact.directProblemResponsibility)}).`
       : affinity.weakTitleMatches.length > 0 && affinity.evidenceCount < 2
         ? `Title contains "${affinity.weakTitleMatches.join('", "')}" but nothing corroborates ownership - a keyword is not proof of relevance.`
         : `Not classified as a direct owner (current category: ${contact.roleCategory.replace(/_/g, ' ').toLowerCase()}).`,
@@ -718,11 +718,16 @@ export function scoreContact(input: ScoringInput): ScoringResult {
   };
 }
 
-function describeAffinity(affinity: ReturnType<typeof assessProblemAffinity>): string {
+/** Names every signal that was actually counted, so the reason matches the tally. */
+function describeAffinity(
+  affinity: ReturnType<typeof assessProblemAffinity>,
+  directResponsibility: boolean,
+): string {
   const parts: string[] = [];
   if (affinity.strongTitleMatches.length) parts.push(`title: ${affinity.strongTitleMatches.join(', ')}`);
   if (affinity.departmentMatch) parts.push(`department: ${affinity.departmentMatch}`);
   if (affinity.functionMatch) parts.push(`function: ${affinity.functionMatch}`);
+  if (directResponsibility) parts.push('researcher-recorded responsibility');
   return parts.join('; ') || 'recorded responsibility';
 }
 
