@@ -117,6 +117,12 @@ export async function getCampaignKpis(campaignId: string): Promise<CampaignKpis>
   }
 
   const emailsSent = emails.filter((e) => e.sentAt).length;
+  // Reply rate is measured against email *events*, which is the same unit the
+  // replies are recorded in. Mixing it with logged EmailActivity rows (a much
+  // smaller sample) would inflate the rate.
+  const contactsEmailed = new Set(
+    events.filter((e) => e.eventType === EventType.EMAIL_SENT).map((e) => e.contactId),
+  ).size;
   const emailsDelivered = emails.filter((e) =>
     ['DELIVERED', 'SENT', 'LOGGED_MANUALLY'].includes(e.deliveryStatus),
   ).length;
@@ -142,7 +148,7 @@ export async function getCampaignKpis(campaignId: string): Promise<CampaignKpis>
     ),
     emailsSent,
     emailDeliveryRate: rate(emailsDelivered, emailsSent),
-    positiveReplyRate: rate(positiveReplyIds.size, emailsSent || contactedIds.size),
+    positiveReplyRate: rate(positiveReplyIds.size, contactsEmailed || contactedIds.size),
     webinarRegistrationRate: rate(registeredIds.size, contactedIds.size || campaignContacts.length),
     liveAttendanceRate: rate(attendedIds.size, registeredIds.size),
     averageAttendanceDuration: durations.length

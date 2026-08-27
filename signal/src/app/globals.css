@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 218 60% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 218 60% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 218 60% 15%;
+    --primary: 217 74% 27%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 32% 94%;
+    --secondary-foreground: 218 60% 20%;
+    --muted: 214 32% 95%;
+    --muted-foreground: 215 20% 40%;
+    --accent: 212 90% 95%;
+    --accent-foreground: 217 74% 27%;
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 25% 88%;
+    --input: 214 25% 88%;
+    --ring: 217 74% 40%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Visible focus for keyboard users - operational speed depends on it. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer utilities {
+  .numeric {
+    font-variant-numeric: tabular-nums;
+  }
+}
