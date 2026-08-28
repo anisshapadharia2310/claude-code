@@ -26,7 +26,11 @@ export default async function CampaignsPage() {
       <PageHeader
         title="Campaigns"
         description="Targeting criteria decide who can qualify at all. Cost drives the cost-per-verified-attendee figure."
-        actions={<ButtonLink href="/campaigns/compare" variant="outline" size="sm">Compare methods</ButtonLink>}
+        actions={
+          <ButtonLink href="/campaigns/compare" variant="outline" size="sm" icon="trendUp">
+            Compare methods
+          </ButtonLink>
+        }
       />
 
       <div className="space-y-4">
@@ -66,7 +70,7 @@ export default async function CampaignsPage() {
                       ['Languages', campaign.preferredLanguages],
                     ].map(([label, values]) => (
                       <div key={String(label)}>
-                        <dt className="font-semibold uppercase tracking-wide text-navy-500">{label}</dt>
+                        <dt className="eyebrow">{label}</dt>
                         <dd className="mt-1 flex flex-wrap gap-1">
                           {(values as string[]).length === 0
                             ? <span className="text-navy-400">Not restricted</span>
@@ -80,11 +84,11 @@ export default async function CampaignsPage() {
 
                   <div className="grid gap-3 text-xs sm:grid-cols-2">
                     <div>
-                      <p className="font-semibold uppercase tracking-wide text-navy-500">Relevant title terms</p>
+                      <p className="eyebrow">Relevant title terms</p>
                       <p className="mt-1 leading-relaxed text-navy-600">{campaign.relevantTitleTerms.join(', ') || 'None'}</p>
                     </div>
                     <div>
-                      <p className="font-semibold uppercase tracking-wide text-rose-700">Excluded title terms</p>
+                      <p className="eyebrow text-danger-700">Excluded title terms</p>
                       <p className="mt-1 leading-relaxed text-navy-600">{campaign.excludedTitleTerms.join(', ') || 'None'}</p>
                       <p className="mt-1 text-[11px] text-navy-500">
                         These are the titles that pass a naive keyword filter and waste caller time.
@@ -95,11 +99,11 @@ export default async function CampaignsPage() {
 
                 <div className="space-y-3">
                   {data ? (
-                    <dl className="grid grid-cols-2 gap-2 rounded-md border border-line bg-navy-50 px-3 py-3 text-xs">
-                      <div><dt className="text-navy-500">Contacts</dt><dd className="tabular text-lg font-semibold">{data.kpis.totalContacts}</dd></div>
-                      <div><dt className="text-navy-500">P1</dt><dd className="tabular text-lg font-semibold text-brand-700">{data.kpis.byPriority.P1}</dd></div>
-                      <div><dt className="text-navy-500">P2</dt><dd className="tabular text-lg font-semibold text-cyan-700">{data.kpis.byPriority.P2}</dd></div>
-                      <div><dt className="text-navy-500">Registered</dt><dd className="tabular text-lg font-semibold">{data.kpis.registrations}</dd></div>
+                    <dl className="grid grid-cols-2 gap-3 rounded-lg border border-line bg-surface-sunk px-4 py-3.5 text-xs">
+                      <div><dt className="eyebrow">Contacts</dt><dd className="tabular mt-0.5 text-lg font-semibold text-navy-900">{data.kpis.totalContacts}</dd></div>
+                      <div><dt className="eyebrow">P1</dt><dd className="tabular mt-0.5 text-lg font-semibold text-brand-700">{data.kpis.byPriority.P1}</dd></div>
+                      <div><dt className="eyebrow">P2</dt><dd className="tabular mt-0.5 text-lg font-semibold text-warn-700">{data.kpis.byPriority.P2}</dd></div>
+                      <div><dt className="eyebrow">Registered</dt><dd className="tabular mt-0.5 text-lg font-semibold text-navy-900">{data.kpis.registrations}</dd></div>
                     </dl>
                   ) : null}
 
@@ -126,7 +130,7 @@ export default async function CampaignsPage() {
                           ))}
                         </Select>
                       </div>
-                      <SubmitButton size="sm" variant="secondary" pendingLabel="Saving...">Save</SubmitButton>
+                      <SubmitButton size="sm" variant="secondary" pendingLabel="Saving…">Save</SubmitButton>
                     </ActionForm>
                   ) : (
                     <p className="text-xs text-navy-500">

@@ -1,16 +1,16 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Button } from '@/components/ui/button';
-import { Checkbox, Label, Select } from '@/components/ui/form';
-import { Alert, Progress } from '@/components/ui/misc';
+import { Button, ButtonLink } from '@/components/ui/button';
+import { CheckboxField, Checkbox, Field, Select } from '@/components/ui/form';
+import { Icon } from '@/components/ui/icon';
+import { Alert } from '@/components/ui/misc';
 import { Table, TableWrap, Td, Th, Tr } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import {
-  commitImportAction, parseCsvAction, validateImportAction,
-} from '@/server/actions/import';
-import type { ColumnMapping, ImportField, ImportValidationResult } from '@/server/services/import';
-import type { CommitResult } from '@/server/services/import';
+import { commitImportAction, parseCsvAction, validateImportAction } from '@/server/actions/import';
+import type {
+  ColumnMapping, CommitResult, ImportField, ImportValidationResult,
+} from '@/server/services/import';
 
 export interface FieldOption {
   field: ImportField;
@@ -21,13 +21,20 @@ export interface FieldOption {
 
 type Step = 'upload' | 'map' | 'review' | 'done';
 
-const STEPS: Array<[Step, string]> = [
-  ['upload', 'Upload'],
-  ['map', 'Map columns'],
-  ['review', 'Validate and fix'],
-  ['done', 'Summary'],
+const STEPS: Array<[Step, string, string]> = [
+  ['upload', 'Upload', 'Choose a CSV'],
+  ['map', 'Map columns', 'Match your headers'],
+  ['review', 'Validate', 'Fix or skip rows'],
+  ['done', 'Summary', 'Imported and scored'],
 ];
 
+const STATUS_STYLE: Record<string, string> = {
+  VALID: 'border-success-200 bg-success-50 text-success-800',
+  DUPLICATE: 'border-warn-200 bg-warn-50 text-warn-800',
+  INVALID: 'border-danger-200 bg-danger-50 text-danger-800',
+};
+
+/** The four-step import flow. Behaviour is unchanged; only the surface differs. */
 export function ImportWizard({
   fields, campaigns,
 }: {
@@ -37,6 +44,7 @@ export function ImportWizard({
   const [step, setStep] = useState<Step>('upload');
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [dragging, setDragging] = useState(false);
 
   const [fileName, setFileName] = useState('');
   const [text, setText] = useState('');
@@ -98,70 +106,138 @@ export function ImportWizard({
     ? validation.rows.filter((row) => !skipped.has(row.index)
         && (row.status === 'VALID' || (includeDuplicates && row.status === 'DUPLICATE'))).length
     : 0;
+  const currentIndex = STEPS.findIndex(([key]) => key === step);
 
   return (
-    <div className="space-y-4">
-      <ol className="flex flex-wrap gap-2" aria-label="Import steps">
-        {STEPS.map(([key, label], index) => {
+    <div className="space-y-5">
+      {/* ---------------------------------------------------------- stepper */}
+      <ol className="flex flex-wrap gap-2 sm:flex-nowrap sm:items-stretch" aria-label="Import steps">
+        {STEPS.map(([key, label, caption], index) => {
           const active = key === step;
-          const done = STEPS.findIndex(([s]) => s === step) > index;
+          const done = currentIndex > index;
           return (
-            <li key={key} className={cn(
-              'flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-medium',
-              active ? 'border-brand-600 bg-brand-600 text-white'
-                : done ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
-                : 'border-line bg-white text-navy-500',
-            )}>
-              <span className="tabular">{index + 1}</span> {label}
+            <li
+              key={key}
+              aria-current={active ? 'step' : undefined}
+              className={cn(
+                'flex flex-1 items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-colors',
+                active ? 'border-brand-600 bg-brand-600 text-white shadow-sm'
+                  : done ? 'border-success-200 bg-success-50 text-success-800'
+                  : 'border-line bg-surface text-navy-500',
+              )}
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'tabular flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-2xs font-bold',
+                  active ? 'bg-white/20 text-white'
+                    : done ? 'bg-success-600 text-white'
+                    : 'bg-navy-100 text-navy-500',
+                )}
+              >
+                {done ? <Icon name="check" className="h-3 w-3" strokeWidth={3} /> : index + 1}
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate text-xs font-semibold">{label}</span>
+                <span className={cn('block truncate text-[10px]', active ? 'text-white/75' : 'text-navy-400')}>
+                  {caption}
+                </span>
+              </span>
             </li>
           );
         })}
       </ol>
 
-      {error ? <Alert tone="danger">{error}</Alert> : null}
-      {pending ? <Progress value={60} label="Working" /> : null}
+      {error ? <Alert tone="danger" title="Import problem">{error}</Alert> : null}
 
+      {pending ? (
+        <div role="status" aria-live="polite" className="flex items-center gap-3 rounded-lg border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-900">
+          <svg viewBox="0 0 16 16" className="h-4 w-4 animate-[spin_700ms_linear_infinite]" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.25" />
+            <path d="M8 1.5A6.5 6.5 0 0 1 14.5 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          Processing the file…
+        </div>
+      ) : null}
+
+      {/* ----------------------------------------------------------- upload */}
       {step === 'upload' ? (
-        <div className="rounded-lg border border-dashed border-navy-300 bg-white px-6 py-10 text-center">
-          <p className="text-sm font-medium text-navy-800">Upload a target account list</p>
-          <p className="mx-auto mt-1 max-w-lg text-xs text-navy-500">
-            CSV only. Required columns: company name, contact first name, contact last name, job title,
-            industry, country, and either a work email or a phone number.
+        <div
+          onDragOver={(event) => { event.preventDefault(); setDragging(true); }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setDragging(false);
+            const file = event.dataTransfer.files?.[0];
+            if (file) void handleFile(file);
+          }}
+          className={cn(
+            'rounded-xl border-2 border-dashed bg-surface px-6 py-14 text-center transition-colors',
+            dragging ? 'border-brand-500 bg-brand-50' : 'border-line-strong',
+          )}
+        >
+          <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+            <Icon name="import" className="h-6 w-6" />
+          </span>
+          <p className="text-md font-semibold text-navy-900">Upload a target account list</p>
+          <p className="mx-auto mt-1.5 max-w-lg text-sm leading-relaxed text-navy-500">
+            CSV only. Drop the file here, or choose it below. Required columns: company name, contact first
+            name, contact last name, job title, industry, country, and either a work email or a phone number.
           </p>
-          <input
-            id="csv"
-            type="file"
-            accept=".csv,text/csv"
-            className="mx-auto mt-4 block w-full max-w-sm text-sm text-navy-700 file:mr-3 file:rounded-md file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-brand-700"
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) void handleFile(file);
-            }}
-          />
-          <p className="mt-4 text-xs text-navy-500">
-            Need a starting point? <a href="/sample-import.csv" download className="text-brand-700 underline">
+
+          <label className="mt-5 inline-flex cursor-pointer items-center gap-2 rounded-md bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-xs transition-colors hover:bg-brand-700">
+            <Icon name="import" className="h-4 w-4" />
+            Choose a CSV file
+            <input
+              id="csv"
+              type="file"
+              accept=".csv,text/csv"
+              className="sr-only"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) void handleFile(file);
+              }}
+            />
+          </label>
+
+          <p className="mt-5 text-xs text-navy-500">
+            Need a starting point?{' '}
+            <a href="/sample-import.csv" download className="font-medium text-brand-700 underline underline-offset-2">
               Download the sample CSV
             </a>
           </p>
         </div>
       ) : null}
 
+      {/* -------------------------------------------------------------- map */}
       {step === 'map' ? (
-        <div className="rounded-lg border border-line bg-white p-5">
-          <h2 className="text-sm font-semibold text-navy-800">Map your columns</h2>
-          <p className="mt-1 text-xs text-navy-500">
-            {fileName} &middot; {headers.length} columns detected. Guesses are pre-filled; correct anything wrong.
-          </p>
+        <div className="rounded-xl border border-line bg-surface shadow-xs">
+          <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4">
+            <div>
+              <h2 className="text-sm font-semibold text-navy-800">Map your columns</h2>
+              <p className="mt-0.5 flex items-center gap-1.5 text-xs text-navy-500">
+                <Icon name="document" className="h-3.5 w-3.5" />
+                {fileName} · {headers.length} columns detected. Guesses are pre-filled; correct anything wrong.
+              </p>
+            </div>
+            <Button type="button" variant="ghost" size="sm" onClick={() => setStep('upload')}>
+              Choose another file
+            </Button>
+          </header>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 px-5 py-5 sm:grid-cols-2 lg:grid-cols-3">
             {fields.map((field) => (
-              <div key={field.field}>
-                <Label htmlFor={`map-${field.field}`}>
-                  {field.label}{field.required ? <span className="text-rose-600"> *</span> : null}
-                </Label>
+              <Field
+                key={field.field}
+                label={field.label}
+                htmlFor={`map-${field.field}`}
+                required={field.required}
+                hint={field.help || undefined}
+              >
                 <Select
                   id={`map-${field.field}`}
                   value={mapping[field.field] ?? ''}
+                  aria-invalid={field.required && !mapping[field.field] ? true : undefined}
                   onChange={(event) => setMapping((current) => ({
                     ...current,
                     [field.field]: event.target.value || undefined,
@@ -170,26 +246,31 @@ export function ImportWizard({
                   <option value="">Not in this file</option>
                   {headers.map((header) => <option key={header} value={header}>{header}</option>)}
                 </Select>
-                {field.help ? <p className="mt-1 text-[11px] text-navy-500">{field.help}</p> : null}
-              </div>
+              </Field>
             ))}
           </div>
 
           {missingRequired.length > 0 ? (
-            <Alert tone="warning" className="mt-4">
-              Map these before continuing: {missingRequired.map((field) => field.label).join(', ')}.
-            </Alert>
+            <div className="px-5 pb-4">
+              <Alert tone="warning" title="Required columns are not mapped">
+                Map these before continuing: {missingRequired.map((field) => field.label).join(', ')}.
+              </Alert>
+            </div>
           ) : null}
 
           {preview.length > 0 ? (
-            <div className="mt-4">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-navy-500">First rows</p>
-              <TableWrap className="rounded border border-line">
+            <div className="border-t border-line">
+              <p className="eyebrow px-5 pb-2 pt-4">First rows in the file</p>
+              <TableWrap className="max-h-64 border-y border-line">
                 <Table>
                   <thead><tr>{headers.map((header) => <Th key={header}>{header}</Th>)}</tr></thead>
                   <tbody>
                     {preview.map((row, index) => (
-                      <Tr key={index}>{headers.map((header, cell) => <Td key={header} className="text-xs">{row[cell] ?? ''}</Td>)}</Tr>
+                      <Tr key={index}>
+                        {headers.map((header, cell) => (
+                          <Td key={header} className="whitespace-nowrap text-xs">{row[cell] ?? ''}</Td>
+                        ))}
+                      </Tr>
                     ))}
                   </tbody>
                 </Table>
@@ -197,30 +278,40 @@ export function ImportWizard({
             </div>
           ) : null}
 
-          <div className="mt-4 flex gap-2">
-            <Button type="button" onClick={runValidation} disabled={pending || missingRequired.length > 0}>
+          <div className="flex flex-wrap gap-2 border-t border-line bg-surface-sunk px-5 py-4">
+            <Button
+              type="button" icon="check" onClick={runValidation}
+              disabled={pending || missingRequired.length > 0}
+            >
               Validate {validation ? 'again' : 'rows'}
             </Button>
-            <Button type="button" variant="ghost" onClick={() => setStep('upload')}>Choose another file</Button>
           </div>
         </div>
       ) : null}
 
+      {/* ----------------------------------------------------------- review */}
       {step === 'review' && validation && summary ? (
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-            {[
-              ['Rows', summary.total, ''],
-              ['Valid', summary.valid, 'text-emerald-700'],
-              ['Invalid', summary.invalid, 'text-rose-700'],
-              ['Duplicates', summary.duplicates, 'text-amber-700'],
-              ['No email', summary.missingEmail, 'text-navy-600'],
-              ['No phone', summary.missingPhone, 'text-navy-600'],
-              ['Role unclear', summary.unverifiedRole, 'text-amber-700'],
-            ].map(([label, value, tone]) => (
-              <div key={String(label)} className="rounded-lg border border-line bg-white px-4 py-3">
-                <p className="text-xs uppercase tracking-wide text-navy-500">{label}</p>
-                <p className={cn('tabular mt-1 text-2xl font-semibold', tone || 'text-navy-900')}>{value}</p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">
+            {([
+              ['Rows', summary.total, 'default'],
+              ['Valid', summary.valid, 'success'],
+              ['Invalid', summary.invalid, 'danger'],
+              ['Duplicates', summary.duplicates, 'warning'],
+              ['No email', summary.missingEmail, 'default'],
+              ['No phone', summary.missingPhone, 'default'],
+              ['Role unclear', summary.unverifiedRole, 'warning'],
+            ] as const).map(([label, value, tone]) => (
+              <div key={label} className="rounded-xl border border-line bg-surface px-4 py-3 shadow-xs">
+                <p className="eyebrow">{label}</p>
+                <p className={cn(
+                  'tabular mt-1.5 text-2xl font-semibold',
+                  tone === 'success' ? 'text-success-700'
+                    : tone === 'danger' ? 'text-danger-700'
+                    : tone === 'warning' ? 'text-warn-700' : 'text-navy-900',
+                )}>
+                  {value}
+                </p>
               </div>
             ))}
           </div>
@@ -232,29 +323,33 @@ export function ImportWizard({
             </Alert>
           ) : null}
 
-          <div className="rounded-lg border border-line bg-white">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3">
+          <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-xs">
+            <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4">
               <div>
                 <h2 className="text-sm font-semibold text-navy-800">Row report</h2>
-                <p className="text-xs text-navy-500">
+                <p className="mt-0.5 text-xs text-navy-500">
                   Uncheck any row to skip it. Invalid rows are skipped by default.
                 </p>
               </div>
-              <label className="flex items-center gap-2 text-xs text-navy-700">
-                <Checkbox checked={includeDuplicates} onChange={(event) => setIncludeDuplicates(event.target.checked)} />
-                Import duplicates anyway (flagged as duplicates)
-              </label>
-            </div>
-            <TableWrap className="max-h-[26rem]">
+              <CheckboxField
+                checked={includeDuplicates}
+                onChange={(event) => setIncludeDuplicates(event.target.checked)}
+                label="Import duplicates anyway"
+                hint="They are written with a duplicate flag and cannot score above Reject."
+                className="text-xs"
+              />
+            </header>
+
+            <TableWrap className="max-h-[28rem]">
               <Table>
                 <thead>
                   <tr>
-                    <Th className="w-10">Use</Th>
-                    <Th className="w-16">Line</Th>
-                    <Th className="w-24">Status</Th>
-                    <Th>Contact</Th>
-                    <Th>Company</Th>
-                    <Th>Issues</Th>
+                    <Th className="w-12">Use</Th>
+                    <Th className="w-16" numeric>Line</Th>
+                    <Th className="w-28">Status</Th>
+                    <Th className="min-w-[220px]">Contact</Th>
+                    <Th className="min-w-[170px]">Company</Th>
+                    <Th className="min-w-[280px]">Issues</Th>
                   </tr>
                 </thead>
                 <tbody>
@@ -262,7 +357,7 @@ export function ImportWizard({
                     const included = !skipped.has(row.index)
                       && (row.status === 'VALID' || (includeDuplicates && row.status === 'DUPLICATE'));
                     return (
-                      <Tr key={row.index}>
+                      <Tr key={row.index} selected={included}>
                         <Td>
                           <Checkbox
                             checked={included}
@@ -275,40 +370,54 @@ export function ImportWizard({
                             })}
                           />
                         </Td>
-                        <Td className="tabular text-xs">{row.line}</Td>
+                        <Td numeric className="text-xs text-navy-500">{row.line}</Td>
                         <Td>
                           <span className={cn(
-                            'rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase',
-                            row.status === 'VALID' ? 'bg-emerald-100 text-emerald-800'
-                              : row.status === 'DUPLICATE' ? 'bg-amber-100 text-amber-800'
-                              : 'bg-rose-100 text-rose-800',
+                            'inline-flex rounded-md border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.04em]',
+                            STATUS_STYLE[row.status],
                           )}>
                             {row.status}
                           </span>
                         </Td>
                         <Td className="text-xs">
-                          {row.normalized
-                            ? <>
-                                <p className="font-medium text-navy-800">{row.normalized.firstName} {row.normalized.lastName}</p>
-                                <p className="text-navy-500">{row.normalized.jobTitle}</p>
-                                <p className="font-mono text-[10px] text-navy-400">{row.normalized.normalizedJobTitle}</p>
-                              </>
-                            : <span className="text-navy-400">not normalized</span>}
+                          {row.normalized ? (
+                            <>
+                              <p className="font-medium text-navy-800">
+                                {row.normalized.firstName} {row.normalized.lastName}
+                              </p>
+                              <p className="text-navy-500">{row.normalized.jobTitle}</p>
+                              <p className="font-mono text-[10px] text-navy-400">{row.normalized.normalizedJobTitle}</p>
+                            </>
+                          ) : (
+                            <span className="italic text-navy-400">not normalized</span>
+                          )}
                         </Td>
                         <Td className="text-xs">
-                          {row.normalized?.companyName ?? '-'}
+                          {row.normalized?.companyName ?? '—'}
                           <p className="text-navy-500">{row.normalized?.country ?? ''}</p>
                         </Td>
-                        <Td className="max-w-md text-xs">
+                        <Td className="text-xs">
                           {row.errors.map((message) => (
-                            <p key={message} className="text-rose-700">{message}</p>
+                            <p key={message} className="flex items-start gap-1.5 text-danger-700">
+                              <Icon name="close" className="mt-0.5 h-3 w-3 shrink-0" strokeWidth={2.5} />{message}
+                            </p>
                           ))}
-                          {row.duplicate ? <p className="text-amber-800">{row.duplicate.detail}</p> : null}
+                          {row.duplicate ? (
+                            <p className="flex items-start gap-1.5 text-warn-800">
+                              <Icon name="alert" className="mt-0.5 h-3 w-3 shrink-0" strokeWidth={2} />
+                              {row.duplicate.detail}
+                            </p>
+                          ) : null}
                           {row.warnings.map((message) => (
-                            <p key={message} className="text-navy-500">{message}</p>
+                            <p key={message} className="flex items-start gap-1.5 text-navy-500">
+                              <Icon name="info" className="mt-0.5 h-3 w-3 shrink-0" />{message}
+                            </p>
                           ))}
-                          {row.errors.length + row.warnings.length === 0 && !row.duplicate
-                            ? <span className="text-navy-400">None</span> : null}
+                          {row.errors.length + row.warnings.length === 0 && !row.duplicate ? (
+                            <span className="inline-flex items-center gap-1 text-success-700">
+                              <Icon name="check" className="h-3 w-3" strokeWidth={2.5} />Clean
+                            </span>
+                          ) : null}
                         </Td>
                       </Tr>
                     );
@@ -318,60 +427,102 @@ export function ImportWizard({
             </TableWrap>
           </div>
 
-          <div className="rounded-lg border border-line bg-white p-5">
+          <div className="rounded-xl border border-line bg-surface p-5 shadow-xs">
             <h2 className="text-sm font-semibold text-navy-800">Import into</h2>
-            <p className="text-xs text-navy-500">
+            <p className="mt-1 max-w-2xl text-xs leading-relaxed text-navy-500">
               Imported contacts are scored against every campaign you choose. The same person can be a P1 on
               one campaign and a reject on another.
             </p>
-            <div className="mt-3 space-y-2">
-              {campaigns.map((campaign) => (
-                <label key={campaign.id} className="flex items-center gap-2 text-sm text-navy-700">
-                  <Checkbox
-                    checked={campaignIds.includes(campaign.id)}
-                    onChange={(event) => setCampaignIds((current) =>
-                      event.target.checked
-                        ? [...current, campaign.id]
-                        : current.filter((id) => id !== campaign.id))}
-                  />
-                  {campaign.clientBrand} &mdash; {campaign.name}
-                </label>
-              ))}
+            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {campaigns.map((campaign) => {
+                const chosen = campaignIds.includes(campaign.id);
+                return (
+                  <label
+                    key={campaign.id}
+                    className={cn(
+                      'flex cursor-pointer items-start gap-2.5 rounded-lg border px-3.5 py-3 text-sm transition-colors',
+                      chosen ? 'border-brand-400 bg-brand-50' : 'border-line bg-surface hover:border-navy-300',
+                    )}
+                  >
+                    <Checkbox
+                      className="mt-0.5"
+                      checked={chosen}
+                      onChange={(event) => setCampaignIds((current) =>
+                        event.target.checked
+                          ? [...current, campaign.id]
+                          : current.filter((id) => id !== campaign.id))}
+                    />
+                    <span className="min-w-0">
+                      <span className="block text-2xs font-semibold uppercase tracking-[0.06em] text-navy-400">
+                        {campaign.clientBrand}
+                      </span>
+                      <span className="block text-xs font-medium leading-snug text-navy-800">{campaign.name}</span>
+                    </span>
+                  </label>
+                );
+              })}
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <Button type="button" onClick={runCommit} disabled={pending || includedCount === 0}>
+            <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-line pt-4">
+              <Button type="button" icon="check" onClick={runCommit} disabled={pending || includedCount === 0}>
                 Import {includedCount} row{includedCount === 1 ? '' : 's'} and score
               </Button>
-              <Button type="button" variant="ghost" onClick={() => setStep('map')}>Back to mapping</Button>
+              <Button type="button" variant="ghost" icon="chevronLeft" onClick={() => setStep('map')}>
+                Back to mapping
+              </Button>
             </div>
           </div>
         </div>
       ) : null}
 
+      {/* ------------------------------------------------------------- done */}
       {step === 'done' && result ? (
-        <div className="rounded-lg border border-line bg-white p-6">
-          <h2 className="text-base font-semibold text-navy-900">Import complete</h2>
-          <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div><dt className="text-xs uppercase tracking-wide text-navy-500">Accounts created</dt><dd className="tabular text-2xl font-semibold">{result.accountsCreated}</dd></div>
-            <div><dt className="text-xs uppercase tracking-wide text-navy-500">Contacts created</dt><dd className="tabular text-2xl font-semibold">{result.contactsCreated}</dd></div>
-            <div><dt className="text-xs uppercase tracking-wide text-navy-500">Campaign memberships</dt><dd className="tabular text-2xl font-semibold">{result.membershipsCreated}</dd></div>
-            <div><dt className="text-xs uppercase tracking-wide text-navy-500">Rows skipped</dt><dd className="tabular text-2xl font-semibold">{result.skipped}</dd></div>
+        <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
+          <div className="flex items-center gap-4 border-b border-line bg-success-50 px-6 py-5">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-success-600 text-white">
+              <Icon name="check" className="h-5 w-5" strokeWidth={2.5} />
+            </span>
+            <div>
+              <h2 className="text-md font-semibold text-navy-900">Import complete</h2>
+              <p className="mt-0.5 text-xs text-navy-600">
+                Every imported contact has been scored and gated.
+              </p>
+            </div>
+          </div>
+
+          <dl className="grid grid-cols-2 gap-px bg-line sm:grid-cols-4">
+            {([
+              ['Accounts created', result.accountsCreated],
+              ['Contacts created', result.contactsCreated],
+              ['Campaign memberships', result.membershipsCreated],
+              ['Rows skipped', result.skipped],
+            ] as const).map(([label, value]) => (
+              <div key={label} className="bg-surface px-5 py-4">
+                <dt className="eyebrow">{label}</dt>
+                <dd className="tabular mt-1.5 text-2xl font-semibold text-navy-900">{value}</dd>
+              </div>
+            ))}
           </dl>
-          <p className="mt-4 text-sm text-navy-600">
-            Every imported contact has been scored and gated. New records start unverified, so most will
-            appear in the research review queue until a researcher confirms the role and the contact details.
-          </p>
-          <div className="mt-4 flex gap-2">
-            <Button type="button" variant="outline" onClick={() => {
-              setStep('upload'); setText(''); setValidation(null); setResult(null);
-              setHeaders([]); setMapping({}); setCampaignIds([]); setSkipped(new Set());
-            }}>
-              Import another file
-            </Button>
-            <a href="/review" className="inline-flex h-9 items-center rounded-md bg-brand-600 px-4 text-sm font-medium text-white hover:bg-brand-700">
-              Open the review queue
-            </a>
+
+          <div className="px-6 py-5">
+            <p className="max-w-3xl text-sm leading-relaxed text-navy-600">
+              New records start unverified, so most will appear in the research review queue until a
+              researcher confirms the role and the contact details.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <ButtonLink href="/review" icon="review">Open the review queue</ButtonLink>
+              <Button
+                type="button"
+                variant="outline"
+                icon="import"
+                onClick={() => {
+                  setStep('upload'); setText(''); setValidation(null); setResult(null);
+                  setHeaders([]); setMapping({}); setCampaignIds([]); setSkipped(new Set()); setFileName('');
+                }}
+              >
+                Import another file
+              </Button>
+            </div>
           </div>
         </div>
       ) : null}

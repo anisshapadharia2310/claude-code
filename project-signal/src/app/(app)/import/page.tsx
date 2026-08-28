@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ImportWizard } from '@/components/import/import-wizard';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
+import { Icon } from '@/components/ui/icon';
 import { PageHeader } from '@/components/ui/misc';
 import { requirePermission } from '@/server/auth/guards';
 import { getRepository } from '@/server/repo';
@@ -16,6 +17,7 @@ export default async function ImportPage() {
   return (
     <>
       <PageHeader
+        eyebrow="Research"
         title="Import contacts"
         description="Upload a target account list, map the columns, fix what is wrong, then let the engine score it."
       />
@@ -32,7 +34,7 @@ export default async function ImportPage() {
 
         <div className="space-y-4">
           <Card>
-            <CardHeader title="What happens on import" />
+            <CardHeader title="What happens on import" icon={<Icon name="import" className="h-4 w-4" />} />
             <CardBody>
               <ol className="space-y-2 text-xs leading-relaxed text-navy-600">
                 {[
@@ -46,8 +48,10 @@ export default async function ImportPage() {
                   'The relevance gate, the compliance gate and the scoring engine run over the new records.',
                   'A summary is shown, and anything the engine is unsure about goes to the review queue.',
                 ].map((step, index) => (
-                  <li key={step} className="flex gap-2">
-                    <span className="tabular shrink-0 font-semibold text-brand-700">{index + 1}.</span>
+                  <li key={step} className="flex gap-2.5">
+                    <span className="tabular flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-50 text-[9px] font-bold text-brand-700">
+                      {index + 1}
+                    </span>
                     <span>{step}</span>
                   </li>
                 ))}
@@ -56,7 +60,7 @@ export default async function ImportPage() {
           </Card>
 
           <Card>
-            <CardHeader title="Required columns" />
+            <CardHeader title="Required columns" icon={<Icon name="document" className="h-4 w-4" />} />
             <CardBody>
               <ul className="space-y-1 text-xs text-navy-600">
                 {IMPORT_FIELDS.filter((field) => field.required).map((field) => (

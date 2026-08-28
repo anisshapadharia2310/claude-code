@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/form';
+import { Icon } from '@/components/ui/icon';
+import { InputWithIcon } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/misc';
 import { EmptyRow, Table, TableWrap, Td, Th, Tr } from '@/components/ui/table';
@@ -45,25 +46,35 @@ export default async function AccountsPage({
   return (
     <>
       <PageHeader
+        eyebrow={campaign?.name ?? 'No campaign selected'}
         title="Accounts"
-        description={`${formatNumber(accounts.length)} companies. Counts are for ${campaign?.name ?? 'the selected campaign'}.`}
+        description={`${formatNumber(accounts.length)} companies. Priority counts are for the selected campaign.`}
       />
 
-      <form method="get" action="/accounts" className="mb-4 flex gap-2">
-        <Input name="q" type="search" defaultValue={q ?? ''} placeholder="Company, industry, country or domain"
-          className="max-w-sm" />
-        <Button type="submit">Search</Button>
+      <form method="get" action="/accounts" className="mb-5 flex flex-wrap gap-2">
+        <div className="min-w-[240px] flex-1 sm:max-w-sm">
+          <label htmlFor="account-search" className="sr-only">Search accounts</label>
+          <InputWithIcon
+            id="account-search" name="q" type="search" defaultValue={q ?? ''}
+            placeholder="Company, industry, country or domain"
+          />
+        </div>
+        <Button type="submit" icon="search">Search</Button>
       </form>
 
       <Card>
-        <CardHeader title="Company list" description="Trigger strength is what separates a fit from a live opportunity." />
+        <CardHeader
+          title="Company list"
+          description="Trigger strength is what separates a fit from a live opportunity."
+          icon={<Icon name="building" className="h-4 w-4" />}
+        />
         <CardBody className="p-0">
           <TableWrap>
             <Table>
               <thead>
                 <tr>
                   <Th>Company</Th><Th>Industry</Th><Th>Location</Th><Th>Size</Th>
-                  <Th>Triggers</Th><Th className="text-right">In campaign</Th><Th className="text-right">P1 / P2</Th>
+                  <Th>Triggers</Th><Th numeric>In campaign</Th><Th numeric>P1 / P2</Th>
                 </tr>
               </thead>
               <tbody>
@@ -111,11 +122,11 @@ export default async function AccountsPage({
                           </div>
                         ) : <span className="text-xs text-navy-400">None recorded</span>}
                       </Td>
-                      <Td className="tabular text-right">{group.length}</Td>
-                      <Td className="tabular text-right">
+                      <Td numeric>{group.length}</Td>
+                      <Td numeric>
                         <span className="font-semibold text-brand-700">{p1}</span>
                         <span className="text-navy-400"> / </span>
-                        <span className="text-cyan-700">{p2}</span>
+                        <span className="text-accent-700">{p2}</span>
                       </Td>
                     </Tr>
                   );

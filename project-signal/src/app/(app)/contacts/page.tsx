@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ContactTable } from '@/components/contacts/contact-table';
 import { FilterBar } from '@/components/contacts/filter-bar';
 import { ButtonLink } from '@/components/ui/button';
-import { EmptyState, PageHeader, Stat } from '@/components/ui/misc';
+import { EmptyState, PageHeader, SectionHeading, Stat } from '@/components/ui/misc';
 import { toContactRow } from '@/lib/rows';
 import { formatNumber } from '@/lib/utils';
 import { requirePermission } from '@/server/auth/guards';
@@ -49,6 +49,16 @@ export default async function ContactsPage({
   const rows = filtered.map(toContactRow);
   const callers = users.filter((entry) => entry.role === 'CALLER' || entry.role === 'MANAGER');
 
+  const activeCount = [
+    filters.priority, filters.country, filters.industry, filters.employeeBand,
+    filters.seniority, filters.roleCategory, filters.technology, filters.trigger,
+    filters.emailStatus, filters.phoneStatus, filters.whatsappStatus,
+    filters.consentStatus, filters.status,
+  ].filter((list) => list.length > 0).length
+    + [filters.scoreMin, filters.scoreMax, filters.eventType, filters.assignedTo, filters.verifiedBefore]
+      .filter((value) => value !== null).length
+    + (filters.reviewOnly ? 1 : 0);
+
   const counts = {
     P1: rows.filter((row) => row.priority === 'P1').length,
     P2: rows.filter((row) => row.priority === 'P2').length,
@@ -67,19 +77,31 @@ export default async function ContactsPage({
   return (
     <>
       <PageHeader
+        eyebrow={campaign.name}
         title="Contacts"
-        description={`${formatNumber(rows.length)} of ${formatNumber(links.length)} contacts in ${campaign.name}. Every score can be opened and explained.`}
+        description={`${formatNumber(rows.length)} of ${formatNumber(links.length)} contacts in this campaign. Every score can be opened and explained down to the field that produced it.`}
         actions={
           can(user.role, 'exportData')
-            ? <ButtonLink href={`/api/export/contacts?${exportQuery.toString()}`} variant="outline" size="sm">
+            ? (
+              <ButtonLink
+                href={`/api/export/contacts?${exportQuery.toString()}`}
+                variant="outline"
+                size="sm"
+                icon="download"
+              >
                 Export this view
               </ButtonLink>
+            )
             : null
         }
       />
 
-      <section className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <Stat label="Showing" value={formatNumber(rows.length)} />
+      <SectionHeading
+        title="Result mix"
+        description="How the current filters break down by priority."
+      />
+      <section className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <Stat label="Showing" value={formatNumber(rows.length)} icon="contacts" />
         <Stat label="P1" value={formatNumber(counts.P1)} tone="p1" />
         <Stat label="P2" value={formatNumber(counts.P2)} tone="p2" />
         <Stat label="P3" value={formatNumber(counts.P3)} tone="p3" />
@@ -87,12 +109,18 @@ export default async function ContactsPage({
         <Stat label="Reject" value={formatNumber(counts.REJECT)} tone="reject" />
       </section>
 
-      <div className="mb-4">
-        <FilterBar filters={filters} options={filterOptions(links)} callers={callers} />
+      <div className="mb-5">
+        <FilterBar
+          filters={filters}
+          options={filterOptions(links)}
+          callers={callers}
+          activeCount={activeCount}
+        />
       </div>
 
       <ContactTable
         rows={rows}
+        total={links.length}
         campaignId={campaign.id}
         callers={callers}
         canBulk={can(user.role, 'bulkUpdate')}

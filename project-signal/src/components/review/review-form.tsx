@@ -1,7 +1,8 @@
 'use client';
 
 import { ActionForm, SubmitValueButton } from '@/components/forms/action-form';
-import { Checkbox, FieldError, Label, Select, Textarea } from '@/components/ui/form';
+import { CheckboxField, Field, FieldGroup, FormActions, Select, Textarea } from '@/components/ui/form';
+import { Icon } from '@/components/ui/icon';
 import { applyReviewAction } from '@/server/actions/review';
 
 const ROLE_CATEGORIES = [
@@ -12,8 +13,9 @@ const ROLE_CATEGORIES = [
 /**
  * The researcher's working form.
  *
- * Corrections to the underlying record are made here, not only a verdict: the
- * point of the queue is to fix the data, so the next score is right.
+ * Corrections come first and the verdict comes last, because the point of the
+ * queue is to fix the record so the next score is right — not simply to pass
+ * judgement on the current one.
  */
 export function ReviewForm({
   campaignContactId, contact, canApprove,
@@ -34,121 +36,155 @@ export function ReviewForm({
   };
   canApprove: boolean;
 }) {
+  const isP1 = contact.priority === 'P1';
+
   return (
-    <ActionForm action={applyReviewAction} className="space-y-4">
+    <ActionForm action={applyReviewAction} className="space-y-6">
       {(state) => (
         <>
           <input type="hidden" name="campaignContactId" value={campaignContactId} />
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div>
-              <Label htmlFor={`role-${campaignContactId}`}>Role category</Label>
+          <FieldGroup
+            title="Role classification"
+            description="What the engine read, and what you know to be true. These corrections change the record."
+            columns={2}
+          >
+            <Field label="Role category" htmlFor={`role-${campaignContactId}`}>
               <Select id={`role-${campaignContactId}`} name="roleCategory" defaultValue={contact.roleCategory}>
                 {ROLE_CATEGORIES.map((value) => (
-                  <option key={value} value={value}>{value.replace(/_/g, ' ').toLowerCase()}</option>
+                  <option key={value} value={value}>
+                    {value.replace(/_/g, ' ').toLowerCase().replace(/^./, (character) => character.toUpperCase())}
+                  </option>
                 ))}
               </Select>
-            </div>
-            <div>
-              <Label htmlFor={`conf-${campaignContactId}`}>Role confidence</Label>
+            </Field>
+
+            <Field label="Role confidence" htmlFor={`conf-${campaignContactId}`}>
               <Select id={`conf-${campaignContactId}`} name="roleConfidence" defaultValue={contact.roleConfidence}>
                 <option value="HIGH">High</option>
                 <option value="MEDIUM">Medium</option>
                 <option value="LOW">Low</option>
                 <option value="UNKNOWN">Unknown</option>
               </Select>
-            </div>
-            <div>
-              <Label htmlFor={`dir-${campaignContactId}`}>Direct problem responsibility</Label>
-              <Select id={`dir-${campaignContactId}`} name="directProblemResponsibility"
-                defaultValue={String(contact.directProblemResponsibility)}>
+            </Field>
+
+            <Field
+              label="Direct problem responsibility"
+              htmlFor={`dir-${campaignContactId}`}
+              hint="Confirming this is what unlocks the 12-point ownership award."
+            >
+              <Select
+                id={`dir-${campaignContactId}`}
+                name="directProblemResponsibility"
+                defaultValue={String(contact.directProblemResponsibility)}
+              >
                 <option value="true">Confirmed: they are accountable</option>
                 <option value="false">Not confirmed</option>
               </Select>
-            </div>
-            <div>
-              <Label htmlFor={`trig-${campaignContactId}`}>Business trigger</Label>
+            </Field>
+
+            <Field label="Business trigger" htmlFor={`trig-${campaignContactId}`}>
               <Select id={`trig-${campaignContactId}`} name="triggerVerification" defaultValue={contact.triggerVerification}>
                 <option value="VERIFIED">Verified with a source</option>
                 <option value="UNVERIFIED">Unverified</option>
                 <option value="FALSE_POSITIVE">False: no such trigger</option>
                 <option value="NONE">No trigger recorded</option>
               </Select>
-            </div>
-            <div>
-              <Label htmlFor={`budget-${campaignContactId}`}>Owns budget</Label>
+            </Field>
+
+            <Field label="Owns budget" htmlFor={`budget-${campaignContactId}`}>
               <Select id={`budget-${campaignContactId}`} name="ownsBudget" defaultValue={String(contact.ownsBudget)}>
                 <option value="true">Yes</option>
                 <option value="false">No</option>
               </Select>
-            </div>
-            <div>
-              <Label htmlFor={`infl-${campaignContactId}`}>Influences the decision</Label>
+            </Field>
+
+            <Field label="Influences the decision" htmlFor={`infl-${campaignContactId}`}>
               <Select id={`infl-${campaignContactId}`} name="influencesDecision" defaultValue={String(contact.influencesDecision)}>
                 <option value="true">Yes</option>
                 <option value="false">No</option>
               </Select>
-            </div>
-          </div>
+            </Field>
+          </FieldGroup>
 
-          <div>
-            <Label htmlFor={`why-${campaignContactId}`}>
-              Why this contact {contact.priority === 'P1' ? '(required to approve a P1)' : ''}
-            </Label>
-            <Textarea
-              id={`why-${campaignContactId}`}
-              name="whyThisContact"
-              rows={4}
-              defaultValue={contact.whyThisContact ?? ''}
-              placeholder={contact.whyThisContactDraft ?? 'What they own, which trigger you verified, and why now.'}
+          <FieldGroup title="Evidence" columns={1}>
+            <Field
+              label={`Why this contact${isP1 ? ' — required to approve a P1' : ''}`}
+              htmlFor={`why-${campaignContactId}`}
+              required={isP1}
+              error={state.fieldErrors?.whyThisContact}
+              hint={
+                contact.whyThisContactDraft && !contact.whyThisContact
+                  ? 'The engine draft is shown as the placeholder. Rewrite it in your own words: a generated sentence never satisfies the P1 rule.'
+                  : 'What they own, which trigger you verified, and why now.'
+              }
+            >
+              <Textarea
+                id={`why-${campaignContactId}`}
+                name="whyThisContact"
+                rows={4}
+                defaultValue={contact.whyThisContact ?? ''}
+                aria-invalid={state.fieldErrors?.whyThisContact ? true : undefined}
+                placeholder={contact.whyThisContactDraft ?? 'What they own, which trigger you verified, and why now.'}
+              />
+            </Field>
+
+            <Field
+              label="Research notes"
+              htmlFor={`notes-${campaignContactId}`}
+              hint="What you checked and where you checked it."
+            >
+              <Textarea
+                id={`notes-${campaignContactId}`}
+                name="reviewNotes"
+                rows={3}
+                defaultValue={contact.reviewNotes ?? ''}
+              />
+            </Field>
+
+            <Field label="Role relevance notes" htmlFor={`rel-${campaignContactId}`}>
+              <Textarea
+                id={`rel-${campaignContactId}`}
+                name="roleRelevanceNotes"
+                rows={2}
+                defaultValue={contact.roleRelevanceNotes ?? ''}
+              />
+            </Field>
+
+            <CheckboxField
+              name="markVerifiedNow"
+              label="Set the last-verified date to today"
+              hint="Clears the freshness warning and restores the data-quality points."
             />
-            <FieldError>{state.fieldErrors?.whyThisContact}</FieldError>
-            {contact.whyThisContactDraft && !contact.whyThisContact ? (
-              <p className="mt-1 text-xs text-navy-500">
-                Engine draft, shown as the placeholder. Rewrite it in your own words: a generated sentence
-                never satisfies the P1 rule.
-              </p>
-            ) : null}
-          </div>
+          </FieldGroup>
 
-          <div>
-            <Label htmlFor={`notes-${campaignContactId}`}>Research notes</Label>
-            <Textarea
-              id={`notes-${campaignContactId}`}
-              name="reviewNotes"
-              rows={3}
-              defaultValue={contact.reviewNotes ?? ''}
-              placeholder="What you checked and where you checked it."
-            />
-          </div>
-
-          <div>
-            <Label htmlFor={`rel-${campaignContactId}`}>Role relevance notes</Label>
-            <Textarea id={`rel-${campaignContactId}`} name="roleRelevanceNotes" rows={2}
-              defaultValue={contact.roleRelevanceNotes ?? ''} />
-          </div>
-
-          <label className="flex items-center gap-2 text-sm text-navy-700">
-            <Checkbox name="markVerifiedNow" />
-            Set the last-verified date to today
-          </label>
-
-          <div className="flex flex-wrap gap-2 border-t border-line pt-3">
-            <SubmitValueButton name="decision" value="SAVE" variant="secondary" size="sm" pendingLabel="Saving...">
+          <FormActions>
+            <SubmitValueButton name="decision" value="SAVE" variant="secondary" size="sm" pendingLabel="Saving…">
               Save notes
             </SubmitValueButton>
             {canApprove ? (
-              <SubmitValueButton name="decision" value="APPROVE" variant="success" size="sm" pendingLabel="Approving...">
+              <SubmitValueButton name="decision" value="APPROVE" variant="success" size="sm" icon="check" pendingLabel="Approving…">
                 Approve
               </SubmitValueButton>
             ) : null}
-            <SubmitValueButton name="decision" value="DOWNGRADE" variant="outline" size="sm" pendingLabel="Downgrading...">
+            <SubmitValueButton name="decision" value="DOWNGRADE" variant="outline" size="sm" pendingLabel="Downgrading…">
               Downgrade
             </SubmitValueButton>
-            <SubmitValueButton name="decision" value="REJECT" variant="danger" size="sm" pendingLabel="Rejecting...">
+
+            {/* Destructive actions sit apart from the rest. */}
+            <span aria-hidden="true" className="mx-1 hidden h-6 w-px bg-line sm:block" />
+            <SubmitValueButton name="decision" value="REJECT" variant="danger" size="sm" icon="ban" pendingLabel="Rejecting…">
               Reject
             </SubmitValueButton>
-          </div>
+          </FormActions>
+
+          {!canApprove ? (
+            <p className="flex items-start gap-2 rounded-lg bg-navy-50 px-3 py-2.5 text-xs leading-relaxed text-navy-600">
+              <Icon name="info" className="mt-0.5 h-3.5 w-3.5 shrink-0 text-navy-400" />
+              Approving a P1 is a manager decision. Save your notes and the justification, and a manager will
+              approve it.
+            </p>
+          ) : null}
         </>
       )}
     </ActionForm>

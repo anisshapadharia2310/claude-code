@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { EmailComposer, type EmailTemplate } from '@/components/outreach/email-composer';
 import { ButtonLink } from '@/components/ui/button';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
+import { Icon } from '@/components/ui/icon';
 import { PageHeader } from '@/components/ui/misc';
 import { Table, TableWrap, Td, Th, Tr } from '@/components/ui/table';
 import { primaryTrigger } from '@/domain/recommendations';
@@ -155,25 +156,29 @@ export default async function EmailPage({ params }: { params: Promise<{ id: stri
             {contact.workEmail ?? 'No email on record'} &middot; {contact.jobTitle} at {account.companyName}
           </>
         }
-        actions={<ButtonLink href={`/outreach/${link.id}`} variant="outline" size="sm">Back to outreach</ButtonLink>}
+        actions={
+          <ButtonLink href={`/outreach/${link.id}`} variant="outline" size="sm" icon="chevronLeft">
+            Back to outreach
+          </ButtonLink>
+        }
       />
 
-      <div className="mb-4 grid gap-3 sm:grid-cols-3">
+      <div className="mb-5 grid gap-3 sm:grid-cols-3">
         <Card>
           <CardBody>
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy-500">Campaign topic</p>
+            <p className="eyebrow">Campaign topic</p>
             <p className="mt-1 text-sm text-navy-800">{campaign.topic}</p>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy-500">Target business problem</p>
+            <p className="eyebrow">Target business problem</p>
             <p className="mt-1 text-sm text-navy-800">{campaign.targetBusinessProblem}</p>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy-500">Recommended angle</p>
+            <p className="eyebrow">Recommended angle</p>
             <p className="mt-1 text-sm leading-relaxed text-navy-800">{link.emailAngle ?? '-'}</p>
           </CardBody>
         </Card>
@@ -183,6 +188,7 @@ export default async function EmailPage({ params }: { params: Promise<{ id: stri
         <CardHeader
           title="Draft"
           description="Nothing is transmitted in this version. The compliance footer is appended automatically."
+          icon={<Icon name="mail" className="h-4 w-4" />}
         />
         <CardBody>
           <EmailComposer
@@ -205,7 +211,7 @@ export default async function EmailPage({ params }: { params: Promise<{ id: stri
       </Card>
 
       <Card className="mt-4">
-        <CardHeader title="Email history" />
+        <CardHeader title="Email history" icon={<Icon name="clock" className="h-4 w-4" />} />
         <CardBody className="p-0">
           <TableWrap>
             <Table>

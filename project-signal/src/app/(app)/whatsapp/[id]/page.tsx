@@ -4,6 +4,7 @@ import { WhatsAppComposer, type WhatsAppTemplate } from '@/components/outreach/w
 import { Badge } from '@/components/ui/badge';
 import { ButtonLink } from '@/components/ui/button';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
+import { Icon } from '@/components/ui/icon';
 import { PageHeader } from '@/components/ui/misc';
 import { Table, TableWrap, Td, Th, Tr } from '@/components/ui/table';
 import { formatDate, formatDateTime, humanize } from '@/lib/utils';
@@ -88,17 +89,21 @@ export default async function WhatsAppPage({ params }: { params: Promise<{ id: s
       <PageHeader
         title={`WhatsApp ${contact.firstName} ${contact.lastName}`}
         description={<>{campaign.name} &middot; {contact.phoneNumber ?? 'No number on record'}</>}
-        actions={<ButtonLink href={`/outreach/${link.id}`} variant="outline" size="sm">Back to outreach</ButtonLink>}
+        actions={
+          <ButtonLink href={`/outreach/${link.id}`} variant="outline" size="sm" icon="chevronLeft">
+            Back to outreach
+          </ButtonLink>
+        }
       />
 
-      <div className="mb-4 grid gap-3 sm:grid-cols-3">
+      <div className="mb-5 grid gap-3 sm:grid-cols-3">
         <Card>
           <CardBody>
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy-500">Permission status</p>
+            <p className="eyebrow">Permission status</p>
             <p className="mt-1">
               {permitted
-                ? <Badge tone="success">Permitted and opted in</Badge>
-                : <Badge tone="danger">Blocked</Badge>}
+                ? <Badge tone="success" icon="check">Permitted and opted in</Badge>
+                : <Badge tone="danger" icon="ban">Blocked</Badge>}
             </p>
             <p className="mt-2 text-xs leading-relaxed text-navy-600">
               {permitted
@@ -109,21 +114,25 @@ export default async function WhatsAppPage({ params }: { params: Promise<{ id: s
         </Card>
         <Card>
           <CardBody>
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy-500">Event, local time</p>
+            <p className="eyebrow">Event, local time</p>
             <p className="mt-1 text-sm text-navy-800">{localEvent ?? 'No event date on this campaign'}</p>
             <p className="mt-1 text-xs text-navy-500">{contact.timeZone ?? 'No time zone on record'}</p>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
-            <p className="text-xs font-semibold uppercase tracking-wide text-navy-500">Recommendation</p>
+            <p className="eyebrow">Recommendation</p>
             <p className="mt-1 text-xs leading-relaxed text-navy-700">{link.whatsappRecommendation ?? '-'}</p>
           </CardBody>
         </Card>
       </div>
 
       <Card>
-        <CardHeader title="Message" description="Templates only, in the contact's own time zone." />
+        <CardHeader
+          title="Message"
+          description="Templates only, in the contact's own time zone."
+          icon={<Icon name="chat" className="h-4 w-4" />}
+        />
         <CardBody>
           <WhatsAppComposer
             campaignContactId={link.id}
@@ -135,7 +144,7 @@ export default async function WhatsAppPage({ params }: { params: Promise<{ id: s
       </Card>
 
       <Card className="mt-4">
-        <CardHeader title="WhatsApp history" />
+        <CardHeader title="WhatsApp history" icon={<Icon name="clock" className="h-4 w-4" />} />
         <CardBody className="p-0">
           <TableWrap>
             <Table>

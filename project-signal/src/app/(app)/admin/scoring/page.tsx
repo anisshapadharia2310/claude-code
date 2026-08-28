@@ -39,6 +39,7 @@ export default async function ScoringPage({
   return (
     <>
       <PageHeader
+        eyebrow="Administration"
         title="Scoring rules"
         description={`Weights for ${selected.clientBrand} — ${selected.name}. Saving rescores the whole campaign and writes an audit entry per changed contact.`}
         actions={
@@ -81,16 +82,19 @@ export default async function ScoringPage({
         }))}
       />
 
-      <Card className="mt-4">
-        <CardHeader title="Rules the weights cannot change" />
+      <Card className="mt-4" accent="danger">
+        <CardHeader
+          title="Rules the weights cannot change"
+          description="Structural guarantees. No weight configuration can switch these off."
+        />
         <CardBody>
-          <ul className="space-y-2 text-sm leading-relaxed text-navy-700">
-            <li>A contact who fails a blocking relevance check is rejected regardless of score.</li>
-            <li>A contact who is opted out, marked do-not-contact, or a duplicate is rejected regardless of score.</li>
-            <li>Incomplete compliance information produces a compliance hold, not a priority.</li>
-            <li>A P1 requires a written &ldquo;why this contact&rdquo; justification and a manager approval.</li>
-            <li>The account-level signal is displayed separately and never changes a contact score.</li>
-            <li>Every score change is written to an append-only audit trail.</li>
+          <ul className="space-y-2.5 text-base leading-relaxed text-navy-700">
+            <li className="flex gap-2.5"><span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-danger-400" />A contact who fails a blocking relevance check is rejected regardless of score.</li>
+            <li className="flex gap-2.5"><span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-danger-400" />A contact who is opted out, marked do-not-contact, or a duplicate is rejected regardless of score.</li>
+            <li className="flex gap-2.5"><span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-danger-400" />Incomplete compliance information produces a compliance hold, not a priority.</li>
+            <li className="flex gap-2.5"><span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-danger-400" />A P1 requires a written &ldquo;why this contact&rdquo; justification and a manager approval.</li>
+            <li className="flex gap-2.5"><span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-danger-400" />The account-level signal is displayed separately and never changes a contact score.</li>
+            <li className="flex gap-2.5"><span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-danger-400" />Every score change is written to an append-only audit trail.</li>
           </ul>
         </CardBody>
       </Card>

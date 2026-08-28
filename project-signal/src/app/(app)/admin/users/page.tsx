@@ -3,6 +3,7 @@ import { ActionForm, SubmitButton } from '@/components/forms/action-form';
 import { CreateUserForm } from '@/components/admin/create-user-form';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
+import { Icon } from '@/components/ui/icon';
 import { Checkbox, Select } from '@/components/ui/form';
 import { PageHeader } from '@/components/ui/misc';
 import { Table, TableWrap, Td, Th, Tr } from '@/components/ui/table';
@@ -21,11 +22,15 @@ export default async function UsersPage() {
 
   return (
     <>
-      <PageHeader title="Users" description="Roles decide which screens and actions each person can reach." />
+      <PageHeader
+        eyebrow="Administration"
+        title="Users"
+        description="Roles decide which screens and actions each person can reach."
+      />
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <Card>
-          <CardHeader title="Team" description={`${users.length} accounts`} />
+          <CardHeader title="Team" description={`${users.length} accounts`} icon={<Icon name="users" className="h-4 w-4" />} />
           <CardBody className="p-0">
             <TableWrap>
               <Table>
@@ -48,7 +53,7 @@ export default async function UsersPage() {
                             Active
                           </label>
                           <span className="text-xs text-navy-500">{formatDate(user.createdAt)}</span>
-                          <SubmitButton size="sm" variant="secondary" pendingLabel="Saving...">Save</SubmitButton>
+                          <SubmitButton size="sm" variant="secondary" pendingLabel="Saving…">Save</SubmitButton>
                         </ActionForm>
                       </Td>
                       <Td />
@@ -62,7 +67,7 @@ export default async function UsersPage() {
 
         <div className="space-y-4">
           <Card>
-            <CardHeader title="Add a user" />
+            <CardHeader title="Add a user" icon={<Icon name="plus" className="h-4 w-4" />} />
             <CardBody>
               <CreateUserForm
                 roles={ALL_ROLES.map((role) => ({ value: role, label: ROLE_LABELS[role] }))}
@@ -71,7 +76,7 @@ export default async function UsersPage() {
           </Card>
 
           <Card>
-            <CardHeader title="What each role can do" />
+            <CardHeader title="What each role can do" icon={<Icon name="shield" className="h-4 w-4" />} />
             <CardBody>
               <dl className="space-y-3 text-xs">
                 {ALL_ROLES.map((role) => (

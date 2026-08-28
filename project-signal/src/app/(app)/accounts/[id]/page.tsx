@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Badge, PriorityBadge } from '@/components/ui/badge';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
+import { Icon } from '@/components/ui/icon';
 import { Alert, PageHeader, Stat } from '@/components/ui/misc';
 import { EmptyRow, Table, TableWrap, Td, Th, Tr } from '@/components/ui/table';
 import { computeAccountSignal } from '@/domain/account-signal';
@@ -57,6 +58,7 @@ export default async function AccountDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       <PageHeader
+        eyebrow={account.namedAccountStatus ? 'Named strategic account' : 'Account'}
         title={account.companyName}
         description={
           <>
@@ -90,19 +92,20 @@ export default async function AccountDetailPage({ params }: { params: Promise<{ 
           <CardHeader
             title="Contacts in this campaign"
             description={campaign ? campaign.name : 'No campaign selected'}
+            icon={<Icon name="contacts" className="h-4 w-4" />}
           />
           <CardBody className="p-0">
             <TableWrap>
               <Table>
                 <thead>
-                  <tr><Th>Priority</Th><Th className="text-right">Score</Th><Th>Contact</Th><Th>Role</Th><Th>Status</Th></tr>
+                  <tr><Th>Priority</Th><Th numeric>Score</Th><Th>Contact</Th><Th>Role</Th><Th>Status</Th></tr>
                 </thead>
                 <tbody>
                   {accountLinks.length === 0 ? <EmptyRow colSpan={5}>No contacts from this account are in the selected campaign.</EmptyRow> : null}
                   {accountLinks.map((link) => (
                     <Tr key={link.id}>
                       <Td><PriorityBadge priority={link.priority} pending={link.priority === 'P1' && link.humanReviewStatus !== 'APPROVED'} /></Td>
-                      <Td className="tabular text-right font-semibold">{link.totalScore}</Td>
+                      <Td numeric className="font-semibold">{link.totalScore}</Td>
                       <Td>
                         <Link href={`/contacts/${link.id}`} className="font-medium text-brand-700 hover:underline">
                           {link.contact.firstName} {link.contact.lastName}
@@ -124,10 +127,14 @@ export default async function AccountDetailPage({ params }: { params: Promise<{ 
 
         <div className="space-y-4">
           <Card>
-            <CardHeader title="Business triggers" description={`Verification: ${humanize(account.triggerVerification)}`} />
+            <CardHeader
+              title="Business triggers"
+              description={`Verification: ${humanize(account.triggerVerification)}`}
+              icon={<Icon name="spark" className="h-4 w-4" />}
+            />
             <CardBody className="space-y-2">
               {account.recentBusinessTrigger ? (
-                <p className="rounded border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-relaxed text-amber-900">
+                <p className="rounded-lg border border-warn-200 bg-warn-50 px-3.5 py-2.5 text-sm leading-relaxed text-warn-900">
                   {account.recentBusinessTrigger}
                 </p>
               ) : null}
@@ -139,7 +146,7 @@ export default async function AccountDetailPage({ params }: { params: Promise<{ 
               <ul className="space-y-1.5 pt-2">
                 {triggers.map(([label, present, weight]) => (
                   <li key={label} className="flex items-start gap-2 text-xs">
-                    <span className={`mt-1 h-2 w-2 shrink-0 rounded-full ${present ? 'bg-emerald-500' : 'bg-navy-200'}`} />
+                    <span className={`mt-1 h-2 w-2 shrink-0 rounded-full ${present ? 'bg-success-500' : 'bg-navy-200'}`} />
                     <span className={present ? 'text-navy-800' : 'text-navy-400'}>
                       {label}
                       <span className="block text-[10px] text-navy-400">{weight}</span>
@@ -159,7 +166,7 @@ export default async function AccountDetailPage({ params }: { params: Promise<{ 
           </Card>
 
           <Card>
-            <CardHeader title="Company profile" />
+            <CardHeader title="Company profile" icon={<Icon name="building" className="h-4 w-4" />} />
             <CardBody>
               <dl className="space-y-2 text-xs">
                 <div><dt className="text-navy-500">Employees</dt><dd className="font-medium text-navy-800">{humanize(account.employeeBand)}</dd></div>

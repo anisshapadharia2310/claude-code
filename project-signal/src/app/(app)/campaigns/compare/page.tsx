@@ -20,6 +20,7 @@ export default async function ComparePage() {
   return (
     <>
       <PageHeader
+        eyebrow="Method comparison"
         title="Surface-level list versus SIGNAL"
         description="The same contacts, the same event ledger, two ways of choosing who to call."
       />
@@ -55,42 +56,42 @@ export default async function ComparePage() {
                       <thead>
                         <tr>
                           <Th>Measure</Th>
-                          <Th className="text-right">Surface-level</Th>
-                          <Th className="text-right">SIGNAL</Th>
+                          <Th numeric>Surface-level</Th>
+                          <Th numeric>SIGNAL</Th>
                         </tr>
                       </thead>
                       <tbody>
                         <Tr>
                           <Td>List size</Td>
-                          <Td className="tabular text-right">{formatNumber(surface.listSize)}</Td>
-                          <Td className="tabular text-right font-semibold">{formatNumber(signal.listSize)}</Td>
+                          <Td numeric>{formatNumber(surface.listSize)}</Td>
+                          <Td numeric className="font-semibold text-navy-900">{formatNumber(signal.listSize)}</Td>
                         </Tr>
                         <Tr>
                           <Td>Registration rate</Td>
-                          <Td className="tabular text-right">{formatPercent(surface.registrationRate)}</Td>
-                          <Td className="tabular text-right font-semibold">{formatPercent(signal.registrationRate)}</Td>
+                          <Td numeric>{formatPercent(surface.registrationRate)}</Td>
+                          <Td numeric className="font-semibold text-navy-900">{formatPercent(signal.registrationRate)}</Td>
                         </Tr>
                         <Tr>
                           <Td>Attendance rate</Td>
-                          <Td className="tabular text-right">{formatPercent(surface.attendanceRate)}</Td>
-                          <Td className="tabular text-right font-semibold">{formatPercent(signal.attendanceRate)}</Td>
+                          <Td numeric>{formatPercent(surface.attendanceRate)}</Td>
+                          <Td numeric className="font-semibold text-navy-900">{formatPercent(signal.attendanceRate)}</Td>
                         </Tr>
                         <Tr>
                           <Td>Positive response rate</Td>
-                          <Td className="tabular text-right">{formatPercent(surface.positiveResponseRate)}</Td>
-                          <Td className="tabular text-right font-semibold">{formatPercent(signal.positiveResponseRate)}</Td>
+                          <Td numeric>{formatPercent(surface.positiveResponseRate)}</Td>
+                          <Td numeric className="font-semibold text-navy-900">{formatPercent(signal.positiveResponseRate)}</Td>
                         </Tr>
                         <Tr>
                           <Td>Meeting rate</Td>
-                          <Td className="tabular text-right">{formatPercent(surface.meetingRate)}</Td>
-                          <Td className="tabular text-right font-semibold">{formatPercent(signal.meetingRate)}</Td>
+                          <Td numeric>{formatPercent(surface.meetingRate)}</Td>
+                          <Td numeric className="font-semibold text-navy-900">{formatPercent(signal.meetingRate)}</Td>
                         </Tr>
                         <Tr>
                           <Td>Cost per verified attendee</Td>
-                          <Td className="tabular text-right">
+                          <Td numeric>
                             {surface.costPerVerifiedAttendee === null ? '-' : formatCurrency(surface.costPerVerifiedAttendee, entry.kpis.currency)}
                           </Td>
-                          <Td className="tabular text-right font-semibold">
+                          <Td numeric className="font-semibold text-navy-900">
                             {signal.costPerVerifiedAttendee === null ? '-' : formatCurrency(signal.costPerVerifiedAttendee, entry.kpis.currency)}
                           </Td>
                         </Tr>

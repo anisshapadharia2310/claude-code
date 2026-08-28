@@ -63,17 +63,18 @@ export default async function DataQualityPage({
   return (
     <>
       <PageHeader
+        eyebrow="Whole database"
         title="Data quality"
         description="Reachability, verification and compliance completeness across every contact the agency holds."
-        actions={<ButtonLink href="/import" variant="outline" size="sm">Import more data</ButtonLink>}
+        actions={<ButtonLink href="/import" variant="outline" size="sm" icon="import">Import more data</ButtonLink>}
       />
 
       <section className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <Stat label="Total contacts" value={formatNumber(summary.total)} />
-        <Stat label="Valid records" value={formatNumber(summary.valid)} tone="p1"
-          hint={formatPercent((summary.valid / Math.max(summary.total, 1)) * 100)} />
-        <Stat label="Invalid records" value={formatNumber(summary.invalid)} tone="reject"
-          hint={formatPercent((summary.invalid / Math.max(summary.total, 1)) * 100)} />
+        <Stat label="Total contacts" value={formatNumber(summary.total)} icon="contacts" emphasis />
+        <Stat label="Valid records" value={formatNumber(summary.valid)} tone="success" icon="check" emphasis
+          hint={`${formatPercent((summary.valid / Math.max(summary.total, 1)) * 100)} of the database`} />
+        <Stat label="Invalid records" value={formatNumber(summary.invalid)} tone="reject" icon="ban" emphasis
+          hint={`${formatPercent((summary.invalid / Math.max(summary.total, 1)) * 100)} of the database`} />
       </section>
 
       <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -81,12 +82,13 @@ export default async function DataQualityPage({
           <Link
             key={key}
             href={`/data-quality?issue=${key}`}
-            className={`rounded-lg border bg-white px-4 py-3 transition-colors hover:border-brand-400 ${
+            className={`group rounded-xl border bg-surface px-4 py-3.5 shadow-xs transition-all hover:-translate-y-0.5 hover:border-brand-400 hover:shadow-sm ${
               activeIssue === key ? 'border-brand-600 ring-1 ring-brand-600/20' : 'border-line'
             }`}
+            aria-current={activeIssue === key ? 'true' : undefined}
           >
-            <p className="text-xs font-medium uppercase tracking-wide text-navy-500">{label}</p>
-            <p className="tabular mt-1 text-2xl font-semibold text-navy-900">{formatNumber(value)}</p>
+            <p className="eyebrow">{label}</p>
+            <p className="tabular mt-1.5 text-2xl font-semibold text-navy-900">{formatNumber(value)}</p>
             <div className="mt-2"><Progress value={value} max={Math.max(summary.total, 1)} tone="neutral" /></div>
             <p className="mt-2 text-[11px] leading-snug text-navy-500">{help}</p>
           </Link>

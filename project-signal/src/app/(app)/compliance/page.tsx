@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { ActionForm, SubmitButton } from '@/components/forms/action-form';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
-import { Checkbox, Input, Label, Select, Textarea } from '@/components/ui/form';
+import { Icon } from '@/components/ui/icon';
+import { Checkbox, Input, Select, Textarea } from '@/components/ui/form';
 import { Alert, PageHeader, Stat } from '@/components/ui/misc';
 import { EmptyRow, Table, TableWrap, Td, Th, Tr } from '@/components/ui/table';
 import { ADMIN_LEGAL_WARNING, evaluateCompliance } from '@/domain/compliance';
@@ -56,6 +57,7 @@ export default async function CompliancePage({
   return (
     <>
       <PageHeader
+        eyebrow="Permission and consent"
         title="Compliance"
         description="Country-aware permission rules and the per-contact records they are evaluated against."
       />
@@ -66,11 +68,11 @@ export default async function CompliancePage({
       </Alert>
 
       <section className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Contacts" value={formatNumber(evaluated.length)} />
-        <Stat label="Cleared" value={formatNumber(counts.pass)} tone="p1" />
-        <Stat label="On hold" value={formatNumber(counts.hold)} tone="hold"
+        <Stat label="Contacts" value={formatNumber(evaluated.length)} icon="contacts" />
+        <Stat label="Cleared" value={formatNumber(counts.pass)} tone="success" icon="check" />
+        <Stat label="On hold" value={formatNumber(counts.hold)} tone="hold" icon="alert"
           tooltip="Required compliance information is missing. Outreach is blocked until it is completed." />
-        <Stat label="Blocked" value={formatNumber(counts.blocked)} tone="reject"
+        <Stat label="Blocked" value={formatNumber(counts.blocked)} tone="reject" icon="ban"
           hint={`${counts.dnc} do-not-contact`} />
       </section>
 
@@ -93,7 +95,7 @@ export default async function CompliancePage({
               <input type="hidden" name="country" value={focused.contact.country} />
 
               <div>
-                <Label htmlFor="consentStatus">Consent status</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="consentStatus">Consent status</label>
                 <Select id="consentStatus" name="consentStatus" defaultValue={focused.record?.consentStatus ?? 'NOT_CAPTURED'}>
                   {['EXPLICIT_OPT_IN', 'SOFT_OPT_IN', 'LEGITIMATE_INTEREST', 'NOT_CAPTURED', 'OPT_OUT', 'DO_NOT_CONTACT'].map((value) => (
                     <option key={value} value={value}>{humanize(value)}</option>
@@ -101,7 +103,7 @@ export default async function CompliancePage({
                 </Select>
               </div>
               <div>
-                <Label htmlFor="lawfulBasis">Lawful basis</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="lawfulBasis">Lawful basis</label>
                 <Select id="lawfulBasis" name="lawfulBasis" defaultValue={focused.record?.lawfulBasis ?? 'NOT_DETERMINED'}>
                   {['CONSENT', 'LEGITIMATE_INTEREST', 'CONTRACT', 'LEGAL_OBLIGATION', 'NOT_DETERMINED'].map((value) => (
                     <option key={value} value={value}>{humanize(value)}</option>
@@ -109,17 +111,17 @@ export default async function CompliancePage({
                 </Select>
               </div>
               <div>
-                <Label htmlFor="consentSource">Consent source</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="consentSource">Consent source</label>
                 <Input id="consentSource" name="consentSource" defaultValue={focused.record?.consentSource ?? ''}
                   placeholder="Where the permission came from" />
               </div>
               <div>
-                <Label htmlFor="consentDate">Consent date</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="consentDate">Consent date</label>
                 <Input id="consentDate" name="consentDate" type="date"
                   defaultValue={focused.record?.consentDate?.toISOString().slice(0, 10) ?? ''} />
               </div>
               <div>
-                <Label htmlFor="optOutStatus">Opt-out status</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="optOutStatus">Opt-out status</label>
                 <Select id="optOutStatus" name="optOutStatus" defaultValue={focused.record?.optOutStatus ?? 'NONE'}>
                   {['NONE', 'EMAIL_OPT_OUT', 'PHONE_OPT_OUT', 'WHATSAPP_OPT_OUT', 'GLOBAL_OPT_OUT'].map((value) => (
                     <option key={value} value={value}>{humanize(value)}</option>
@@ -127,13 +129,13 @@ export default async function CompliancePage({
                 </Select>
               </div>
               <div>
-                <Label htmlFor="allowedChannels">Allowed channels</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="allowedChannels">Allowed channels</label>
                 <Input id="allowedChannels" name="allowedChannels"
                   defaultValue={(focused.record?.allowedChannels ?? []).join(',')}
                   placeholder="EMAIL,PHONE,WHATSAPP" />
               </div>
               <div>
-                <Label htmlFor="blockedChannels">Blocked channels</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="blockedChannels">Blocked channels</label>
                 <Input id="blockedChannels" name="blockedChannels"
                   defaultValue={(focused.record?.blockedChannels ?? []).join(',')} />
               </div>
@@ -142,7 +144,7 @@ export default async function CompliancePage({
                 Privacy notice provided
               </label>
               <div className="sm:col-span-2">
-                <Label htmlFor="complianceNotes">Notes</Label>
+                <label className="mb-1.5 block text-xs font-medium text-navy-700" htmlFor="complianceNotes">Notes</label>
                 <Textarea id="complianceNotes" name="complianceNotes" rows={2}
                   defaultValue={focused.record?.complianceNotes ?? ''} />
               </div>
@@ -152,7 +154,7 @@ export default async function CompliancePage({
             </ActionForm>
 
             <div className="mt-4 border-t border-line pt-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-navy-500">Channel evaluation</p>
+              <p className="eyebrow">Channel evaluation</p>
               <ul className="mt-2 space-y-1 text-xs">
                 {CHANNELS.map((channel) => {
                   const allowed = focused.result.allowedChannels.includes(channel as never);
@@ -176,6 +178,7 @@ export default async function CompliancePage({
         <CardHeader
           title="Country rules"
           description="Configurable per country. Changing a rule rescores every campaign, because a compliance change can move a contact between reject, hold and workable."
+          icon={<Icon name="shield" className="h-4 w-4" />}
         />
         <CardBody className="p-0">
           <TableWrap>
@@ -258,14 +261,26 @@ export default async function CompliancePage({
         <CardHeader
           title="Contact records"
           description="Showing up to 200. Open a record to complete it."
+          icon={<Icon name="compliance" className="h-4 w-4" />}
           actions={
-            <div className="flex gap-2 text-xs">
-              {[['', 'All'], ['PASS', 'Cleared'], ['HOLD', 'On hold'], ['BLOCKED', 'Blocked']].map(([value, label]) => (
-                <Link key={label} href={value ? `/compliance?status=${value}` : '/compliance'}
-                  className={`rounded border px-2 py-1 ${status === value || (!status && !value) ? 'border-brand-600 bg-brand-600 text-white' : 'border-line bg-white text-navy-600'}`}>
-                  {label}
-                </Link>
-              ))}
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by compliance status">
+              {[['', 'All'], ['PASS', 'Cleared'], ['HOLD', 'On hold'], ['BLOCKED', 'Blocked']].map(([value, label]) => {
+                const selected = status === value || (!status && !value);
+                return (
+                  <Link
+                    key={label}
+                    href={value ? `/compliance?status=${value}` : '/compliance'}
+                    aria-current={selected ? 'true' : undefined}
+                    className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                      selected
+                        ? 'border-brand-600 bg-brand-600 text-white'
+                        : 'border-line-strong bg-surface text-navy-600 hover:border-navy-300 hover:bg-navy-50'
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
             </div>
           }
         />

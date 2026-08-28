@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { ActionForm, SubmitButton } from '@/components/forms/action-form';
-import { Checkbox, FieldError, Label, Select, Textarea } from '@/components/ui/form';
+import { CheckboxField, Field, Select, Textarea } from '@/components/ui/form';
+import { Icon } from '@/components/ui/icon';
 import { Alert } from '@/components/ui/misc';
 import { logWhatsAppAction } from '@/server/actions/outreach';
 
@@ -17,8 +18,8 @@ export interface WhatsAppTemplate {
  * WhatsApp drafting.
  *
  * The controls are disabled outright when the compliance engine does not permit
- * the channel. The action re-checks permission server-side regardless, so a
- * stale page cannot send.
+ * the channel, and the action re-checks permission on the server regardless, so
+ * a stale page can never send.
  */
 export function WhatsAppComposer({
   campaignContactId, templates, permitted, blockedReason,
@@ -39,8 +40,8 @@ export function WhatsAppComposer({
   };
 
   return (
-    <div className="grid gap-4 lg:grid-cols-2">
-      <ActionForm action={logWhatsAppAction} className="space-y-3">
+    <div className="grid gap-5 lg:grid-cols-2">
+      <ActionForm action={logWhatsAppAction} className="space-y-4">
         {(state) => (
           <>
             <input type="hidden" name="campaignContactId" value={campaignContactId} />
@@ -57,33 +58,36 @@ export function WhatsAppComposer({
               </Alert>
             )}
 
-            <fieldset disabled={!permitted} className="space-y-3">
-              <div>
-                <Label htmlFor="wa-template">Message type</Label>
+            <fieldset disabled={!permitted} className="space-y-4 disabled:opacity-60">
+              <Field label="Message type" htmlFor="wa-template">
                 <Select id="wa-template" value={templateKey} onChange={(event) => applyTemplate(event.target.value)}>
                   {templates.map((template) => (
                     <option key={template.key} value={template.key}>{template.label}</option>
                   ))}
                 </Select>
-              </div>
+              </Field>
 
-              <div>
-                <Label htmlFor="messageText">Message</Label>
-                <Textarea id="messageText" name="messageText" rows={8} value={text}
-                  onChange={(event) => setText(event.target.value)} required />
-                <FieldError>{state.fieldErrors?.messageText}</FieldError>
-                <p className="mt-1 text-xs text-navy-500">{text.length} characters</p>
-              </div>
+              <Field
+                label="Message"
+                htmlFor="messageText"
+                required
+                error={state.fieldErrors?.messageText}
+                hint={`${text.length} characters`}
+              >
+                <Textarea
+                  id="messageText" name="messageText" rows={8} value={text} required
+                  aria-invalid={state.fieldErrors?.messageText ? true : undefined}
+                  onChange={(event) => setText(event.target.value)}
+                />
+              </Field>
 
-              <label className="flex items-center gap-2 text-sm text-navy-700">
-                <Checkbox name="markSent" />
-                Mark as sent
-              </label>
+              <CheckboxField name="markSent" label="Mark as sent" />
 
-              <SubmitButton pendingLabel="Recording...">Log this message</SubmitButton>
+              <SubmitButton icon="chat" pendingLabel="Recording…">Log this message</SubmitButton>
             </fieldset>
 
-            <p className="text-xs text-navy-500">
+            <p className="flex items-start gap-2 rounded-lg bg-navy-50 px-3 py-2.5 text-xs leading-relaxed text-navy-600">
+              <Icon name="info" className="mt-0.5 h-3.5 w-3.5 shrink-0 text-navy-400" />
               No WhatsApp Business API provider is connected, so nothing is transmitted. The message is stored
               against the contact.
             </p>
@@ -91,12 +95,15 @@ export function WhatsAppComposer({
         )}
       </ActionForm>
 
-      <div>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-navy-500">Preview</p>
-        <div className="rounded-lg bg-[#e9edf1] p-4">
-          <div className="ml-auto max-w-sm rounded-lg rounded-br-sm bg-[#d9fdd3] px-3 py-2 shadow-sm">
-            <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-navy-900">{text}</pre>
-            <p className="mt-1 text-right text-[10px] text-navy-500">Preview only &middot; not sent</p>
+      <div className="lg:sticky lg:top-24 lg:self-start">
+        <p className="eyebrow mb-2">Preview</p>
+        <div className="rounded-xl border border-line bg-[#eceff3] p-5 shadow-inner">
+          <div className="ml-auto max-w-sm rounded-xl rounded-br-sm bg-[#d9fdd3] px-3.5 py-2.5 shadow-sm">
+            <pre className="whitespace-pre-wrap font-sans text-base leading-relaxed text-navy-900">{text}</pre>
+            <p className="mt-1.5 flex items-center justify-end gap-1 text-[10px] text-navy-500">
+              Preview only · not sent
+              <Icon name="check" className="h-3 w-3" strokeWidth={2.5} />
+            </p>
           </div>
         </div>
       </div>
