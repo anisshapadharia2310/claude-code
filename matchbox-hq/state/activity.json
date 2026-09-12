@@ -1,6 +1,116 @@
 {
   "events": [
     {
+      "time": "2026-09-12T19:18:48.157Z",
+      "agent": "master",
+      "text": "Office rebuilt against your reference photos: maple desks, brass saucers, grid windows, checkerboard jute."
+    },
+    {
+      "time": "2026-09-12T19:15:09.619Z",
+      "agent": "master",
+      "text": "Read the finance files - they are already on the new numbers, so the stale stuff is mostly in the older brand, sales and supplier files."
+    },
+    {
+      "time": "2026-09-12T19:14:48.959Z",
+      "agent": "supplier",
+      "text": "Found the trap: in the match trade a 'veneer matchbox' often means veneer OUTER shell with a cardboard inner tray. Asking every vendor which part is wood."
+    },
+    {
+      "time": "2026-09-12T19:14:47.627Z",
+      "agent": "prodops",
+      "text": "Most Pune printer websites are blocked (403) - working from search snippets and marking numbers UNVERIFIED."
+    },
+    {
+      "time": "2026-09-12T19:14:39.469Z",
+      "agent": "legal",
+      "text": "Biggest catch: our own vendor message asks for pink and black match heads, and colour matches are treated differently in law from safety matches - confirm in writing before ordering"
+    },
+    {
+      "time": "2026-09-12T19:14:39.431Z",
+      "agent": "legal",
+      "text": "Delivered the Drop 01 law map, a 12-line dashboard checklist, and legal notes for the box printing, website, Instagram, cafe and vendor tasks"
+    },
+    {
+      "time": "2026-09-12T19:14:28.222Z",
+      "agent": "master",
+      "text": "Starting the consistency sweep across all the older files."
+    },
+    {
+      "time": "2026-09-12T19:14:27.382Z",
+      "agent": "launch",
+      "text": "Verifying real Pune venues via web search — no invented names allowed."
+    },
+    {
+      "time": "2026-09-12T19:14:26.153Z",
+      "agent": "brand",
+      "text": "Three design agendas written plus a one-page priority sheet. Run packaging first this weekend, social on Wednesday, leave the website alone until 22 September."
+    },
+    {
+      "time": "2026-09-12T19:14:17.900Z",
+      "agent": "legal",
+      "text": "Law map is written - seven stages, from the Sivakasi invoice to the Instagram caption, with what each one costs"
+    },
+    {
+      "time": "2026-09-12T19:13:57.277Z",
+      "agent": "supplier",
+      "text": "Every company website is blocked on this machine (403). I am building the comparison from search snippets and saying so in every row."
+    },
+    {
+      "time": "2026-09-12T19:13:41.818Z",
+      "agent": "launch",
+      "text": "Started on seeding list, WhatsApp messages and hand-delivery plan for Drop 01 (300 boxes, Pune only)."
+    },
+    {
+      "time": "2026-09-12T19:13:15.270Z",
+      "agent": "prodops",
+      "text": "Started printer + striker strip research for Drop 01 sleeves."
+    },
+    {
+      "time": "2026-09-12T19:13:10.070Z",
+      "agent": "prodops",
+      "text": "Started printer + striker strip research for Drop 01 sleeves."
+    },
+    {
+      "time": "2026-09-12T19:12:45.421Z",
+      "agent": "supplier",
+      "text": "Business model changed: I am now sourcing plain wooden-veneer trays in bulk, not custom printed boxes."
+    },
+    {
+      "time": "2026-09-12T19:12:40.868Z",
+      "agent": "brand",
+      "text": "Caught a date clash: the 30-day Instagram plan has you posting SOLD OUT and packing orders in week 4, but the boxes do not exist until 24 October. Re-cut the arc to the real dates."
+    },
+    {
+      "time": "2026-09-12T19:10:19.609Z",
+      "agent": "brand",
+      "text": "Found a hole in the box plan: nobody has said who puts the striker strip on the printed sleeve. Raising it as a decision before the printer quotes."
+    },
+    {
+      "time": "2026-09-12T19:10:10.107Z",
+      "agent": "legal",
+      "text": "Confirmed the e-way bill line is 50,000 rupees and that a live 'claimed' counter on the site must show real numbers - fake scarcity is a listed dark pattern"
+    },
+    {
+      "time": "2026-09-12T19:07:43.821Z",
+      "agent": "legal",
+      "text": "Re-read my own legal checklist, label rules and trademark notes before building the Drop 01 law map"
+    },
+    {
+      "time": "2026-09-12T19:07:42.743Z",
+      "agent": "brand",
+      "text": "Started the three design agendas - reading box concepts and the Instagram plan I already wrote so I build on them, not replace them."
+    },
+    {
+      "time": "2026-09-12T19:06:40.892Z",
+      "agent": "master",
+      "text": "Legal Team and Design Team renamed. Website Builder is on hold."
+    },
+    {
+      "time": "2026-09-12T18:55:34.156Z",
+      "agent": "prodops",
+      "text": "Got your match quality spec - veneer tray, poplar splints, one-strike damp-proof."
+    },
+    {
       "time": "2026-09-12T18:33:45.762Z",
       "agent": "master",
       "text": "All 6 desks reported. 4 decisions really matter now, the rest can wait."

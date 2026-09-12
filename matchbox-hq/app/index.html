@@ -90,6 +90,17 @@
     body:has(#sheet.open) #side{opacity:0;pointer-events:none}
   }
 
+  /* the cabin */
+  #cabin{position:fixed;inset:0;z-index:25;background:#2A2A1E;display:flex;flex-direction:column}
+  #cabin[hidden]{display:none}
+  #cabinBar{display:flex;align-items:center;gap:10px;padding:10px 14px;
+    background:linear-gradient(#C08D55,#A8763F);border-bottom:3px solid #6E4A22;color:#2A1B08}
+  #cabinTitle{font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:12px;flex:1}
+  #cabinBar button{background:#FBF5E8;color:#241F1A;border:0;border-radius:7px;
+    padding:9px 13px;font:700 13px var(--f);cursor:pointer;min-height:0}
+  #cabinBar button.lnk{background:transparent;color:#2A1B08;text-decoration:underline}
+  #cabinFrame{flex:1;width:100%;border:0;background:#2A2A1E}
+
   /* speech bubbles */
   #bubbles{position:fixed;inset:0;z-index:4;pointer-events:none}
   .bubble{position:absolute;top:0;left:0;background:rgba(250,246,238,.97);color:#241F27;
@@ -159,12 +170,13 @@
     <button id="soundBtn">🔇 Sound</button>
     <button id="timeBtn">☾ Evening</button>
     <button id="zoomOut">Zoom out</button>
+    <button id="cabinBtn">My cabin</button>
     <button id="meetBtn">Call Meeting</button>
   </div>
 </div>
 
 <div id="side">
-  <div class="card"><h3>Waiting on you</h3><div id="decList"><div class="muted">Loading…</div></div></div>
+  <div class="card"><h3>Needs my yes</h3><div id="decList"><div class="muted">Loading…</div></div></div>
   <div class="card"><h3>Pipeline</h3><div id="pipeList"></div></div>
   <div class="card"><h3>The team</h3><div id="teamList"></div></div>
 </div>
@@ -177,6 +189,15 @@
   <div class="cell"><div class="l">Pre-orders</div><div class="v" id="sPre">0 / 500</div></div>
   <div class="cell"><div class="l">Days to <span data-drop>Drop 01</span></div><div class="v" id="sDays">—</div></div>
   <div class="cell hot"><div class="l">Waiting on you</div><div class="v" id="sDecisions">—</div></div>
+</div>
+
+<div id="cabin" hidden>
+  <div id="cabinBar">
+    <span id="cabinTitle">Founder's cabin</span>
+    <button id="cabinOpen" class="lnk">Open full screen</button>
+    <button id="cabinClose">Close</button>
+  </div>
+  <iframe id="cabinFrame" title="Founder dashboard" src="about:blank"></iframe>
 </div>
 
 <div id="sheet">

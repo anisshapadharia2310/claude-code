@@ -4,57 +4,57 @@
       "id": "master",
       "name": "Master (me)",
       "color": "#94a3b8",
-      "status": "waiting",
-      "doing": "Office rebuilt and tested. Waiting on your 4 answers.",
-      "lastUpdate": "2026-09-12T18:33:45.797Z"
+      "status": "working",
+      "doing": "Auditing round-one deliverables for stale numbers",
+      "lastUpdate": "2026-09-12T19:14:28.182Z"
     },
     {
       "id": "supplier",
       "name": "Supplier Scout",
       "color": "#f59e0b",
-      "status": "done",
-      "doing": "Handed sourcing over to Production & Ops. Files stay on the board.",
-      "lastUpdate": "2026-09-12T17:28:22.127Z"
+      "status": "working",
+      "doing": "Chasing extra vendors who publicly advertise carbonised splints + veneer",
+      "lastUpdate": "2026-09-12T19:14:49.000Z"
     },
     {
       "id": "prodops",
       "name": "Production & Ops",
       "color": "#E0714B",
-      "status": "waiting",
-      "doing": "Done. Waiting on D-011 (how many trays) and on you making the calls on Monday.",
-      "lastUpdate": "2026-09-12T18:26:28.124Z"
+      "status": "working",
+      "doing": "Building Pune printer list - 6 names so far, chasing contacts",
+      "lastUpdate": "2026-09-12T19:14:47.593Z"
     },
     {
       "id": "legal",
-      "name": "Legal & Setup",
+      "name": "Legal Team",
       "color": "#3b82f6",
-      "status": "waiting",
-      "doing": "Done. 3 files delivered. Waiting on D-004 (trademark spend) and D-005 (address on the box)",
-      "lastUpdate": "2026-09-12T17:33:16.023Z"
+      "status": "working",
+      "doing": "waiting - law map delivered, need the founder to confirm the colour match question with vendors",
+      "lastUpdate": "2026-09-12T19:14:39.506Z"
     },
     {
       "id": "brand",
-      "name": "Brand & Content",
+      "name": "Design Team",
       "color": "#ec4899",
       "status": "waiting",
-      "doing": "All 4 brand deliverables done - waiting on your name decision (D-002)",
-      "lastUpdate": "2026-09-12T17:32:19.194Z"
+      "doing": "Three agendas delivered - waiting on the brand name (D-002) and the striker question (D-012)",
+      "lastUpdate": "2026-09-12T19:14:26.194Z"
     },
     {
       "id": "website",
       "name": "Website Builder",
       "color": "#8b5cf6",
-      "status": "waiting",
-      "doing": "Waiting for you to check the site and decide the real open and close dates for Drop 01",
-      "lastUpdate": "2026-09-12T18:29:51.804Z"
+      "status": "paused",
+      "doing": "ON HOLD at your request. Site is built and waiting.",
+      "lastUpdate": "2026-09-12T19:06:40.848Z"
     },
     {
       "id": "launch",
       "name": "Sales & PR",
       "color": "#22c55e",
-      "status": "waiting",
-      "doing": "Four files delivered. Waiting on the 3-box set price (D-010) and on the brand name and payment decisions.",
-      "lastUpdate": "2026-09-12T18:26:27.084Z"
+      "status": "working",
+      "doing": "Web-verifying Pune cafes/bars/IT-park spots across 10 areas for the seeding list",
+      "lastUpdate": "2026-09-12T19:14:27.415Z"
     },
     {
       "id": "finance",

@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && (pgrep -f autosave.js >/dev/null || (nohup node autosave.js >> /tmp/matchbox-autosave.log 2>&1 &)) ; echo 'Matchbox HQ: autosave watching. Read PROJECT_BRIEF.md first.'"
+          }
+        ]
+      }
+    ]
+  }
+}

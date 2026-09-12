@@ -20,9 +20,9 @@
       "id": "T3",
       "title": "Quote comparison table",
       "agent": "supplier",
-      "status": "review",
-      "note": "Empty comparison table pre-filled with 12 supplier names",
-      "updated": "2026-09-12T17:28:05.747Z"
+      "status": "inprogress",
+      "note": "Rebuilding vendor research around plain trays",
+      "updated": "2026-09-12T19:12:45.458Z"
     },
     {
       "id": "T4",
@@ -92,17 +92,17 @@
       "id": "T12",
       "title": "Build pre-order website",
       "agent": "website",
-      "status": "review",
-      "note": "Site built and tested: 25 automated checks pass, 0 JS errors, 17 KB, loads instantly, works offline and on Netlify",
-      "updated": "2026-09-12T17:38:33.712Z"
+      "status": "todo",
+      "note": "PAUSED - waiting for you to unpause",
+      "updated": "2026-09-12T19:06:40.848Z"
     },
     {
       "id": "T13",
       "title": "Payment setup guide",
       "agent": "website",
       "status": "todo",
-      "note": "Blocked on D-001. Site already has all 3 payment paths written - flipping it is a one-line change once you decide.",
-      "updated": "2026-09-12T17:38:44.345Z"
+      "note": "PAUSED - waiting for you to unpause",
+      "updated": "2026-09-12T19:06:40.848Z"
     },
     {
       "id": "T14",
@@ -212,9 +212,9 @@
       "id": "W1",
       "title": "Waitlist + per-drop pre-order",
       "agent": "website",
-      "status": "review",
-      "note": "Waitlist + drop pre-order both live; 4 states, honest counter, Pune-only gate; 75 browser checks pass",
-      "updated": "2026-09-12T18:29:51.725Z"
+      "status": "todo",
+      "note": "PAUSED - waiting for you to unpause",
+      "updated": "2026-09-12T19:06:40.848Z"
     },
     {
       "id": "F1",
@@ -223,6 +223,70 @@
       "status": "review",
       "note": "Rebuilt on the two-part box. Recommend 99 rupees. Break-even 204 of 300. Raised decision D-009 on cutting Drop 01 to 300 boxes.",
       "updated": "2026-09-12T18:23:51.520Z"
+    },
+    {
+      "id": "L1",
+      "title": "Every law that applies to Drop 01",
+      "agent": "legal",
+      "status": "review",
+      "note": "Seven stages mapped with costs, consequences and confidence markers. Total legal spend is 500 rupees.",
+      "updated": "2026-09-12T19:14:27.491Z"
+    },
+    {
+      "id": "L2",
+      "title": "Laws to remember checklist",
+      "agent": "legal",
+      "status": "review",
+      "note": "Twelve lines, dashboard-ready.",
+      "updated": "2026-09-12T19:14:27.529Z"
+    },
+    {
+      "id": "G1",
+      "title": "Agenda: packaging design",
+      "agent": "brand",
+      "status": "review",
+      "note": "Packaging agenda done. Flagged a hole: nobody has confirmed who applies the striker to a sleeve we print in Pune - raised as D-012, answer needed by Fri 18 Sep.",
+      "updated": "2026-09-12T19:14:26.037Z"
+    },
+    {
+      "id": "G2",
+      "title": "Agenda: social launch content",
+      "agent": "brand",
+      "status": "review",
+      "note": "Social agenda done. Re-cut the 30 days to the real drop dates - the old week 4 had you posting sold-out while the boxes do not exist until 24 Oct.",
+      "updated": "2026-09-12T19:14:26.079Z"
+    },
+    {
+      "id": "G3",
+      "title": "Agenda: website design",
+      "agent": "brand",
+      "status": "todo",
+      "note": "Website agenda written and parked. Do not open before 22 Sep - Website desk is still paused and that is the right call.",
+      "updated": "2026-09-12T19:14:26.113Z"
+    },
+    {
+      "id": "FA1",
+      "title": "Create the private GitHub repo",
+      "agent": "master",
+      "status": "todo",
+      "note": "github.com/new, name it matchbox-hq, private, no README. 30 seconds. Then I push everything.",
+      "updated": "2026-09-12T19:18:48.040Z"
+    },
+    {
+      "id": "FA2",
+      "title": "Put the office online",
+      "agent": "master",
+      "status": "todo",
+      "note": "Drag the app folder onto app.netlify.com/drop. I cannot - this machine blocks netlify and vercel entirely.",
+      "updated": "2026-09-12T19:18:48.077Z"
+    },
+    {
+      "id": "FA3",
+      "title": "Lock the brand name by Fri 25 Sep",
+      "agent": "master",
+      "status": "todo",
+      "note": "Hard deadline. The printer cannot start without it and the drop slips day for day.",
+      "updated": "2026-09-12T19:18:48.112Z"
     }
   ]
 }

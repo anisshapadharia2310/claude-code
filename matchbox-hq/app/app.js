@@ -82,10 +82,12 @@ function paintPanels(){
   $('sWait').textContent = pipe.waitlist ?? 0;
 
   // decisions panel
-  $('decList').innerHTML = open.length
+  const decHtml = open.length
     ? open.slice(0,4).map(d => '<div class="dec"><b>' + esc(d.title) + '</b><span>' +
         esc((d.recommendation||'').slice(0,110)) + '…</span></div>').join('')
     : '<div class="muted">Nothing waiting. 👍</div>';
+  $('decList').innerHTML = decHtml;
+  wireDecList();
 
   // pipeline panel
   $('pipeList').innerHTML = [
@@ -158,16 +160,25 @@ canvas.addEventListener('touchmove', e => {
     wantZoom = Math.max(.5, Math.min(4.5, wantZoom * (d / pinch))); pinch = d;
   }
 }, { passive:true });
+const CABIN = { x: 15.5, z: -10.5 };          // the founder's corner office
+function cabinHit(cx, cy){
+  const s = R.project(CABIN.x, 3, CABIN.z);
+  return Math.hypot(s.x - cx, s.y - cy) < 120 * R.cam.zoom;
+}
 canvas.addEventListener('dblclick', e => {
-  const d = R.pick(e.clientX, e.clientY - canvas.getBoundingClientRect().top);
-  if (d){ openPerson(people.find(p => p.id === d.id)); }
+  const top = canvas.getBoundingClientRect().top;
+  const d = R.pick(e.clientX, e.clientY - top);
+  if (d){ openPerson(people.find(p => p.id === d.id)); return; }
+  if (cabinHit(e.clientX, e.clientY - top)) openCabin();
 });
 let lastTap = 0;
 canvas.addEventListener('touchend', e => {
   const t = Date.now();
   if (t - lastTap < 320 && e.changedTouches[0]){
-    const d = R.pick(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    const tx = e.changedTouches[0].clientX, ty = e.changedTouches[0].clientY;
+    const d = R.pick(tx, ty);
     if (d) openPerson(people.find(p => p.id === d.id));
+    else if (cabinHit(tx, ty)) openCabin();
   }
   lastTap = t;
 });
@@ -178,6 +189,24 @@ addEventListener('keydown', e => {
   }
 });
 $('zoomOut').onclick = () => { R.cam.tx = 0; R.cam.tz = 1; wantZoom = 1; $('sheet').classList.remove('open'); };
+
+// ── the cabin: the founder's dashboard, opened inside the office ────
+function openCabin(){
+  const f = $('cabinFrame');
+  if (f.getAttribute('src') === 'about:blank') f.setAttribute('src', './dashboard.html');
+  $('cabin').hidden = false;
+}
+$('cabinBtn').onclick = openCabin;
+$('cabinClose').onclick = () => { $('cabin').hidden = true; };
+$('cabinOpen').onclick = () => { location.href = './dashboard.html'; };
+
+// the floor panel mirrors the cabin's list — same data, one tap away
+function wireDecList(){
+  $('decList').querySelectorAll('.dec').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.onclick = openCabin;
+  });
+}
 
 // ── Call Meeting ────────────────────────────────────────────────────
 let meeting = false;
@@ -255,6 +284,8 @@ $('soundBtn').onclick = async () => {
     btn.textContent = '🔊 Sound'; btn.classList.add('on');
   } catch (e){ btn.textContent = 'No sound'; }
 };
+
+window.__hq = { get people(){ return people; }, get R(){ return R; } };  // debugging handle
 
 // ── go ──────────────────────────────────────────────────────────────
 await makeRenderer();

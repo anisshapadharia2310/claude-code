@@ -318,6 +318,84 @@
       "blocks": [],
       "created": "2026-09-12T18:26:13.730Z",
       "priority": "later"
+    },
+    {
+      "id": "D-012",
+      "title": "Who puts the striker strip on our printed sleeve?",
+      "why": "The striker normally sits on the OUTER box - and the outer is now the thing we print in Pune. A Pune digital printer cannot apply striker paste. Nobody has confirmed a Sivakasi vendor will strike our card. If the answer is nobody, the box does not light and the die is wrong. It changes the sleeve shape, so it must be answered before the printer quotes on Fri 18 Sep.",
+      "raisedBy": "brand",
+      "options": [
+        {
+          "label": "A. Full printed sleeve, Sivakasi applies striker to our card",
+          "detail": "Best looking. Depends entirely on a vendor saying yes. This is what production-model.md already assumes but nobody has checked."
+        },
+        {
+          "label": "B. Printed belly band over a factory box that already has strikers",
+          "detail": "Band wraps top-end-bottom-end, about 108 x 46 mm, leaving both striker sides untouched. Cheapest, zero striker risk, no cutting die needed. Slightly less finished looking."
+        },
+        {
+          "label": "C. Full printed sleeve plus self-adhesive striker tape applied by hand",
+          "detail": "600 strips, two evenings, and one crooked strip per box is very likely."
+        }
+      ],
+      "recommendation": "Ask every vendor for A on Monday 14 Sep. If no one says yes by Fri 18 Sep, lock B and lose zero days. Revisit A for Drop 02.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [],
+      "created": "2026-09-12T19:14:06.257Z"
+    },
+    {
+      "id": "D-013",
+      "title": "Coloured match heads - confirm before ordering",
+      "why": "Our supplier enquiry asks for pink and black match heads and dyed sticks. Indian law separates plain safety matches from colour matches, and colour matches sit near the fireworks rulebook. I could not open PESO's own FAQ to settle it. Getting this wrong after paying a factory is expensive.",
+      "raisedBy": "legal",
+      "options": [
+        {
+          "label": "A. Ask first, order after",
+          "detail": "Send one WhatsApp line to every vendor - is this a safety match to IS 2653 or a colour match - and wait for it in writing. Costs nothing, delays nothing, since we are still collecting quotes."
+        },
+        {
+          "label": "B. Order coloured heads now",
+          "detail": "Faster, but if a vendor treats them as colour matches our whole no-licence position changes and the money is already spent."
+        },
+        {
+          "label": "C. Drop coloured heads for Drop 01",
+          "detail": "Plain heads, all the design in the printed outer box. Zero legal question, but loses a signature detail."
+        }
+      ],
+      "recommendation": "A - ask first. It is one line in a message we are already sending.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [],
+      "created": "2026-09-12T19:14:39.378Z"
+    },
+    {
+      "id": "D-014",
+      "title": "How should live meetings work?",
+      "why": "You asked for real-time meetings with the teams. A page on Vercel has no way to reach Claude on its own - something has to sit in between. This is the choice, and it is the only thing blocking meetings.",
+      "raisedBy": "master",
+      "options": [
+        {
+          "label": "A. Keep it queued (free)",
+          "detail": "You tap Call a meeting, I answer on the next cycle and post the outcome. Costs nothing, but it is not live."
+        },
+        {
+          "label": "B. Add a small server function plus your own Anthropic API key",
+          "detail": "Genuinely live chat, exactly as you described. Free hosting, but you pay per message - roughly a rupee or two per exchange. Takes about an hour to wire."
+        },
+        {
+          "label": "C. Only live when you run the office on your own laptop",
+          "detail": "Free and fully live, but only works at your desk, not on your phone."
+        }
+      ],
+      "recommendation": "A for now, B once Drop 01 is actually selling. Paying per message to talk to your own team before you have a single pre-order is the wrong order to spend money in.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [],
+      "created": "2026-09-12T19:18:47.993Z"
     }
   ]
 }

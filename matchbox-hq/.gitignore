@@ -1,0 +1,7 @@
+node_modules/
+.hq.pid
+.autosave.pid
+state/.lock/
+publish/
+*.log
+.DS_Store

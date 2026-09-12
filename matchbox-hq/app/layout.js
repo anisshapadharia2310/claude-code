@@ -1,15 +1,26 @@
 // ── The office, as DATA ─────────────────────────────────────────────
 // Both renderers (WebGL and 2D canvas) read this same list, so the
 // 3D office and the 2D fallback can never drift apart.
+// 70s loft: olive and mustard plaster, honey wood, amber glass, cork,
+// jute, tan leather, grey plaster and exposed pipes in one corner.
 export const C = {
-  floor:'#BE8D5F', floorAlt:'#C89A69', wall:'#EFE3D2', wallSide:'#E3D4C0', skirt:'#D8C7B0',
-  wood:'#C2915E', woodDark:'#A0764A', woodTop:'#D0A472', cork:'#C9A26B',
-  black:'#2B282E', blackSoft:'#3A363D', metal:'#6E6A70',
-  pink:'#F08AAE', pinkDeep:'#D9557F', pinkPale:'#F9D2DF',
-  leaf:'#6E9C63', leafDark:'#557A4E', pot:'#B5705A',
-  glass:'#BFD8DC', paper:'#FBF6EC', screen:'#24414A',
-  sofa:'#8E8A93', sofaDark:'#7E7A85', rug:'#D9C7B2', rugPink:'#F2D9E1',
-  counter:'#E9DFD0', crate:'#B08C5E',
+  floor:'#B8804A', floorAlt:'#C08D55',
+  wall:'#565C38',            // olive plaster, back wall
+  wallSide:'#9C7328',        // mustard plaster, left wall
+  wallGrey:'#827D74',        // grey plaster, the pipe corner
+  skirt:'#4A4632',
+  wood:'#C9A86F', woodDark:'#8E6134', woodTop:'#D9C09A', cork:'#C39A63',
+  maple:'#D9C09A',
+  black:'#1E1C1A', blackSoft:'#2B2724', metal:'#6E6A63', pipe:'#7C776E',
+  pink:'#F08AAE', pinkDeep:'#C8506F', pinkPale:'#F2CBD6',
+  mustard:'#C8963E', olive:'#6E7A4A', rust:'#A85A32',
+  leaf:'#5F8A55', leafDark:'#4A6E44', pot:'#A8703F',
+  glass:'#C8862E',           // amber glass dividers
+  paper:'#F2E9D8', screen:'#1A2422',
+  sofa:'#A8703F', sofaDark:'#8E5A30',   // tan leather
+  rug:'#C0AE88', rugPink:'#D8B375',     // jute, and the leopard corner
+  counter:'#E4D9C4', crate:'#A8823F',
+  lampRed:'#C4452E', lampWhite:'#EFE7D8',
 };
 
 export const DESKS = [
@@ -43,6 +54,13 @@ const glass = (x,y,z,w,h,d) => P.push({ k:'glass', x,y,z,w,h,d,c:C.glass });
 const rug = (x,z,w,d,c) => P.push({ k:'rug', x,y:0.03,z,w,h:0.06,d,c });
 const sign = (text,x,y,z,w,h,face,c,weight) => P.push({ k:'sign', text,x,y,z,w,h,face,c,weight:weight||700 });
 const win = (x,y,z,w,h,face) => P.push({ k:'window', x,y,z,w,h,face });
+
+function coneLamp(x, z, shade){
+  box(x, .12, z, 2.2, .24, 2.2, C.blackSoft, 'lamp');
+  box(x, 3.4, z, .22, 6.4, .22, C.metal, 'lamp');
+  P.push({ k:'cone', x, y:7.2, z, w:2.6, h:2.2, d:2.6, c:shade, tag:'coneshade' });
+  P.push({ k:'bulb', x, y:6.5, z, w:.6, h:.6, d:.6, c:'#FFD9A0', tag:'bulb' });
+}
 
 function chair(x,z,facing,c){
   box(x, 2.35, z, 2, .3, 2, c, 'chair');
@@ -86,7 +104,8 @@ function desk(d){
   box(x, 3, z, 8, .35, 3.8, C.woodTop, 'desk');
   box(x-3.6, 1.5, z, .45, 3, 3.6, C.wood, 'desk');
   box(x+3.6, 1.5, z, .45, 3, 3.6, C.wood, 'desk');
-  box(x, 4.1, z-1.9, 8.2, 1.9, .28, color, 'divider');
+  box(x, 4.1, z-1.9, 8.2, 1.9, .22, color, 'dividerpost');
+  P.push({ k:'amber', x, y:5.6, z:z-1.9, w:8.2, h:2.6, d:.14, c:C.glass, tag:'divider' });
   monitor(x-1.3, 3.18, z-.6);
   lamp(x+3.05, 3.18, z-1);
   mug(x+1.6, 3.18, z+.9, color);
@@ -106,15 +125,15 @@ export function buildLayout(CFG){
   P.push({ k:'floor', x:0, y:0, z:0, w:hx*2, h:.1, d:hz*2, c:C.floor });
   box(0, wallH/2, -hz, hx*2, wallH, .5, C.wall, 'wall');
   box(-hx, wallH/2, 0, .5, wallH, hz*2, C.wallSide, 'wall');
-  box(0, .3, -hz+.35, hx*2, .6, .7, C.skirt, 'wall');
-  box(-hx+.35, .3, 0, .7, .6, hz*2, C.skirt, 'wall');
+  box(0, .3, -hz+.35, hx*2, .6, .7, C.skirt, 'skirt');
+  box(-hx+.35, .3, 0, .7, .6, hz*2, C.skirt, 'skirt');
 
   win(-15.5, 6.6, -hz+.32, 9, 6, 'z');
   win( 15.5, 6.6, -hz+.32, 9, 6, 'z');
   win(-hx+.32, 6.6, 2, 8, 6.5, 'x');
   win(-hx+.32, 6.6, -8.5, 5, 6.5, 'x');
 
-  rug(0, 4.5, 34, 16, C.rug);
+  P.push({ k:'rug', x:0, y:.03, z:4.5, w:34, h:.06, d:16, c:C.rug, tex:'checker' });
   rug(0, -10.5, 14, 8, C.rugPink);
 
   // ── meeting room ──
@@ -207,11 +226,50 @@ export function buildLayout(CFG){
   matchbox(4.5, 4.65, 15.5, 'pink');
   plant(-20.5, -3); plant(20.5, 6, 1.15); plant(7, 12.5, .9); plant(-6, 14.5, 1.05);
 
+  // framed canvases
+  P.push({ k:'art', seed:0, x:-hx+.42, y:7.2, z:-1.5, w:5.2, h:6.2, d:.12, c:'#8E9A5B', face:'x' });
+  box(-hx+.3, 7.2, -1.5, .2, 6.8, 5.8, '#2B2724', 'frame');
+  P.push({ k:'art', seed:1, x:-hx+.42, y:7, z:8.5, w:4.6, h:5.6, d:.12, c:'#D8C7A0', face:'x' });
+  box(-hx+.3, 7, 8.5, .2, 6.2, 5.2, '#2B2724', 'frame');
+  P.push({ k:'art', seed:2, x:17.5, y:7.4, z:-hz+.42, w:4.4, h:5.2, d:.12, c:'#C9784A', face:'z' });
+  box(17.5, 7.4, -hz+.3, 5, 5.8, .2, '#2B2724', 'frame');
+
+  // speaker on cinder blocks (reference 01)
+  for (const [dz, by] of [[-1.1, 1], [1.1, 1], [-1.1, 2.85], [1.1, 2.85]])
+    box(19, by, 3.4 + dz, 3.2, 1.75, 2.0, '#B9B3A6', 'block');
+  box(19, 5.6, 3.4, 4.0, 3.6, 3.2, '#E8E2D4', 'speaker');
+  P.push({ k:'cone', x:19, y:5.6, z:5.1, w:2.2, h:.45, d:2.2, c:'#2B2724', tag:'driver' });
+
+  // grey plaster corner with exposed pipes (front-left of the open floor)
+  box(-hx+.9, 6, 13.5, .6, 12, 7, C.wallGrey, 'plaster');
+  for (const [py, pz] of [[9.2, 11.2],[9.9, 11.2]])
+    P.push({ k:'pipe', x:-hx+1.5, y:py, z:pz, w:.5, h:.5, d:7.5, c:C.pipe, tag:'pipe' });
+  P.push({ k:'pipe', x:-hx+1.5, y:6.5, z:15.4, w:.42, h:6, d:.42, c:C.pipe, tag:'pipe' });
+
+  // record shelf + books, against the right-hand open edge
+  box(20.6, 3.2, -.5, 1.8, 6.4, 9, C.woodDark, 'shelf');
+  for (let r = 0; r < 3; r++)
+    box(20.6, 1.2 + r*2.1, -.5, 1.9, .22, 9, C.wood, 'shelf');
+  const spines = [C.mustard, C.rust, C.olive, '#D8C7A0', C.pinkDeep, '#3E5A6E'];
+  for (let r = 0; r < 3; r++)
+    for (let i = 0; i < 14; i++)
+      box(20.6, 2.1 + r*2.1, -4.4 + i*.62, 1.5, 1.6, .5,
+          spines[(i + r*3) % spines.length], 'book');
+
+  // cone floor lamps
+  coneLamp(-3.5, -8.2, C.lampRed);
+  coneLamp(19.2, 11.5, C.lampWhite);
+
+  // leopard rug, one corner only
+  P.push({ k:'rug', x:-14.5, y:.04, z:13.2, w:9, h:.06, d:6.5, c:C.rugPink, tex:'leopard' });
+
   // ceiling track + pendants
   box(0, 11.7, 4.5, 38, .18, .3, C.blackSoft, 'track');
-  [-14,0,14].forEach(x => {
-    box(x, 10.3, 4.5, .16, 2.6, .16, C.blackSoft, 'pendant');
-    box(x, 8.6, 4.5, 2.3, .95, 2.3, '#33303A', 'pendantShade');
+  [-14, 0, 14].forEach(x => {
+    box(x, 10.6, 4.5, .1, 2.2, .1, C.blackSoft, 'pendant');
+    P.push({ k:'saucer', x, y:9.3, z:4.5, w:4.2, h:.42, d:4.2, c:'#B08D4F', tag:'saucer' });
+    P.push({ k:'saucer', x, y:9.05, z:4.5, w:2.6, h:.3, d:2.6, c:'#C9A463', tag:'saucer' });
+    P.push({ k:'chrome', x, y:8.55, z:4.5, w:.85, h:.85, d:.85, c:'#D8D2C6', tag:'chrome' });
   });
 
   return P.slice();

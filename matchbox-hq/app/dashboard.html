@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2A2A1E">
+<title>Matchbox HQ · Founder</title>
+<style>
+  :root{
+    --olive:#565C38; --olive-lo:#414630; --mustard:#9C7328; --mustard-hi:#C8963E;
+    --cork:#C39A63; --cork-dk:#A87F4C; --honey:#B8804A; --maple:#D9C09A;
+    --cream:#F2E9D8; --paper:#FBF5E8; --ink:#241F1A; --ink-dim:#6B5F4E;
+    --ox:#7A3B2E; --moss:#3F5A3A; --line:rgba(36,31,26,.16);
+    --lamp:0 2px 0 rgba(36,31,26,.06), 0 14px 34px -18px rgba(36,31,26,.5);
+    --f:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:var(--f);color:var(--ink);font-size:16px;line-height:1.5;
+    background:
+      radial-gradient(120% 70% at 12% 0%, rgba(255,222,168,.5), transparent 60%),
+      repeating-linear-gradient(92deg, rgba(255,255,255,.03) 0 3px, transparent 3px 7px),
+      #2A2A1E;
+    min-height:100vh;padding-bottom:40px}
+
+  /* ── the ledger strip: a wooden rail across the top ── */
+  #bar{position:sticky;top:0;z-index:30;
+    background:linear-gradient(#C08D55,#A8763F 55%,#94682F);
+    border-bottom:3px solid #6E4A22;box-shadow:0 8px 22px -10px rgba(0,0,0,.6)}
+  #bar .in{max-width:1080px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;
+    gap:14px;flex-wrap:wrap}
+  #bar .fig{display:flex;gap:18px;flex:1;min-width:0;cursor:pointer;align-items:baseline}
+  #bar .f{min-width:0}
+  #bar .l{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#4A3115;font-weight:700}
+  #bar .v{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:#2A1B08;
+    white-space:nowrap;text-shadow:0 1px 0 rgba(255,236,200,.4)}
+  #bar .v.out{color:#6E2A18} #bar .v.left{color:#2C4A25}
+  .btn{font:700 14px var(--f);border:0;border-radius:7px;padding:10px 14px;cursor:pointer;
+    background:var(--paper);color:var(--ink);box-shadow:0 2px 0 rgba(0,0,0,.22);white-space:nowrap}
+  .btn:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.22)}
+  .btn.add{background:#3F5A3A;color:#F2E9D8}
+  .btn.spend{background:#7A3B2E;color:#F2E9D8}
+  .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+  .btn:focus-visible{outline:2.5px solid var(--mustard-hi);outline-offset:2px}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+  h2{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#D8CBA8;
+    margin:30px 0 12px;font-weight:800;display:flex;align-items:center;gap:10px}
+  h2::after{content:"";flex:1;height:1px;background:rgba(216,203,168,.28)}
+  h2 .n{background:var(--mustard-hi);color:#2A1B08;border-radius:20px;padding:2px 9px;
+    font-size:11px;letter-spacing:.04em}
+
+  /* ── cork board holding index cards ── */
+  .cork{background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.05), transparent 60%),
+      repeating-radial-gradient(circle at 17% 23%, #C39A63 0 2px, #B98E58 2px 4px),
+      var(--cork);
+    border-radius:10px;padding:16px;box-shadow:inset 0 0 60px rgba(90,58,20,.35),var(--lamp);
+    border:7px solid #8A6234}
+  .cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));align-items:start}
+  .card{background:var(--paper);border-radius:3px;padding:16px 16px 14px;position:relative;
+    box-shadow:0 10px 22px -12px rgba(40,25,5,.7);
+    background-image:repeating-linear-gradient(transparent 0 27px, rgba(36,31,26,.07) 27px 28px);
+    background-position:0 44px}
+  .card::before{content:"";position:absolute;top:-7px;left:50%;margin-left:-7px;width:14px;height:14px;
+    border-radius:50%;background:radial-gradient(circle at 35% 30%,#F07A5A,#A8331C);
+    box-shadow:0 3px 5px rgba(0,0,0,.4)}
+  .card .team{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800}
+  .card h3{margin:4px 0 6px;font-size:18px;line-height:1.25;font-weight:800}
+  .card .why{color:var(--ink-dim);font-size:14.5px;margin-bottom:12px}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);
+    border-radius:6px;padding:10px 12px;margin-bottom:7px;cursor:pointer;font:inherit}
+  .opt:hover{border-color:var(--mustard)}
+  .opt b{display:block;font-size:14.5px}
+  .opt span{color:var(--ink-dim);font-size:13px;display:block;margin-top:1px}
+  .opt.rec{border-color:var(--moss);background:#F4F8EE}
+  .opt.rec b::after{content:"RECOMMENDED";float:right;font-size:9px;letter-spacing:.12em;
+    background:var(--moss);color:#fff;border-radius:3px;padding:2px 6px;margin-left:8px}
+  .card .more{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+  .card .more .btn{flex:1;font-size:13px;padding:9px 10px}
+
+  .empty{background:rgba(251,245,232,.9);border-radius:6px;padding:18px;text-align:center;
+    color:var(--ink-dim);font-size:15px}
+
+  /* ── desk calendar for meetings ── */
+  .cal{background:var(--paper);border-radius:8px;overflow:hidden;box-shadow:var(--lamp)}
+  .meet{display:flex;gap:13px;align-items:center;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .meet:last-child{border-bottom:0}
+  .tab{width:52px;flex:none;text-align:center;background:var(--ox);color:var(--cream);
+    border-radius:5px;padding:5px 0}
+  .tab .d{font-size:17px;font-weight:800;line-height:1}
+  .tab .m{font-size:9px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+  .meet .b{flex:1;min-width:0}
+  .meet .t{font-weight:700;font-size:15.5px}
+  .meet .s{color:var(--ink-dim);font-size:13.5px}
+  .urgent .tab{background:#A8331C}
+
+  /* ── ledger drawer ── */
+  #ledger{background:var(--paper);border-radius:8px;box-shadow:var(--lamp);overflow:hidden;display:none}
+  #ledger.open{display:block}
+  .lrow{display:flex;gap:12px;padding:11px 15px;border-bottom:1px solid var(--line);align-items:baseline}
+  .lrow:last-child{border-bottom:0}
+  .lrow .amt{font-variant-numeric:tabular-nums;font-weight:800;width:96px;text-align:right;flex:none}
+  .lrow .amt.out{color:var(--ox)} .lrow .amt.in{color:var(--moss)}
+  .lrow .r{flex:1;min-width:0}
+  .lrow .dt{color:var(--ink-dim);font-size:12.5px;white-space:nowrap}
+
+  /* ── modal ── */
+  dialog{border:0;border-radius:12px;padding:0;max-width:400px;width:calc(100% - 32px);
+    background:var(--paper);box-shadow:0 30px 70px -20px rgba(0,0,0,.7)}
+  dialog::backdrop{background:rgba(20,16,10,.6)}
+  .dlg{padding:20px}
+  .dlg h3{margin:0 0 4px;font-size:19px}
+  .dlg p{margin:0 0 14px;color:var(--ink-dim);font-size:14px}
+  label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:800;margin-bottom:5px;color:var(--ink-dim)}
+  input,textarea{width:100%;font:16px var(--f);padding:12px;border-radius:7px;
+    border:1.5px solid var(--line);background:#fff;margin-bottom:12px}
+  input:focus,textarea:focus{outline:2px solid var(--mustard);outline-offset:0;border-color:transparent}
+  .dlg .row{display:flex;gap:8px}
+  .dlg .row .btn{flex:1;padding:13px}
+  .err{color:#A8331C;font-size:13.5px;min-height:18px;margin:-6px 0 8px;font-weight:600}
+  .note{background:#F6EFDD;border-left:3px solid var(--mustard);padding:9px 12px;border-radius:0 6px 6px 0;
+    font-size:13.5px;color:var(--ink-dim);margin-top:12px}
+  .done{background:rgba(251,245,232,.92);border-radius:6px;padding:12px 15px;margin-bottom:9px}
+  .done b{display:block;font-size:14.5px}
+  .done span{color:var(--ink-dim);font-size:13px}
+  a{color:var(--mustard-hi)}
+  footer{color:#A89B7A;font-size:12px;text-align:center;margin-top:34px}
+  @media(max-width:600px){
+    #bar .fig{gap:12px} #bar .v{font-size:17px} .cards{grid-template-columns:1fr}
+    #bar .in{padding:8px 12px;gap:9px}
+  }
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div class="in">
+    <div class="fig" id="figs" role="button" tabindex="0" aria-label="Show the full ledger">
+      <div class="f"><div class="l">Capital</div><div class="v" id="bTotal">₹20,000</div></div>
+      <div class="f"><div class="l">Spent</div><div class="v out" id="bSpent">₹0</div></div>
+      <div class="f"><div class="l">Remaining</div><div class="v left" id="bLeft">₹20,000</div></div>
+    </div>
+    <button class="btn add" id="addBtn">+ Add money</button>
+    <button class="btn spend" id="spendBtn">– Spend money</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <h2 id="ledgerHead" style="display:none">The ledger</h2>
+  <div id="ledger"></div>
+
+  <h2>Needs my yes <span class="n" id="qCount">0</span></h2>
+  <div class="cork"><div class="cards" id="queries"></div></div>
+
+  <h2>Meeting schedule <span class="n" id="mCount">0</span></h2>
+  <div class="cal" id="meetings"></div>
+
+  <h2>Needs my research</h2>
+  <div class="cal" id="research"></div>
+
+  <h2>Decided</h2>
+  <div id="decided"></div>
+
+  <footer>Matchbox HQ · one source of truth · <a href="/">open the office</a></footer>
+</div>
+
+<dialog id="moneyDlg"><form method="dialog" class="dlg" id="moneyForm">
+  <h3 id="mTitle">Spend money</h3>
+  <p id="mSub">Nothing is recorded without a reason.</p>
+  <label for="mAmt">Amount in rupees</label>
+  <input id="mAmt" type="number" inputmode="numeric" min="1" step="1" placeholder="1200" required>
+  <label for="mWhy">What for — one line</label>
+  <input id="mWhy" type="text" maxlength="90" placeholder="Sample boxes from Bhish Exports" required>
+  <div class="err" id="mErr"></div>
+  <div class="row">
+    <button class="btn ghost" value="cancel" type="submit" formnovalidate>Cancel</button>
+    <button class="btn spend" id="mGo" value="ok" type="button">Record it</button>
+  </div>
+</form></dialog>
+
+<dialog id="answerDlg"><form method="dialog" class="dlg">
+  <h3>Write my own answer</h3>
+  <p id="aFor"></p>
+  <label for="aTxt">Your answer</label>
+  <textarea id="aTxt" rows="4" placeholder="Type it how you'd say it out loud."></textarea>
+  <div class="row">
+    <button class="btn ghost" value="cancel" type="submit" formnovalidate>Cancel</button>
+    <button class="btn add" id="aGo" type="button">Send to the team</button>
+  </div>
+</form></dialog>
+
+<script type="module" src="/dashboard.js"></script>
+</body>
+</html>

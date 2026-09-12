@@ -5,7 +5,7 @@ const fs = require('fs'), path = require('path'), cp = require('child_process');
 const ROOT = __dirname, APP = path.join(ROOT, 'app');
 
 const S = { now: new Date().toISOString() };
-for (const n of ['tasks','agents','activity','decisions','budget','deliverables','requests'])
+for (const n of ['tasks','agents','activity','decisions','budget','deliverables','requests','ledger','meetings','pipeline'])
   S[n] = JSON.parse(fs.readFileSync(path.join(ROOT, 'state', n + '.json'), 'utf8'));
 
 // 1. the JSON the office reads
@@ -34,6 +34,9 @@ if (fs.existsSync(pipePath)){
     'PIPELINE: ' + JSON.stringify(p, null, 4).replace(/\n/g, '\n  ') + ',');
   fs.writeFileSync(path.join(APP, 'config.js'), cfg);
 }
+
+try { cp.execSync('python3 tools/write_budget_xlsx.py', { cwd: ROOT, stdio:'pipe' }); }
+catch (e) { console.log('budget sheet skipped:', e.message.split('\n')[0]); }
 
 const sizes = fs.readdirSync(APP).map(f => f + ' ' + (fs.statSync(path.join(APP,f)).size/1024).toFixed(0) + 'k');
 console.log('synced ->', APP);

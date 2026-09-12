@@ -7,7 +7,8 @@ const CORRIDOR = [4.5, 13.2];      // the two clear lanes; nobody walks through 
 
 const SKIN = ['#C98C61','#E0AE83','#A9704A','#D9A377','#8E5A3B','#EFC9A5','#B87E52'];
 const HAIR = ['#2B2119','#3E2A1E','#1C1713','#4A3323','#2A1F2E','#111014','#3A2418'];
-const SHIRT_ALT = ['#4A5568','#6B5B7B','#3F5E52','#7A4A4A','#4A4458','#5A6B4A','#6B4A5A'];
+// 70s wardrobe — these have to read against honey wood, so no dark slate
+const SHIRT_ALT = ['#C8963E','#A85A32','#6E7A4A','#E4D2A8','#3E7A72','#9C4A3C','#4A6B8A'];
 
 export function createPeople(){
   return DESKS.map((d, i) => ({

@@ -14,10 +14,13 @@ export const CONFIG = {
 
   // The sales pipeline, updated by the Sales & PR desk.
   PIPELINE: {
-    waitlist: 0, waitlistTarget: 200,
-    preorders: 0, dropSize: 500,
-    cafesPitched: 0, cafesBought: 0,
-    creatorsSent: 0,
+      "waitlist": 0,
+      "waitlistTarget": 200,
+      "preorders": 0,
+      "dropSize": 300,
+      "cafesPitched": 0,
+      "cafesBought": 0,
+      "creatorsSent": 0
   },
 
   // Simple gate. SHA-256 of the password + salt. Keeps strangers out;

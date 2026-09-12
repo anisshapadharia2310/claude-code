@@ -60,6 +60,28 @@ withLock(() => {
       if (spent > s.total) throw new Error('REFUSED: that would spend more than the 20,000 budget');
       wr('budget', s); break;
     }
+    case 'money': { // hq.js money <in|out> <amount> "<reason>" [who]
+      const dir = a[0], amt = Math.round(+a[1]), reason = (a[2]||'').trim();
+      if (dir !== 'in' && dir !== 'out') throw new Error('use: money in|out <amount> "<reason>"');
+      if (!(amt > 0)) throw new Error('amount must be a positive number');
+      if (!reason) throw new Error('REFUSED: every entry needs a one-line reason');
+      const L = rd('ledger');
+      const bal = L.entries.reduce((t,e) => t + (e.type === 'in' ? e.amount : -e.amount), L.opening);
+      if (dir === 'out' && amt > bal)
+        throw new Error('REFUSED: that would spend ' + (amt - bal) + ' more than you have');
+      L.entries.unshift({ id:'L' + Date.now(), date: now(), type: dir, amount: amt,
+        reason, by: a[3] || 'founder' });
+      wr('ledger', L);
+      const spent = L.entries.filter(e => e.type === 'out').reduce((t,e) => t + e.amount, 0);
+      const added = L.entries.filter(e => e.type === 'in').reduce((t,e) => t + e.amount, 0);
+      const B = rd('budget'); B.total = L.opening + added; wr('budget', B);
+      const act = rd('activity');
+      act.events.unshift({ time: now(), agent: 'finance',
+        text: (dir === 'out' ? 'Spent \u20b9' : 'Added \u20b9') + amt.toLocaleString('en-IN') + ' - ' + reason });
+      wr('activity', act);
+      console.log(JSON.stringify({ balance: L.opening + added - spent, spent, added }));
+      break;
+    }
     case 'requests': console.log(JSON.stringify(rd('requests'), null, 2)); break;
     default: console.log('commands: status log task addtask deliverable decision budget requests');
   }

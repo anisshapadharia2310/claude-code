@@ -1,0 +1,48 @@
+{
+  "meetings": [
+    {
+      "id": "M-legal-1",
+      "about": "L1",
+      "title": "Every law that applies to Drop 01",
+      "team": "legal",
+      "by": "legal",
+      "reason": "Before you print a box or take a rupee, know the order these hit you",
+      "urgent": true,
+      "at": "2026-09-12T19:06:40.848Z",
+      "status": "pending"
+    },
+    {
+      "id": "M-design-1",
+      "about": "G1",
+      "title": "Packaging design — the physical box",
+      "team": "brand",
+      "by": "brand",
+      "reason": "Print, finish and what makes it worth keeping",
+      "urgent": false,
+      "at": "2026-09-12T19:06:40.848Z",
+      "status": "pending"
+    },
+    {
+      "id": "M-design-2",
+      "about": "G2",
+      "title": "Social launch content — first 30 days",
+      "team": "brand",
+      "by": "brand",
+      "reason": "A different job from packaging: this one is about attention",
+      "urgent": false,
+      "at": "2026-09-12T19:06:40.848Z",
+      "status": "pending"
+    },
+    {
+      "id": "M-design-3",
+      "about": "G3",
+      "title": "Website design — look and pre-order flow",
+      "team": "brand",
+      "by": "brand",
+      "reason": "Held until Website Builder is unpaused",
+      "urgent": false,
+      "at": "2026-09-12T19:06:40.848Z",
+      "status": "pending"
+    }
+  ]
+}

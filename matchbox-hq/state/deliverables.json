@@ -216,6 +216,62 @@
       "agent": "website",
       "desc": "Plain-English steps: open a drop, close it, update the claimed count, reuse the site for Drop 02.",
       "updated": "2026-09-12T18:29:51.690Z"
+    },
+    {
+      "name": "Match quality spec",
+      "path": "vendors/match-quality-spec.md",
+      "agent": "prodops",
+      "desc": "What to demand from every vendor: veneer tray, poplar splints, one-strike.",
+      "updated": "2026-09-12T18:55:34.120Z"
+    },
+    {
+      "name": "Agenda 1 - Packaging Design",
+      "path": "deliverables/agenda-packaging.md",
+      "agent": "brand",
+      "desc": "The printed sleeve for 300 boxes: print method, dimensions, stock, what makes it collectible, and what the printer needs by 29 Sep",
+      "updated": "2026-09-12T19:14:13.623Z"
+    },
+    {
+      "name": "Agenda 2 - Social Launch Content",
+      "path": "deliverables/agenda-social.md",
+      "agent": "brand",
+      "desc": "The 30-day Pune arc re-cut to the real drop dates, the 90-minute shoot list, and what good looks like as numbers",
+      "updated": "2026-09-12T19:14:13.659Z"
+    },
+    {
+      "name": "Agenda 3 - Website Design (ON HOLD)",
+      "path": "deliverables/agenda-website.md",
+      "agent": "brand",
+      "desc": "What the page must prove in 5 seconds and the waitlist-to-pre-order states - parked until 22 Sep",
+      "updated": "2026-09-12T19:14:13.698Z"
+    },
+    {
+      "name": "Design Priorities",
+      "path": "deliverables/design-priorities.md",
+      "agent": "brand",
+      "desc": "Which design meeting to run first, which waits, and the one decision blocking all three",
+      "updated": "2026-09-12T19:14:13.734Z"
+    },
+    {
+      "name": "Drop 01 Law Map",
+      "path": "deliverables/drop-01-law-map.md",
+      "agent": "legal",
+      "desc": "Every law Drop 01 touches, in the order you hit it - sourcing, printing, labelling, invoicing, website, delivery, ads",
+      "updated": "2026-09-12T19:14:27.368Z"
+    },
+    {
+      "name": "Laws To Remember",
+      "path": "deliverables/laws-to-remember.md",
+      "agent": "legal",
+      "desc": "Twelve one-line reminders to keep on the dashboard",
+      "updated": "2026-09-12T19:14:27.408Z"
+    },
+    {
+      "name": "Legal Notes On Tasks",
+      "path": "deliverables/legal-notes-on-tasks.md",
+      "agent": "legal",
+      "desc": "One-line legal warnings keyed to G1/P2, W1, G2, T15 and P1",
+      "updated": "2026-09-12T19:14:27.456Z"
     }
   ]
 }
