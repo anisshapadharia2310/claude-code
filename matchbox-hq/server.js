@@ -75,11 +75,15 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // static
+  // static. /office/* is the deployable app folder, everything else is public/
   let p = url.pathname === '/' ? '/index.html' : url.pathname;
   if (p.endsWith('/')) p += 'index.html';
-  const file = path.join(ROOT, 'public', path.normalize(p).replace(/^(\.\.[/\\])+/, ''));
-  if (!file.startsWith(path.join(ROOT, 'public'))) return send(res, 403, 'no');
+  const office = p === '/office' || p.startsWith('/office/');
+  const base = office ? path.join(ROOT, 'app') : path.join(ROOT, 'public');
+  if (office) p = p.replace(/^\/office/, '') || '/index.html';
+  if (p === '/' || p === '') p = '/index.html';
+  const file = path.join(base, path.normalize(p).replace(/^(\.\.[/\\])+/, ''));
+  if (!file.startsWith(base)) return send(res, 403, 'no');
   fs.readFile(file, (err, data) => {
     if (err) return send(res, 404, 'Not found', 'text/plain');
     send(res, 200, data, MIME[path.extname(file)] || 'application/octet-stream');
