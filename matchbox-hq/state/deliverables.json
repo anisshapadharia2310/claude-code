@@ -1,0 +1,221 @@
+{
+  "files": [
+    {
+      "name": "Matchbox HQ dashboard",
+      "path": "matchbox-hq/public/index.html",
+      "agent": "master",
+      "desc": "This screen.",
+      "updated": "2026-09-12T17:20:19Z"
+    },
+    {
+      "name": "Matchbox HQ (live link)",
+      "path": "https://claude.ai/code/artifact/688f02e3-da15-4ee9-b395-29ccf4750848",
+      "agent": "master",
+      "desc": "The dashboard, openable on any phone or laptop.",
+      "updated": "2026-09-12T17:27:10.037Z"
+    },
+    {
+      "name": "Brand Names (10 + availability)",
+      "path": "deliverables/brand-names.md",
+      "agent": "brand",
+      "desc": "10 name options, real availability checks, top 3 shortlist - your call",
+      "updated": "2026-09-12T17:27:28.669Z"
+    },
+    {
+      "name": "Supplier Shortlist",
+      "path": "deliverables/supplier-shortlist.md",
+      "agent": "supplier",
+      "desc": "10 Sivakasi match makers with sourced contacts, plus a reality check on the 500-box budget",
+      "updated": "2026-09-12T17:28:05.783Z"
+    },
+    {
+      "name": "Supplier Outreach Messages",
+      "path": "deliverables/supplier-outreach.md",
+      "agent": "supplier",
+      "desc": "Copy-paste WhatsApp, email and follow-up enquiries with all the right questions",
+      "updated": "2026-09-12T17:28:05.819Z"
+    },
+    {
+      "name": "Quote Tracker",
+      "path": "deliverables/supplier-quote-tracker.md",
+      "agent": "supplier",
+      "desc": "Blank comparison table to fill in as quotes come back",
+      "updated": "2026-09-12T17:28:05.857Z"
+    },
+    {
+      "name": "Box Concepts (6 briefs)",
+      "path": "deliverables/box-concepts.md",
+      "agent": "brand",
+      "desc": "6 Canva-ready box designs with hex codes, plus which 3 to print first",
+      "updated": "2026-09-12T17:28:43.940Z"
+    },
+    {
+      "name": "30-Day Instagram Calendar",
+      "path": "deliverables/instagram-30-days.md",
+      "agent": "brand",
+      "desc": "One post a day for 30 days with captions and hashtags written out, phone-only",
+      "updated": "2026-09-12T17:30:23.933Z"
+    },
+    {
+      "name": "Legal checklist (do this / not yet / ignore)",
+      "path": "deliverables/legal-checklist.md",
+      "agent": "legal",
+      "desc": "Week 1 is free. GST is not needed until you ship outside Maharashtra or list on Amazon.",
+      "updated": "2026-09-12T17:31:51.925Z"
+    },
+    {
+      "name": "Matchbox label rules + ready-to-use template",
+      "path": "deliverables/packaging-label-rules.md",
+      "agent": "legal",
+      "desc": "Exactly what the law makes you print on the box, with a template for your designer.",
+      "updated": "2026-09-12T17:31:51.960Z"
+    },
+    {
+      "name": "Trademark notes (Class 34)",
+      "path": "deliverables/trademark-notes.md",
+      "agent": "legal",
+      "desc": "Matches are Class 34. Free search now, 4500 rupee filing later.",
+      "updated": "2026-09-12T17:31:51.997Z"
+    },
+    {
+      "name": "Pune Seeding Plan",
+      "path": "deliverables/seeding-plan.md",
+      "agent": "brand",
+      "desc": "How to place 60 free boxes with the right 30 people in Pune, with word-for-word scripts",
+      "updated": "2026-09-12T17:31:56.421Z"
+    },
+    {
+      "name": "Drop 01 plan - 500 boxes",
+      "path": "deliverables/drop-01-plan.md",
+      "agent": "launch",
+      "desc": "Week-by-week plan to sell 500 boxes, plus the flop plan and the sell-out plan",
+      "updated": "2026-09-12T17:33:03.573Z"
+    },
+    {
+      "name": "Cafe pitch + leave-behind sheet",
+      "path": "deliverables/cafe-pitch.md",
+      "agent": "launch",
+      "desc": "What to say walking into a Pune cafe, both deal structures, printable one-pager",
+      "updated": "2026-09-12T17:33:03.608Z"
+    },
+    {
+      "name": "Marketplace roadmap",
+      "path": "deliverables/marketplace-roadmap.md",
+      "agent": "launch",
+      "desc": "Amazon, Flipkart, Blinkit, Zepto - and the dangerous-goods shipping blocker",
+      "updated": "2026-09-12T17:33:03.645Z"
+    },
+    {
+      "name": "Pune ads plan (3,000 rupees)",
+      "path": "deliverables/pune-ads-plan.md",
+      "agent": "launch",
+      "desc": "How to spend the ad budget once 150 boxes are sold, with the cost-per-order maths",
+      "updated": "2026-09-12T17:33:03.677Z"
+    },
+    {
+      "name": "The money for ONE box (v2)",
+      "path": "deliverables/unit-economics.md",
+      "agent": "finance",
+      "desc": "Rebuilt on trays plus printed outers. What you keep at 79 and 99 across four channels at low, mid and high cost. Answer: 99.",
+      "updated": "2026-09-12T18:23:51.375Z"
+    },
+    {
+      "name": "Break-even and the Drop 02 engine (v2)",
+      "path": "deliverables/break-even.md",
+      "agent": "finance",
+      "desc": "New break-even is 204 boxes at 99. Drop 02, with trays already paid for, breaks even at 73.",
+      "updated": "2026-09-12T18:23:51.411Z"
+    },
+    {
+      "name": "Money tracker (v2)",
+      "path": "deliverables/money-tracker.md",
+      "agent": "finance",
+      "desc": "Opening budget split into one-off trays and per-drop printed outers. Danger line moved to 8,000.",
+      "updated": "2026-09-12T18:23:51.447Z"
+    },
+    {
+      "name": "Drop 02 trigger",
+      "path": "deliverables/drop-02-trigger.md",
+      "agent": "finance",
+      "desc": "The rule for ordering Drop 02, how many trays to buy up front, and the stop-spending line.",
+      "updated": "2026-09-12T18:23:51.483Z"
+    },
+    {
+      "name": "Sales Pipeline",
+      "path": "deliverables/sales-pipeline.md",
+      "agent": "launch",
+      "desc": "The daily board - waitlist, pre-orders, cafes, creators, drops, all starting at zero",
+      "updated": "2026-09-12T18:26:05.597Z"
+    },
+    {
+      "name": "Customer Messaging",
+      "path": "deliverables/customer-messaging.md",
+      "agent": "launch",
+      "desc": "Paste-ready WhatsApp messages: shipping promise, non-Pune reply, confirmations, delays, refunds",
+      "updated": "2026-09-12T18:26:05.634Z"
+    },
+    {
+      "name": "Press & Creators",
+      "path": "deliverables/press-and-creators.md",
+      "agent": "launch",
+      "desc": "Which kinds of Pune outlets and creators to approach, plus the 90-word email and 40-word DM",
+      "updated": "2026-09-12T18:26:05.671Z"
+    },
+    {
+      "name": "Drop Calendar",
+      "path": "deliverables/drop-calendar.md",
+      "agent": "launch",
+      "desc": "Drops 01, 02 and 03 - dates, sizes, windows and what must be true before each",
+      "updated": "2026-09-12T18:26:05.715Z"
+    },
+    {
+      "name": "Vendor sheet (updated in place)",
+      "path": "vendors/Matchbox_Vendors_Pune.xlsx",
+      "agent": "prodops",
+      "desc": "Your own file - EXAMPLE row deleted, real contacts filled in, 8 vendors ranked 1-8, 7 Pune printers added, new Stock tab",
+      "updated": "2026-09-12T18:26:27.123Z"
+    },
+    {
+      "name": "Production model - trays + printed outers",
+      "path": "deliverables/production-model.md",
+      "agent": "prodops",
+      "desc": "Recommended first purchase 12,500 rupees. Per box 16.50 on Drop 01, 11 on Drop 02.",
+      "updated": "2026-09-12T18:26:27.173Z"
+    },
+    {
+      "name": "Sample plan",
+      "path": "deliverables/sample-plan.md",
+      "agent": "prodops",
+      "desc": "50 boxes from 3 vendors for about 1,500 rupees, plus a 30-point scoring sheet",
+      "updated": "2026-09-12T18:26:27.313Z"
+    },
+    {
+      "name": "Ops calendar - first call to 500 boxes",
+      "path": "deliverables/ops-calendar.md",
+      "agent": "prodops",
+      "desc": "6 weeks. First call 14 Sep, boxes in hand 24 Oct, with the dates a delay kills you",
+      "updated": "2026-09-12T18:26:27.359Z"
+    },
+    {
+      "name": "Pre-order + waitlist website",
+      "path": "website/index.html",
+      "agent": "website",
+      "desc": "One-file site: permanent WhatsApp waitlist plus a per-drop pre-order with an honest X-of-500 counter and four drop states.",
+      "updated": "2026-09-12T18:29:51.616Z"
+    },
+    {
+      "name": "Drop state file",
+      "path": "website/state.json",
+      "agent": "website",
+      "desc": "The same drop numbers (name, total, claimed, dates, price) in a small file the office dashboard can read.",
+      "updated": "2026-09-12T18:29:51.654Z"
+    },
+    {
+      "name": "Website guide (founder)",
+      "path": "deliverables/website-guide.md",
+      "agent": "website",
+      "desc": "Plain-English steps: open a drop, close it, update the claimed count, reuse the site for Drop 02.",
+      "updated": "2026-09-12T18:29:51.690Z"
+    }
+  ]
+}

@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Drop 01 &middot; Collectible Matchboxes &middot; Pune</title>
+<meta name="description" content="Collectible matchboxes. Pink or black match heads on black sticks. Drop 01 is Pune-only and hand-delivered. Join the waitlist any time.">
+<meta name="theme-color" content="#0a0708">
+<meta property="og:title" content="Drop 01 &middot; 500 boxes">
+<meta property="og:description" content="Collectible matchboxes. Pink or black heads on black sticks. Pune only, hand-delivered. 500 made.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0708'/><rect x='14' y='12' width='4' height='16' rx='2' fill='%23222'/><ellipse cx='16' cy='9' rx='5' ry='7' fill='%23ff2d78'/></svg>">
+
+<!--
+  ============================================================================
+  READ ME FIRST  (you do not need to know how to code)
+  ============================================================================
+  Everything you are allowed to change lives in the CONFIG box a few lines
+  below, in the block marked "SETTINGS YOU CAN CHANGE".
+  Change the words between the "quote marks". Do not delete the quote marks.
+  Save the file. Refresh the page. Done.
+
+  THE SITE HAS TWO SIGN-UP FORMS AND THEY ARE NOT THE SAME THING:
+    1. THE WAITLIST  - always on, never closes, takes name + WhatsApp number.
+                       This is your standing audience for every future drop.
+    2. THE PRE-ORDER - only appears while the drop window is OPEN. It is the
+                       one that takes money and counts down the 500 boxes.
+  When the drop is closed, sold out, or has not opened yet, the page falls
+  back to the waitlist and says so honestly.
+
+  Full step-by-step instructions: ../deliverables/website-guide.md
+  ============================================================================
+-->
+
+<script>
+/* ===========================================================================
+   SETTINGS YOU CAN CHANGE  -  this is the only block you need to touch
+   =========================================================================== */
+var CONFIG = {
+
+  /* ---- 1. BRAND NAME -----------------------------------------------------
+     Type your brand name here once. It changes everywhere on the page.      */
+  BRAND:        "[YOUR BRAND NAME]",
+  TAGLINE:      "Collectible matchboxes. Made in India. Hand-delivered in Pune.",
+  INSTAGRAM:    "[YOUR_INSTAGRAM_HANDLE]",              // e.g. yourbrand  (no @)
+  SHIP_CITY:    "Pune",
+
+  /* =======================================================================
+     2. THE DROP  -  THIS IS THE BLOCK YOU EDIT TO OPEN AND CLOSE A DROP
+     =======================================================================
+     Dates are YYYY-MM-DD. The open date starts at 00:00 that morning.
+     The close date runs to 23:59 that night (so the close day is included).
+
+     FORCE_STATE is your manual override. Keep the quote marks. Use ONE of:
+       "auto"    = let the dates and the counter decide  (NORMAL SETTING)
+       "open"    = force the pre-order open right now
+       "closed"  = force it shut right now (page falls back to the waitlist)
+       "soldout" = force the sold-out message
+
+     UNITS_CLAIMED is the honest counter. YOU type this number in after you
+     count your orders. Nothing on this page ever increases it by itself.
+     When UNITS_CLAIMED reaches TOTAL_UNITS the page flips to sold out.
+
+     Keep these six numbers the same as the ones in  state.json  in this
+     folder (the office dashboard reads that file). Guide: PART 3.          */
+  DROP: {
+    DROP_NAME:     "DROP 01",
+    TOTAL_UNITS:   500,
+    UNITS_CLAIMED: 0,
+    OPEN_DATE:     "2026-09-22",
+    CLOSE_DATE:    "2026-10-26",
+    PRICE:         99,          // one box, in rupees
+    PRICE_SET3:    249,         // the three-box set (the upsell)
+    FORCE_STATE:   "auto"       // "auto" | "open" | "closed" | "soldout"
+  },
+
+  /* ---- 3. WHERE THE COUNTER NUMBER COMES FROM ----------------------------
+     "config"    = the UNITS_CLAIMED number above wins. Nothing is downloaded.
+                   The page makes ZERO requests to anywhere. (SAFE DEFAULT)
+     "published" = also try to read a published count from COUNT_URL. If that
+                   file is missing or unreadable, the number above is used.
+     Leave this on "config" unless the guide (PART 3) tells you otherwise.   */
+  COUNT_SOURCE: "config",
+  COUNT_URL:    "state.json",
+
+  /* ---- 4. PAYMENT MODE  -  THE ONE-LINE SWITCH ---------------------------
+     This only affects the PRE-ORDER form. The waitlist never takes money.
+     Choose ONE of these three words. Keep the quote marks.
+
+       "waitlist"  = the pre-order reserves a box, takes no money.
+                     (SAFE DEFAULT - start here)
+       "upi"       = show your UPI QR / UPI ID, people pay and type their
+                     payment reference number into the form.
+       "razorpay"  = a real card/UPI checkout button (needs a Razorpay
+                     account first - see the guide).                          */
+  PAYMENT_MODE: "waitlist",
+
+  /* ---- 5. WHERE THE SIGNUPS GO ------------------------------------------
+     Leave this alone until you have done PART 5 of the guide.
+     Until then every signup is still saved inside the visitor's browser AND
+     shown to you on screen, so nothing is lost while you set this up.
+
+     FORM_SERVICE: "google"    = free, unlimited, lands in a Google Sheet  (RECOMMENDED)
+                   "formspree" = free for 50 signups a month, lands in your email
+                   "none"      = save to this browser only (testing)          */
+  FORM_SERVICE: "none",
+
+  // --- if FORM_SERVICE is "google", fill these in (guide PART 5, option A) ---
+  GOOGLE_FORM_URL: "https://docs.google.com/forms/d/e/[YOUR_GOOGLE_FORM_ID]/formResponse",
+  GOOGLE_FIELDS: {
+    list:    "entry.[YOUR_ID_1]",     // "waitlist" or "preorder"
+    name:    "entry.[YOUR_ID_2]",
+    phone:   "entry.[YOUR_ID_3]",     // the WhatsApp number
+    email:   "entry.[YOUR_ID_4]",
+    city:    "entry.[YOUR_ID_5]",
+    area:    "entry.[YOUR_ID_6]",
+    pack:    "entry.[YOUR_ID_7]",
+    variant: "entry.[YOUR_ID_8]",
+    amount:  "entry.[YOUR_ID_9]",
+    payref:  "entry.[YOUR_ID_10]"
+  },
+
+  // --- if FORM_SERVICE is "formspree", fill this in (guide PART 5, option B) ---
+  FORMSPREE_URL: "https://formspree.io/f/[YOUR_FORMSPREE_ID]",
+
+  /* ---- 6. UPI DETAILS  (only used when PAYMENT_MODE is "upi") ------------
+     PUT YOUR REAL UPI ID HERE ONLY WHEN YOU ARE READY TO TAKE MONEY.
+     Never share this file publicly with a real UPI ID you do not own.       */
+  UPI_ID:       "[YOUR_UPI_ID]",          // EXAMPLE FORMAT ONLY: yourname@okicici
+  UPI_NAME:     "[YOUR_NAME_ON_UPI]",     // the name that shows in the app
+
+  // OPTIONAL: screenshot your own UPI QR, save it in this folder as
+  // upi-qr.png, then put "upi-qr.png" between the quote marks below.
+  // Leave it empty and the page shows a "pay in your UPI app" button instead.
+  UPI_QR_FILE:  "",
+
+  /* ---- 7. RAZORPAY  (only used when PAYMENT_MODE is "razorpay") ----------
+     NEVER put a secret key in this file. Only the "Key ID" (starts rzp_).   */
+  RAZORPAY_KEY_ID: "[YOUR_RAZORPAY_KEY_ID]",
+
+  /* ---- 8. LEGAL LABEL INFO (footer) --------------------------------------
+     Your legal agent is working these out. Paste them in when you have them.*/
+  LEGAL: {
+    seller:   "[REGISTERED SELLER NAME]",
+    address:  "[REGISTERED ADDRESS, PUNE]",
+    gstin:    "[GSTIN]",
+    email:    "[SUPPORT EMAIL]",
+    mfg:      "[MANUFACTURER NAME & ADDRESS]",
+    licence:  "[MATCH MANUFACTURING LICENCE NO.]"
+  }
+};
+/* ======================= END OF SETTINGS ================================= */
+</script>
+
+<style>
+
+/* ---------- design tokens ---------- */
+:root{
+  --pink:#ff2d78;
+  --pink-soft:#ff6fa3;
+  --ink:#0a0708;
+  --ink-2:#120d10;
+  --card:#171114;
+  --line:#2c2228;
+  --text:#f6eef2;
+  --muted:#b6a6ae;
+  --amber:#ffb347;
+  --focus:#ffe14d;
+  --maxw:1080px;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:17px;line-height:1.55;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:20px}
+section{padding-block:clamp(48px,9vw,88px);scroll-margin-top:66px}
+a{color:var(--pink-soft)}
+a:hover{color:var(--pink)}
+
+/* ---------- focus / a11y ---------- */
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--focus);color:#000;padding:12px 18px;z-index:99;font-weight:800}
+.skip:focus{left:8px;top:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- type ---------- */
+h1,h2,h3{line-height:.96;letter-spacing:-.03em;margin:0 0 .4em;font-weight:900}
+h1{font-size:clamp(50px,15vw,120px);text-transform:uppercase}
+h2{font-size:clamp(32px,8vw,62px);text-transform:uppercase}
+h3{font-size:clamp(19px,4.4vw,25px);letter-spacing:-.01em;line-height:1.15}
+p{margin:0 0 1em}
+.lede{font-size:clamp(17px,4.2vw,21px);color:var(--muted);max-width:56ch}
+.eyebrow{
+  font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--pink);
+  font-weight:800;margin:0 0 14px;display:block;
+}
+
+/* ---------- top bar ---------- */
+.bar{
+  position:sticky;top:0;z-index:40;background:rgba(10,7,8,.88);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding-block:8px}
+.logo{font-weight:900;letter-spacing:-.02em;font-size:17px;text-transform:uppercase;display:flex;align-items:center;gap:8px;color:var(--text);text-decoration:none}
+.tick{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:right}
+.tick b{color:var(--pink)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--pink);color:#16040c;border:0;border-radius:999px;
+  padding:17px 30px;font:inherit;font-weight:900;font-size:17px;
+  text-transform:uppercase;letter-spacing:.04em;text-decoration:none;
+  cursor:pointer;min-height:56px;width:100%;
+  box-shadow:0 0 0 rgba(255,45,120,.6);transition:transform .12s ease,box-shadow .2s ease;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(255,45,120,.32);color:#16040c}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:transparent;color:var(--text);border:2px solid var(--line)}
+.btn.ghost:hover{border-color:var(--pink);color:var(--pink)}
+@media(min-width:560px){.btn{width:auto}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding-top:clamp(36px,9vw,70px);padding-bottom:clamp(40px,9vw,70px);overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:-25% -10% auto -10%;height:80%;
+  background:radial-gradient(60% 60% at 50% 0%,rgba(255,45,120,.30),transparent 70%);
+  pointer-events:none;
+}
+.hero .wrap{position:relative;z-index:1}
+.dropchip{
+  display:inline-flex;align-items:center;gap:9px;border:1.5px solid var(--pink);
+  color:var(--pink);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:900;
+  letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+h1 .flame{
+  background:linear-gradient(178deg,#fff2f7 0%,var(--pink) 38%,#c9114f 78%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  display:block;
+}
+.heroband{
+  display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 26px;
+}
+.pill{
+  border:1px solid var(--line);background:var(--ink-2);border-radius:999px;
+  padding:8px 14px;font-size:13px;font-weight:700;color:var(--muted);
+}
+.pill b{color:var(--text)}
+.herocta{display:flex;flex-direction:column;gap:12px}
+@media(min-width:560px){.herocta{flex-direction:row}}
+/* on a wide screen, stand the matches beside the headline */
+@media(min-width:920px){
+  .hero{padding-block:86px 70px}
+  .hero h1{font-size:clamp(56px,6.6vw,90px)}
+  .hero .wrap{max-width:var(--maxw);padding-right:min(46%,480px)}
+  .hero .matchstage{
+    position:absolute;top:50%;right:max(20px,calc(50% - var(--maxw)/2));
+    transform:translateY(-50%);width:min(42%,430px);height:440px;margin:0;z-index:0;
+  }
+}
+
+/* ---------- the CSS match (fire, no images, no stock photos) ---------- */
+.matchstage{
+  position:relative;height:280px;margin:34px 0 -10px;
+  display:flex;align-items:flex-end;justify-content:center;gap:58px;
+}
+@media(min-width:760px){.matchstage{height:340px;gap:84px;margin-top:10px}}
+.match{position:relative;width:16px;height:168px;display:flex;flex-direction:column;align-items:center}
+@media(min-width:760px){.match{height:200px}}
+.stick{
+  width:10px;flex:1;border-radius:3px;
+  background:linear-gradient(90deg,#080708,#332c30 42%,#0b090a);
+  box-shadow:0 0 0 1px #000 inset;
+}
+.head{width:26px;height:34px;border-radius:50% 50% 44% 44%;position:relative;z-index:3}
+.head.pink{background:radial-gradient(58% 44% at 36% 26%,#ffe3ee,var(--pink) 46%,#8d0038);box-shadow:0 0 34px 6px rgba(255,45,120,.55)}
+.head.black{background:radial-gradient(58% 44% at 36% 26%,#7d747c,#1a1619 52%,#000);box-shadow:0 0 26px 4px rgba(255,255,255,.09)}
+
+.flamewrap{position:absolute;bottom:132px;left:50%;transform:translateX(-50%);width:130px;height:190px;pointer-events:none;z-index:1}
+@media(min-width:760px){.flamewrap{bottom:164px}}
+.fl{
+  position:absolute;bottom:0;left:50%;border-radius:50% 50% 46% 46%/64% 64% 36% 36%;
+  mix-blend-mode:screen;transform-origin:50% 100%;
+}
+.fl.a{
+  width:112px;height:180px;margin-left:-56px;filter:blur(14px);
+  background:radial-gradient(closest-side,rgba(255,45,120,.95),rgba(255,45,120,.55) 52%,rgba(255,45,120,0) 100%);
+  animation:flick 1.5s ease-in-out infinite;
+}
+.fl.b{
+  width:62px;height:118px;margin-left:-31px;filter:blur(7px);
+  background:radial-gradient(closest-side,rgba(255,190,110,1),rgba(255,140,50,.7) 55%,rgba(255,90,20,0) 100%);
+  animation:flick 1.1s ease-in-out infinite reverse;
+}
+.fl.c{
+  width:26px;height:62px;margin-left:-13px;filter:blur(3px);
+  background:radial-gradient(closest-side,rgba(255,255,255,1),rgba(255,246,220,.85) 50%,rgba(255,220,160,0) 100%);
+  animation:flick .78s ease-in-out infinite;
+}
+@keyframes flick{
+  0%,100%{transform:scaleY(1) scaleX(1) translateY(0) skewX(0deg)}
+  25%{transform:scaleY(1.14) scaleX(.88) translateY(-7px) skewX(5deg)}
+  55%{transform:scaleY(.88) scaleX(1.1) translateY(3px) skewX(-5deg)}
+  78%{transform:scaleY(1.07) scaleX(.94) translateY(-4px) skewX(2deg)}
+}
+.spark{position:absolute;bottom:170px;left:50%;width:4px;height:4px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px 2px rgba(255,179,71,.8);opacity:0;animation:rise 3.2s linear infinite;z-index:2}
+@keyframes rise{
+  0%{opacity:0;transform:translate(0,0) scale(1)}
+  10%{opacity:1}
+  100%{opacity:0;transform:translate(var(--dx,14px),-170px) scale(.2)}
+}
+.glowfloor{
+  position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
+  width:min(620px,100%);height:170px;border-radius:50%;
+  background:radial-gradient(50% 50% at 50% 50%,rgba(255,45,120,.30),transparent 72%);
+  filter:blur(16px);pointer-events:none;
+}
+@media (prefers-reduced-motion: reduce){
+  .fl,.spark,.dot{animation:none}
+  .spark{opacity:.6}
+}
+
+/* ---------- generic cards ---------- */
+.grid{display:grid;gap:16px}
+@media(min-width:720px){.grid.g3{grid-template-columns:repeat(3,1fr)}.grid.g2{grid-template-columns:repeat(2,1fr)}}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:22px;
+}
+.card h3{margin-bottom:.45em}
+.card p{color:var(--muted);margin:0}
+.num{font-size:12px;font-weight:900;letter-spacing:.2em;color:var(--pink);display:block;margin-bottom:10px}
+
+/* ---------- variants ---------- */
+.variant{position:relative;overflow:hidden;padding:26px 22px 30px}
+.variant .swatchrow{display:flex;align-items:flex-end;gap:8px;height:96px;margin-bottom:20px}
+.mini{width:10px;height:78px;display:flex;flex-direction:column;align-items:center}
+.mini .h{width:17px;height:23px;border-radius:50% 50% 42% 42%}
+.mini .s{width:7px;flex:1;border-radius:2px;background:linear-gradient(90deg,#0d0b0c,#2a2427 45%,#0d0b0c)}
+.mini .h.p{background:radial-gradient(60% 45% at 38% 28%,#ffd0e2,var(--pink) 45%,#96003c)}
+.mini .h.k{background:radial-gradient(60% 45% at 38% 28%,#6a6168,#1a1619 55%,#000)}
+.variant.pinkv{border-color:rgba(255,45,120,.45)}
+.variant.pinkv::after{content:"";position:absolute;inset:auto -40% -60% -40%;height:150px;background:radial-gradient(50% 50% at 50% 50%,rgba(255,45,120,.22),transparent 70%)}
+
+/* ---------- scarcity ---------- */
+.counter{
+  border:1px solid var(--line);background:linear-gradient(180deg,var(--card),#0f0b0d);
+  border-radius:var(--r);padding:26px 22px;
+}
+.bignum{font-size:clamp(58px,18vw,120px);font-weight:900;line-height:.85;letter-spacing:-.05em;color:var(--pink);margin:0 0 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+.bignum b{font-weight:900;text-shadow:0 0 40px rgba(255,45,120,.45)}
+.bignum small{color:var(--text);font-size:.26em;letter-spacing:.02em;font-weight:900;text-transform:uppercase}
+.track{height:14px;border-radius:99px;background:#241b20;overflow:hidden;margin:20px 0 12px;border:1px solid var(--line)}
+.fill{height:100%;background:linear-gradient(90deg,#96003c,var(--pink),var(--amber));border-radius:99px;width:0;transition:width .9s ease}
+.trackmeta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:700}
+
+/* ---------- form ---------- */
+.formcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+@media(min-width:720px){.formcard{padding:32px}}
+.field{margin-bottom:18px}
+label{display:block;font-size:14px;font-weight:800;letter-spacing:.02em;margin-bottom:7px}
+.hint{font-size:13px;color:var(--muted);font-weight:500;display:block;margin-top:5px}
+input,select,textarea{
+  width:100%;background:#0c0809;color:var(--text);border:1.5px solid var(--line);
+  border-radius:11px;padding:14px 15px;font:inherit;font-size:16px;min-height:52px;
+}
+input::placeholder{color:#8d7e87}
+input:focus,select:focus,textarea:focus{border-color:var(--pink);outline:3px solid var(--focus);outline-offset:2px}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 24px,calc(100% - 14px) 24px;background-size:6px 6px;background-repeat:no-repeat}
+.row2{display:grid;gap:0}
+@media(min-width:600px){.row2{grid-template-columns:1fr 1fr;gap:18px}}
+fieldset{border:0;padding:0;margin:0 0 18px}
+legend{font-size:14px;font-weight:800;padding:0;margin-bottom:9px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.choice span{
+  display:flex;align-items:center;gap:9px;border:1.5px solid var(--line);border-radius:11px;
+  padding:14px;font-weight:800;font-size:15px;min-height:52px;background:#0c0809;
+}
+.choice input:checked + span{border-color:var(--pink);background:rgba(255,45,120,.12)}
+.choice input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.chip-dot{width:15px;height:15px;border-radius:50%;flex:0 0 auto}
+.chip-dot.p{background:var(--pink)}
+.chip-dot.k{background:#1a1619;border:1px solid #4a444a}
+.err{color:#ff8fb3;font-size:13px;font-weight:700;margin-top:6px;display:none}
+.err.show{display:block}
+input[aria-invalid="true"],select[aria-invalid="true"]{border-color:#ff5c8d}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+/* payment blocks */
+.paybox{border:1.5px dashed rgba(255,45,120,.5);border-radius:var(--r);padding:20px;margin:0 0 20px;background:rgba(255,45,120,.06)}
+.paybox h3{font-size:19px;margin-bottom:.4em}
+.upiid{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  background:#0c0809;border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin:12px 0;
+  font-weight:800;word-break:break-all;
+}
+.qrbox{background:#fff;border-radius:12px;padding:12px;width:196px;max-width:100%;margin:14px auto}
+.steps{margin:12px 0 0;padding-left:20px;color:var(--muted);font-size:15px}
+.steps li{margin-bottom:6px}
+
+/* thank you */
+.thanks{display:none;text-align:center;padding:14px 4px}
+.thanks.show{display:block}
+.thanks h3{font-size:clamp(28px,7vw,44px);text-transform:uppercase;color:var(--pink)}
+.sharebtns{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+@media(min-width:560px){.sharebtns{flex-direction:row;justify-content:center}}
+.tickmark{width:66px;height:66px;margin:0 auto 14px;display:block}
+
+/* ---------- ship note ---------- */
+.shipnote{
+  border:1px solid var(--line);border-left:4px solid var(--pink);
+  background:var(--ink-2);border-radius:10px;padding:18px 20px;
+}
+.shipnote p{margin:0;color:var(--muted)}
+.shipnote b{color:var(--text)}
+
+/* ---------- faq ---------- */
+details{border-bottom:1px solid var(--line);padding:6px 0}
+summary{
+  cursor:pointer;list-style:none;padding:16px 34px 16px 0;position:relative;
+  font-weight:800;font-size:17px;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"+";position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  color:var(--pink);font-size:26px;font-weight:400;line-height:1;
+}
+details[open] summary::after{content:"\2212"}
+details p{color:var(--muted);margin:0 0 16px;padding-right:8px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);background:#070506;padding-block:42px;font-size:14px}
+footer .cols{display:grid;gap:26px}
+@media(min-width:720px){footer .cols{grid-template-columns:1.2fr 1fr 1fr}}
+footer h4{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--pink);margin:0 0 12px;font-weight:900}
+footer p,footer li{color:var(--muted);margin:0 0 6px}
+footer ul{list-style:none;padding:0;margin:0}
+.legalbox{border:1px dashed var(--line);border-radius:10px;padding:14px;margin-top:14px;font-size:13px}
+.smallprint{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);color:#8f8188;font-size:12.5px;line-height:1.7}
+.stripe{height:6px;background:linear-gradient(90deg,var(--pink),var(--amber),var(--pink))}
+
+/* ==========================================================================
+   ADDED FOR THE TWO-TRACK SITE  (permanent waitlist + per-drop pre-order)
+   ========================================================================== */
+
+/* ---------- drop status badge ---------- */
+.statebadge{
+  display:inline-flex;align-items:center;gap:9px;border-radius:999px;
+  padding:7px 15px;font-size:12px;font-weight:900;letter-spacing:.18em;
+  text-transform:uppercase;margin:0 0 16px;border:1.5px solid var(--line);color:var(--muted);
+}
+.statebadge .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.statebadge.is-open{border-color:var(--pink);color:var(--pink)}
+.statebadge.is-before{border-color:var(--amber);color:var(--amber)}
+.statebadge.is-closed,.statebadge.is-soldout{border-color:#6d5f66;color:#c9bac2}
+
+/* ---------- counter block ---------- */
+.counter.is-soldout .fill{background:linear-gradient(90deg,#6d5f66,#c9bac2)}
+.claimline{font-size:clamp(26px,7vw,40px);font-weight:900;letter-spacing:-.03em;margin:0;line-height:1.05}
+.claimline b{color:var(--pink)}
+.counter.is-soldout .claimline b{color:#c9bac2}
+.leftline{font-size:15px;font-weight:800;color:var(--muted);margin:8px 0 0}
+.leftline b{color:var(--text)}
+.countnote{font-size:13px;color:#8f8188;margin:14px 0 0;line-height:1.6}
+
+/* ---------- closed / fallback box ---------- */
+.fallback{
+  border:1px solid var(--line);border-left:4px solid var(--amber);
+  background:var(--ink-2);border-radius:var(--r);padding:22px;margin-top:20px;
+}
+.fallback h3{margin-bottom:.4em}
+.fallback p{color:var(--muted)}
+.fallback .btn{margin-top:8px}
+
+/* ---------- hazard / shipping truth ---------- */
+.hazard{
+  border:2px solid var(--amber);border-radius:var(--r);
+  background:rgba(255,179,71,.10);padding:18px 20px;margin:0 0 22px;
+}
+.hazard .haztag{
+  display:inline-block;background:var(--amber);color:#1a1200;font-weight:900;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  padding:5px 10px;border-radius:6px;margin-bottom:10px;
+}
+.hazard p{margin:0 0 8px;color:var(--text);font-size:15.5px}
+.hazard p:last-child{margin-bottom:0}
+.hazard b{color:var(--amber)}
+
+/* ---------- the "are you in Pune" gate ---------- */
+.gateblock{
+  border:2px solid var(--pink);border-radius:var(--r);
+  background:rgba(255,45,120,.09);padding:20px;margin:0 0 20px;
+}
+.gateblock h3{font-size:21px;margin-bottom:.4em}
+.gateblock p{color:var(--muted);margin-bottom:14px}
+
+/* ---------- order total ---------- */
+.totalbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:#0c0809;border:1.5px solid var(--line);border-radius:11px;
+  padding:14px 16px;margin:0 0 18px;font-weight:800;
+}
+.totalbar .amt{font-size:26px;font-weight:900;color:var(--pink);letter-spacing:-.02em}
+.savetag{
+  display:inline-block;background:rgba(255,45,120,.16);color:var(--pink);
+  border-radius:6px;padding:3px 8px;font-size:12px;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;margin-left:8px;
+}
+
+/* ---------- optional marker on labels ---------- */
+.opt{font-weight:700;color:#8f8188;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-left:6px}
+
+/* ---------- waitlist section ---------- */
+#waitlist{background:var(--ink-2)}
+.wlgrid{display:grid;gap:22px;align-items:start}
+@media(min-width:860px){.wlgrid{grid-template-columns:1fr 1.05fr;gap:34px}}
+.wlpoints{list-style:none;padding:0;margin:18px 0 0}
+.wlpoints li{position:relative;padding-left:26px;margin-bottom:12px;color:var(--muted)}
+.wlpoints li::before{
+  content:"";position:absolute;left:0;top:.55em;width:10px;height:10px;
+  border-radius:50%;background:var(--pink);
+}
+.wlpoints b{color:var(--text)}
+</style>
+</head>
+<body>
+<a class="skip" href="#preorder">Skip to the sign-up forms</a>
+<div class="stripe" aria-hidden="true"></div>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <svg width="18" height="22" viewBox="0 0 18 22" aria-hidden="true"><rect x="6" y="7" width="6" height="15" rx="3" fill="#2a2427"/><ellipse cx="9" cy="5" rx="5" ry="6" fill="#ff2d78"/></svg>
+      <span data-brand>BRAND</span>
+    </a>
+    <p class="tick" id="tickLine"><b data-claimed>0</b> of <span data-total>500</span> claimed</p>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============================= HERO ============================= -->
+<section class="hero">
+  <div class="wrap">
+    <p class="dropchip"><span class="dot" aria-hidden="true"></span><span data-dropname>DROP 01</span> &middot; <span data-total>500</span> BOXES</p>
+    <h1>Strike<span class="flame">Something</span></h1>
+    <p class="lede" data-tagline>Collectible matchboxes.</p>
+
+    <div class="heroband">
+      <span class="pill">Pink or black heads</span>
+      <span class="pill">&#8377;<b data-price>99</b> a box</span>
+      <span class="pill">3 for &#8377;<b data-price3>249</b></span>
+      <span class="pill"><b data-shipcity>Pune</b> only &middot; hand-delivered</span>
+    </div>
+
+    <div class="herocta">
+      <a class="btn" href="#preorder" data-cta>Get on the list</a>
+      <a class="btn ghost" href="#what">What is this?</a>
+    </div>
+
+    <div class="matchstage" aria-hidden="true">
+      <div class="glowfloor"></div>
+      <div class="match">
+        <div class="flamewrap"><i class="fl a"></i><i class="fl b"></i><i class="fl c"></i></div>
+        <i class="spark" style="--dx:16px;animation-delay:.2s"></i>
+        <i class="spark" style="--dx:-22px;animation-delay:1.1s"></i>
+        <i class="spark" style="--dx:8px;animation-delay:2.1s"></i>
+        <div class="head pink"></div><div class="stick"></div>
+      </div>
+      <div class="match">
+        <div class="head black"></div><div class="stick"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= WHAT IT IS ============================= -->
+<section id="what">
+  <div class="wrap">
+    <span class="eyebrow">What it is</span>
+    <h2>A matchbox<br>worth keeping</h2>
+    <p class="lede">Real safety matches. Black wooden sticks, heads in hot pink or deep black, packed in a meme-art box you will actually leave on the table. Light a candle with it, or just collect it. Both are correct.</p>
+    <div class="grid g3" style="margin-top:30px">
+      <div class="card"><span class="num">01</span><h3>Real matches</h3><p>Standard safety matches that strike and burn like they should. Not a toy, not a keyring.</p></div>
+      <div class="card"><span class="num">02</span><h3>Art on the box</h3><p>Every box in the drop carries original meme-art. New art every drop, never reprinted.</p></div>
+      <div class="card"><span class="num">03</span><h3>Numbered</h3><p>Each box in <span data-dropname>Drop 01</span> is numbered out of <span data-total>500</span>. When they are gone, they are gone.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= VARIANTS ============================= -->
+<section id="variants" style="background:var(--ink-2)">
+  <div class="wrap">
+    <span class="eyebrow">Two heads</span>
+    <h2>Pink or black</h2>
+    <p class="lede">Same black stick. Pick your head, or grab both and keep the pair sealed.</p>
+    <div class="grid g2" style="margin-top:30px">
+      <div class="card variant pinkv">
+        <div class="swatchrow" aria-hidden="true">
+          <div class="mini"><div class="h p"></div><div class="s"></div></div>
+          <div class="mini" style="height:88px"><div class="h p"></div><div class="s"></div></div>
+          <div class="mini" style="height:70px"><div class="h p"></div><div class="s"></div></div>
+          <div class="mini" style="height:82px"><div class="h p"></div><div class="s"></div></div>
+        </div>
+        <h3>Pink head</h3>
+        <p>Hot match-head pink on a matte black stick. Loud in a dark room, louder in a photo.</p>
+      </div>
+      <div class="card variant">
+        <div class="swatchrow" aria-hidden="true">
+          <div class="mini"><div class="h k"></div><div class="s"></div></div>
+          <div class="mini" style="height:88px"><div class="h k"></div><div class="s"></div></div>
+          <div class="mini" style="height:70px"><div class="h k"></div><div class="s"></div></div>
+          <div class="mini" style="height:82px"><div class="h k"></div><div class="s"></div></div>
+        </div>
+        <h3>Black head</h3>
+        <p>All black everything. The one people pick up and ask about before you say anything.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= COLLECTIBLE ============================= -->
+<section id="collect">
+  <div class="wrap">
+    <span class="eyebrow">Why it's collectible</span>
+    <h2>500 made.<br>Then never again.</h2>
+    <div class="grid g3" style="margin-top:30px">
+      <div class="card"><h3>Fixed run</h3><p>Exactly <span data-total>500</span> boxes in <span data-dropname>Drop 01</span>. No restock, no "back by popular demand".</p></div>
+      <div class="card"><h3>Numbered box</h3><p>Your box carries its own number. 001 hits different from 487 and everybody knows it.</p></div>
+      <div class="card"><h3>Art retires</h3><p>When the drop sells out, that artwork is retired. The next drop is a different piece.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THE DROP: COUNTER + PRE-ORDER ===================== -->
+<section id="preorder" style="background:var(--ink-2)">
+  <div class="wrap">
+    <span class="eyebrow" data-dropname>Drop 01</span>
+    <p class="statebadge" id="stateBadge"><span class="dot" aria-hidden="true"></span><span id="stateBadgeText">Loading</span></p>
+    <h2 id="dropHeading">The drop</h2>
+    <p class="lede" id="dropSub">Five hundred numbered boxes. Pune only.</p>
+
+    <!-- ---------- the honest counter ---------- -->
+    <div class="counter" id="counterCard" style="margin-top:24px">
+      <p class="claimline"><b data-claimed>0</b> of <span data-total>500</span> claimed</p>
+      <div class="track" id="trackImg" role="img" aria-label="0 of 500 boxes claimed"><div class="fill" data-fill></div></div>
+      <p class="leftline"><b data-remaining>500</b> left</p>
+      <p class="countnote" id="countNote">This number is counted by hand from real orders and updated by us. It does not move on its own.</p>
+    </div>
+
+    <!-- ---------- shown ONLY while the drop window is open ---------- -->
+    <div id="preorderWrap" hidden>
+      <div class="formcard" style="margin-top:24px">
+
+        <div class="hazard">
+          <span class="haztag">Read before you order</span>
+          <p><b><span data-dropname>Drop 01</span> is <span data-shipcity>Pune</span> only, and we hand-deliver it ourselves.</b></p>
+          <p>Matches are classified <b>UN 1944, Class 4.1 flammable solids</b>. Shiprocket, Blue Dart and India Post all refuse them, so there is no courier we can legally put your box on.</p>
+          <p>If you are outside <span data-shipcity>Pune</span> we cannot sell you a box &#8212; but the waitlist further down is open to you, and you get first access the day we can ship wider.</p>
+        </div>
+
+        <!-- payment panels: JS shows exactly one, based on CONFIG.PAYMENT_MODE -->
+        <div class="paybox" id="upiPanel" hidden>
+          <h3>Pay by UPI</h3>
+          <p style="color:var(--muted);margin-bottom:0">Pay first, then fill the form below and paste your UPI reference number so we can match your payment.</p>
+          <div class="qrbox" id="upiQr"></div>
+          <div class="upiid"><span>UPI ID: <span id="upiIdText">[YOUR_UPI_ID]</span></span><button type="button" class="btn ghost" id="copyUpi" style="min-height:42px;padding:10px 16px;font-size:13px;width:auto">Copy</button></div>
+          <ol class="steps">
+            <li>Choose your pack below so you know the amount.</li>
+            <li>Scan the QR, or copy the UPI ID into GPay / PhonePe / Paytm.</li>
+            <li>Pay <b>&#8377;<span id="upiAmt">99</span></b>.</li>
+            <li>Come back and finish the form. Paste the reference / UTR number.</li>
+          </ol>
+        </div>
+
+        <div class="paybox" id="razorpayPanel" hidden>
+          <h3>Card / UPI checkout</h3>
+          <p style="color:var(--muted)">Fill the form below first, then pay securely.</p>
+          <button type="button" class="btn" id="rzpBtn">Pay &#8377;<span id="rzpAmt">99</span> now</button>
+          <p class="hint" id="rzpNote" style="margin-top:12px"></p>
+        </div>
+
+        <form id="preForm" novalidate>
+
+          <!-- STEP 1: the Pune gate. Nothing else shows until this is answered. -->
+          <div class="field">
+            <label for="p-city">Are you in <span data-shipcity>Pune</span>?</label>
+            <select id="p-city" name="city" required>
+              <option value="">Choose one to continue</option>
+              <option value="Pune">Yes &#8212; I am in Pune</option>
+              <option value="Outside Pune">No &#8212; I am somewhere else</option>
+            </select>
+            <span class="hint">We hand-deliver every box ourselves, so we have to ask first.</span>
+            <p class="err" id="ep-city">Please choose one so we know if we can deliver to you.</p>
+          </div>
+
+          <!-- shown if they say they are outside Pune -->
+          <div class="gateblock" id="gateOut" hidden>
+            <h3>We cannot deliver a box to you yet</h3>
+            <p>No courier in India will carry matches (UN 1944, Class 4.1), so <span data-dropname>Drop 01</span> stays inside <span data-shipcity>Pune</span> where we can hand it over in person. We are not going to take your money for something we cannot deliver.</p>
+            <p><b>Join the waitlist instead.</b> It is free, it never closes, and you get first access the day we can ship to your city.</p>
+            <a class="btn" href="#waitlist" id="gateOutBtn">Take me to the waitlist</a>
+          </div>
+
+          <!-- everything below appears once they say "Yes, Pune" -->
+          <div id="preFields" hidden>
+            <div class="row2">
+              <div class="field">
+                <label for="p-name">Your name</label>
+                <input id="p-name" name="name" type="text" autocomplete="name" placeholder="Aarav Kulkarni" required>
+                <p class="err" id="ep-name">Please type your name.</p>
+              </div>
+              <div class="field">
+                <label for="p-phone">WhatsApp number</label>
+                <input id="p-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digit mobile number" required>
+                <span class="hint">This is how we contact you. We do not call, we message.</span>
+                <p class="err" id="ep-phone">Please type a 10 digit Indian mobile number, starting 6, 7, 8 or 9.</p>
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="field">
+                <label for="p-email">Email <span class="opt">optional</span></label>
+                <input id="p-email" name="email" type="email" autocomplete="email" placeholder="you@email.com">
+                <span class="hint">Only if you want a written receipt.</span>
+                <p class="err" id="ep-email">That email address does not look right. Leave it empty if you prefer.</p>
+              </div>
+              <div class="field">
+                <label for="p-area">Your area in <span data-shipcity>Pune</span></label>
+                <input id="p-area" name="area" type="text" list="puneAreas" autocomplete="address-level3" placeholder="Koregaon Park" required>
+                <datalist id="puneAreas">
+                  <option value="Koregaon Park"></option><option value="Kothrud"></option><option value="Baner"></option>
+                  <option value="Aundh"></option><option value="Viman Nagar"></option><option value="Hinjewadi"></option>
+                  <option value="Wakad"></option><option value="Kharadi"></option><option value="Camp"></option>
+                  <option value="Deccan"></option><option value="Hadapsar"></option><option value="Shivajinagar"></option>
+                  <option value="Magarpatta"></option><option value="Pimpri-Chinchwad"></option><option value="Katraj"></option>
+                  <option value="Warje"></option><option value="Bibwewadi"></option><option value="Kalyani Nagar"></option>
+                </datalist>
+                <span class="hint">So we can plan the delivery round.</span>
+                <p class="err" id="ep-area">Please tell us your area so we can plan delivery.</p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="p-pack">What do you want?</label>
+              <select id="p-pack" name="pack" required></select>
+              <span class="hint" id="packHint">The three-box set is the cheapest way to own all the art.</span>
+              <p class="err" id="ep-pack">Please choose a pack.</p>
+            </div>
+
+            <fieldset>
+              <legend>Which head?</legend>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="variant" value="Pink" checked><span><i class="chip-dot p" aria-hidden="true"></i>Pink</span></label>
+                <label class="choice"><input type="radio" name="variant" value="Black"><span><i class="chip-dot k" aria-hidden="true"></i>Black</span></label>
+              </div>
+            </fieldset>
+
+            <p class="totalbar"><span id="totalLabel">1 box</span><span class="amt">&#8377;<span id="totalAmt">99</span></span></p>
+
+            <div class="field" id="payrefField" hidden>
+              <label for="p-payref">UPI reference / UTR number</label>
+              <input id="p-payref" name="payref" type="text" placeholder="12 digit number from your UPI app">
+              <span class="hint">Open your payment in GPay / PhonePe / Paytm, tap the payment, copy the reference or UTR number.</span>
+              <p class="err" id="ep-payref">Please paste the reference number from your UPI app.</p>
+            </div>
+
+            <!-- honeypot: bots fill this, humans never see it -->
+            <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <button class="btn" type="submit" id="preSubmit" style="width:100%">Claim my box</button>
+            <p class="hint" style="margin-top:14px">We only message you about this drop. No spam, no selling your number.</p>
+            <p class="err" id="ep-form" style="margin-top:10px">Something went wrong. Your details were saved on this device &#8212; please try again.</p>
+          </div>
+        </form>
+
+        <div class="thanks" id="preThanks" role="status" aria-live="polite">
+          <svg class="tickmark" viewBox="0 0 66 66" aria-hidden="true"><circle cx="33" cy="33" r="30" fill="none" stroke="#ff2d78" stroke-width="4"/><path d="M20 34l9 9 17-19" fill="none" stroke="#ff2d78" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Box claimed</h3>
+          <p class="lede" id="preThanksLine" style="margin:0 auto 6px;text-align:center">We have your order. We will WhatsApp you to fix a delivery time.</p>
+          <p style="color:var(--muted)">Tell one friend. Boxes go faster than people expect.</p>
+          <div class="sharebtns">
+            <a class="btn" id="preShareWa" href="#" target="_blank" rel="noopener">Share on WhatsApp</a>
+            <button class="btn ghost" id="preShareCopy" type="button">Copy link</button>
+          </div>
+          <p><button class="btn ghost" type="button" id="preAgain" style="margin-top:12px">Add another order</button></p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ---------- shown when the drop is NOT open ---------- -->
+    <div class="fallback" id="closedBox" hidden>
+      <h3 id="closedTitle">This drop is closed</h3>
+      <p id="closedText">Join the waitlist and you get first access to the next one.</p>
+      <a class="btn" href="#waitlist" id="closedBtn">Join the waitlist</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== THE PERMANENT WAITLIST ===================== -->
+<section id="waitlist">
+  <div class="wrap">
+    <span class="eyebrow">Always open</span>
+    <h2>The waitlist</h2>
+    <div class="wlgrid" style="margin-top:24px">
+
+      <div>
+        <p class="lede" id="wlLede">One list, every drop. Free, no payment, and it never closes &#8212; even when a drop is sold out.</p>
+        <ul class="wlpoints">
+          <li><b>First access.</b> Waitlist gets the link before the public post, every single time.</li>
+          <li><b>WhatsApp only.</b> One message per drop. No calls, no daily spam.</li>
+          <li><b>Anywhere in India.</b> You can join from any city. We tell you the day we can deliver to yours.</li>
+          <li><b>Leave any time.</b> Reply STOP on WhatsApp and you are off the list.</li>
+        </ul>
+        <div class="shipnote" style="margin-top:22px">
+          <p><b>Why the waitlist matters more than usual here:</b> matches are UN 1944 Class 4.1 flammable solids and couriers refuse them, so every drop starts in one city at a time. The list is how you find out when it is your city's turn.</p>
+        </div>
+      </div>
+
+      <div class="formcard">
+        <form id="wlForm" novalidate>
+          <div class="field">
+            <label for="w-name">Your name</label>
+            <input id="w-name" name="name" type="text" autocomplete="name" placeholder="Aarav Kulkarni" required>
+            <p class="err" id="ew-name">Please type your name.</p>
+          </div>
+
+          <div class="field">
+            <label for="w-phone">WhatsApp number</label>
+            <input id="w-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digit mobile number" required>
+            <span class="hint">Indian mobile number. This is our main way of reaching you.</span>
+            <p class="err" id="ew-phone">Please type a 10 digit Indian mobile number, starting 6, 7, 8 or 9.</p>
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label for="w-email">Email <span class="opt">optional</span></label>
+              <input id="w-email" name="email" type="email" autocomplete="email" placeholder="you@email.com">
+              <p class="err" id="ew-email">That email address does not look right. Leave it empty if you prefer.</p>
+            </div>
+            <div class="field">
+              <label for="w-city">Your city</label>
+              <input id="w-city" name="city" type="text" autocomplete="address-level2" placeholder="Pune" required>
+              <span class="hint">Tells us which city to open next.</span>
+              <p class="err" id="ew-city">Please type your city.</p>
+            </div>
+          </div>
+
+          <!-- honeypot -->
+          <input class="hp" type="text" name="_gotcha2" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <button class="btn" type="submit" id="wlSubmit" style="width:100%">Join the waitlist</button>
+          <p class="hint" style="margin-top:14px">Free. No payment now or ever for being on the list.</p>
+          <p class="err" id="ew-form" style="margin-top:10px">Something went wrong. Your details were saved on this device &#8212; please try again.</p>
+        </form>
+
+        <div class="thanks" id="wlThanks" role="status" aria-live="polite">
+          <svg class="tickmark" viewBox="0 0 66 66" aria-hidden="true"><circle cx="33" cy="33" r="30" fill="none" stroke="#ff2d78" stroke-width="4"/><path d="M20 34l9 9 17-19" fill="none" stroke="#ff2d78" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>You're on the list</h3>
+          <p class="lede" id="wlThanksLine" style="margin:0 auto 6px;text-align:center">We will WhatsApp you before the next drop opens.</p>
+          <div class="sharebtns">
+            <a class="btn" id="wlShareWa" href="#" target="_blank" rel="noopener">Share on WhatsApp</a>
+            <button class="btn ghost" id="wlShareCopy" type="button">Copy link</button>
+          </div>
+          <p><button class="btn ghost" type="button" id="wlAgain" style="margin-top:12px">Add another person</button></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FAQ ============================= -->
+<section id="faq">
+  <div class="wrap">
+    <span class="eyebrow">Questions</span>
+    <h2>FAQ</h2>
+    <div style="margin-top:22px">
+      <details open><summary>What is the difference between the waitlist and the pre-order?</summary><p>The <b>waitlist</b> is always open, costs nothing, and is how we tell you about every drop. The <b>pre-order</b> only exists while a drop window is open, and that is the one where you claim an actual box. You can be on the waitlist and pre-order too.</p></details>
+      <details><summary>Am I paying now?</summary><p id="faqPay">No. Right now you are joining the waitlist. Nothing is charged.</p></details>
+      <details><summary>How much is a box?</summary><p>&#8377;<span data-price>99</span> for one box. The three-box set is &#8377;<span data-price3>249</span>, which is the cheapest way to own all the art in the drop.</p></details>
+      <details><summary>Why can't you ship to my city?</summary><p>Matches are dangerous goods: <b>UN 1944, Class 4.1 flammable solids</b>. Shiprocket, Blue Dart and India Post all refuse them, and we are not going to lie on a shipping form. So <span data-dropname>Drop 01</span> is hand-delivered by us inside <span data-shipcity>Pune</span> only. Join the waitlist and you get first access when we can reach your city.</p></details>
+      <details><summary>Is the counter real?</summary><p>Yes, and it is deliberately boring. The "<span data-claimed>0</span> of <span data-total>500</span> claimed" number is typed in by us after we count real orders. Nothing on this page makes it tick up on its own to rush you.</p></details>
+      <details><summary>Do the matches actually work?</summary><p>Yes. They are real safety matches made by a licensed match manufacturer. Strike them on the box side like any match.</p></details>
+      <details><summary>Are they safe?</summary><p>They are matches, so treat them like matches. Keep away from children, keep the box dry, strike away from your face. Full safety text is printed on every box.</p></details>
+      <details><summary>What if it sells out before I pay?</summary><p>Then the page flips to sold out and stops taking orders, and the waitlist stays open. Waitlist order decides who gets offered <span data-dropname>Drop 02</span> first.</p></details>
+      <details><summary>Can I buy more than one?</summary><p>Up to 10 boxes per person while stock lasts, so more people get one.</p></details>
+      <details><summary>How do I get in touch?</summary><p>DM us on Instagram <a data-ig-link href="#">@handle</a>, or email <span data-legal-email>[SUPPORT EMAIL]</span>.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Brand</h4>
+        <p style="font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.02em;text-transform:uppercase" data-brand>BRAND</p>
+        <p data-tagline>Collectible matchboxes.</p>
+        <p style="margin-top:12px"><a data-ig-link href="#">Instagram &#8594;</a></p>
+      </div>
+      <div>
+        <h4>Drop</h4>
+        <ul>
+          <li><a href="#what">What it is</a></li>
+          <li><a href="#variants">Pink &amp; black</a></li>
+          <li><a href="#preorder">Drop counter</a></li>
+          <li><a href="#waitlist">Join the waitlist</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal label info</h4>
+        <div class="legalbox">
+          <p>Sold by: <span data-legal-seller></span></p>
+          <p>Address: <span data-legal-address></span></p>
+          <p>GSTIN: <span data-legal-gstin></span></p>
+          <p>Support: <span data-legal-email></span></p>
+          <p>Manufactured by: <span data-legal-mfg></span></p>
+          <p>Licence no.: <span data-legal-licence></span></p>
+        </div>
+      </div>
+    </div>
+    <p class="smallprint">
+      Safety matches. UN 1944, Class 4.1 flammable solid. Keep out of reach of children. Store in a dry place. Strike away from body and from flammable material. Not sent by courier or post.
+      &#169; <span data-year>2026</span> <span data-brand>BRAND</span>. All rights reserved.
+      &#8212; <span data-dropname>Drop 01</span>, <span data-shipcity>Pune</span>, India.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================================
+   SITE ENGINE - you do not need to edit anything below this line.
+   All the knobs are in the CONFIG box at the top of this file.
+
+   What this file does, in order:
+     1. reads the CONFIG block
+     2. works out which of the four drop states we are in
+     3. paints the brand, the prices and the honest counter
+     4. shows the pre-order form ONLY when the drop is open
+     5. keeps the waitlist form working at all times
+   =========================================================================== */
+(function () {
+  "use strict";
+
+  var C = window.CONFIG || {};
+  var D = C.DROP || {};
+  var $  = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var setAll = function (sel, txt) { $$(sel).forEach(function (el) { el.textContent = txt; }); };
+  var clamp = function (n, lo, hi) { return Math.max(lo, Math.min(n, hi)); };
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  /* ---------------------------------------------------------------
+     1. THE DROP NUMBERS
+     --------------------------------------------------------------- */
+  var total   = Math.max(1, Number(D.TOTAL_UNITS) || 500);
+  var claimed = clamp(Number(D.UNITS_CLAIMED) || 0, 0, total);
+  var price   = Number(D.PRICE) || 99;
+  var set3    = Number(D.PRICE_SET3) || (price * 3);
+  var dropName = String(D.DROP_NAME || "DROP 01");
+
+  // "DROP 01" -> "DROP 02"  (used in the honest closed message)
+  var nextDropName = dropName.replace(/(\d+)\s*$/, function (m, n) {
+    var next = String(Number(n) + 1);
+    while (next.length < n.length) { next = "0" + next; }
+    return next;
+  });
+  if (nextDropName === dropName) { nextDropName = "the next drop"; }
+
+  function parseDay(s, endOfDay) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || "").trim());
+    if (!m) { return null; }
+    return endOfDay
+      ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59, 59, 999)
+      : new Date(+m[1], +m[2] - 1, +m[3], 0, 0, 0, 0);
+  }
+  function pretty(d) { return d ? (d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear()) : ""; }
+
+  var openAt  = parseDay(D.OPEN_DATE, false);
+  var closeAt = parseDay(D.CLOSE_DATE, true);
+
+  /* ---------------------------------------------------------------
+     2. WHICH OF THE FOUR STATES ARE WE IN?
+        before  = the open date has not arrived
+        open    = inside the window and boxes are left
+        soldout = claimed has reached the total
+        closed  = past the close date
+        FORCE_STATE in the CONFIG block overrides all of it.
+     --------------------------------------------------------------- */
+  function dropState() {
+    var forced = String(D.FORCE_STATE || "auto").toLowerCase();
+    if (forced === "open" || forced === "closed" || forced === "soldout") { return forced; }
+    if (claimed >= total) { return "soldout"; }
+    var now = new Date();
+    if (openAt && now < openAt)  { return "before"; }
+    if (closeAt && now > closeAt) { return "closed"; }
+    return "open";
+  }
+  var STATE = dropState();
+  window.DROP_STATE = STATE;   // handy for testing
+
+  /* ---------------------------------------------------------------
+     3. PAINT THE BRAND + THE COUNTER
+     --------------------------------------------------------------- */
+  setAll("[data-brand]",     C.BRAND);
+  setAll("[data-tagline]",   C.TAGLINE);
+  setAll("[data-dropname]",  dropName);
+  setAll("[data-shipcity]",  C.SHIP_CITY);
+  setAll("[data-price]",     price);
+  setAll("[data-price3]",    set3);
+  setAll("[data-year]",      new Date().getFullYear());
+
+  document.title = C.BRAND + " - " + dropName + " - " + total + " collectible matchboxes - " + C.SHIP_CITY;
+
+  var L = C.LEGAL || {};
+  setAll("[data-legal-seller]",  L.seller);
+  setAll("[data-legal-address]", L.address);
+  setAll("[data-legal-gstin]",   L.gstin);
+  setAll("[data-legal-email]",   L.email);
+  setAll("[data-legal-mfg]",     L.mfg);
+  setAll("[data-legal-licence]", L.licence);
+
+  var handle = String(C.INSTAGRAM || "").replace(/^@/, "");
+  $$("[data-ig-link]").forEach(function (a) {
+    a.href = "https://instagram.com/" + encodeURIComponent(handle);
+    a.textContent = "@" + handle;
+    a.target = "_blank"; a.rel = "noopener";
+  });
+
+  function paintCounter() {
+    var left = Math.max(0, total - claimed);
+    var pct  = Math.round((claimed / total) * 1000) / 10;
+
+    setAll("[data-total]",     total);
+    setAll("[data-claimed]",   claimed);
+    setAll("[data-remaining]", left);
+
+    var fill = $("[data-fill]");
+    if (fill) { fill.style.width = pct + "%"; }
+
+    var track = $("#trackImg");
+    if (track) { track.setAttribute("aria-label", claimed + " of " + total + " boxes claimed, " + left + " left"); }
+
+    var card = $("#counterCard");
+    if (card) { card.classList.toggle("is-soldout", left === 0); }
+
+    var tick = $("#tickLine");
+    if (tick) {
+      if (STATE === "open")        { tick.innerHTML = "<b>" + claimed + "</b> of " + total + " claimed"; }
+      else if (STATE === "soldout"){ tick.innerHTML = "<b>Sold out</b> &middot; waitlist open"; }
+      else if (STATE === "before") { tick.innerHTML = "<b>Opens " + (openAt ? pretty(openAt) : "soon") + "</b>"; }
+      else                         { tick.innerHTML = "<b>Waitlist</b> open"; }
+    }
+  }
+  paintCounter();
+
+  /* -- optional: read a published count instead of the number in CONFIG -----
+     Only runs if you set COUNT_SOURCE to "published". On the default setting
+     ("config") the page makes no requests to anything at all.               */
+  (function readPublishedCount() {
+    if (String(C.COUNT_SOURCE || "config").toLowerCase() !== "published") { return; }
+    var url = String(C.COUNT_URL || "");
+    if (!url || url.indexOf("[") > -1 || typeof window.fetch !== "function") { return; }
+    try {
+      window.fetch(url, { cache: "no-store" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var d = (j && j.drop) ? j.drop : j;
+          var n = Number(d && d.claimed);
+          if (!isFinite(n) || n < 0) { return; }
+          claimed = clamp(n, 0, total);
+          if (claimed >= total && STATE === "open") { STATE = "soldout"; applyState(); }
+          paintCounter();
+          buildPacks();
+        })["catch"](function (e) {
+          if (window.console) { console.warn("[counter] published count not readable, using the number in CONFIG:", e && e.message); }
+        });
+    } catch (e) { /* never let the counter break the page */ }
+  })();
+
+  /* ---------------------------------------------------------------
+     4. THE PACK CHOICES (the 3-box set is the upsell)
+     --------------------------------------------------------------- */
+  var PACKS = [];
+  function buildPacks() {
+    var sel = $("#p-pack");
+    if (!sel) { return; }
+    var left = Math.max(1, total - claimed);
+    var raw = [
+      { v: "1",    boxes: 1,  amount: price,      label: "1 box" },
+      { v: "2",    boxes: 2,  amount: price * 2,  label: "2 boxes" },
+      { v: "set3", boxes: 3,  amount: set3,       label: "3-box set" },
+      { v: "5",    boxes: 5,  amount: price * 5,  label: "5 boxes" },
+      { v: "10",   boxes: 10, amount: price * 10, label: "10 boxes" }
+    ];
+    PACKS = raw.filter(function (p) { return p.boxes <= Math.min(10, left); });
+    if (!PACKS.length) { PACKS = [raw[0]]; }
+
+    var keep = sel.value;
+    sel.innerHTML = "";
+    PACKS.forEach(function (p) {
+      var o = document.createElement("option");
+      var save = (p.v === "set3") ? (price * 3 - set3) : 0;
+      o.value = p.v;
+      o.textContent = p.label + " - " + "₹" + p.amount + (save > 0 ? " (save ₹" + save + ")" : "");
+      sel.appendChild(o);
+    });
+    if (keep && PACKS.some(function (p) { return p.v === keep; })) { sel.value = keep; }
+    var saving = price * 3 - set3;
+    var hint = $("#packHint");
+    if (hint) {
+      hint.textContent = saving > 0
+        ? "Best value: the 3-box set is ₹" + set3 + " instead of ₹" + (price * 3) + ", so you save ₹" + saving + "."
+        : "The 3-box set is the easiest way to own all the art in the drop.";
+    }
+    updateTotal();
+  }
+  function currentPack() {
+    var sel = $("#p-pack");
+    var v = sel ? sel.value : "1";
+    for (var i = 0; i < PACKS.length; i++) { if (PACKS[i].v === v) { return PACKS[i]; } }
+    return PACKS[0] || { v: "1", boxes: 1, amount: price, label: "1 box" };
+  }
+  function updateTotal() {
+    var p = currentPack();
+    var lab = $("#totalLabel"); if (lab) { lab.textContent = p.label; }
+    var amt = $("#totalAmt");   if (amt) { amt.textContent = p.amount; }
+    var upiAmt = $("#upiAmt");  if (upiAmt) { upiAmt.textContent = p.amount; }
+    var rzpAmt = $("#rzpAmt");  if (rzpAmt) { rzpAmt.textContent = p.amount; }
+    if (MODE === "upi") { refreshUpiLink(p.amount); }
+    var btn = $("#preSubmit");
+    if (btn && MODE !== "waitlist") { btn.textContent = "Pay ₹" + p.amount + " and claim"; }
+    return p;
+  }
+
+  /* ---------------------------------------------------------------
+     5. SHOW THE RIGHT THING FOR THE STATE WE ARE IN
+     --------------------------------------------------------------- */
+  var badge     = $("#stateBadge");
+  var badgeText = $("#stateBadgeText");
+  var wrapPre   = $("#preorderWrap");
+  var closedBox = $("#closedBox");
+
+  function applyState() {
+    var openTxt  = openAt  ? pretty(openAt)  : "";
+    var closeTxt = closeAt ? pretty(closeAt) : "";
+
+    if (badge) { badge.className = "statebadge is-" + STATE; }
+    if (wrapPre)   { wrapPre.hidden   = (STATE !== "open"); }
+    if (closedBox) { closedBox.hidden = (STATE === "open"); }
+
+    var heading = $("#dropHeading");
+    var sub     = $("#dropSub");
+    var cTitle  = $("#closedTitle");
+    var cText   = $("#closedText");
+    var note    = $("#countNote");
+
+    if (STATE === "open") {
+      badgeText.textContent = "Pre-order open";
+      heading.textContent   = dropName + " is open";
+      sub.textContent = total + " numbered boxes at ₹" + price + " each, hand-delivered in " + C.SHIP_CITY +
+                        (closeTxt ? ". Closes " + closeTxt + " or when the boxes run out." : ".");
+      note.textContent = "We count this by hand from real orders and type it in. It never ticks up on its own.";
+
+    } else if (STATE === "before") {
+      badgeText.textContent = "Opens " + (openTxt || "soon");
+      heading.textContent   = dropName + (openTxt ? " opens " + openTxt : " opens soon");
+      sub.textContent = "Pre-orders are not open yet. " + total + " boxes, ₹" + price +
+                        " each, " + C.SHIP_CITY + " only. The waitlist below gets the link first.";
+      cTitle.textContent = dropName + " has not opened yet";
+      cText.textContent  = "Pre-orders open on " + (openTxt || "a date we will announce") +
+                           ". Join the waitlist and you get the link before the public post.";
+      note.textContent = "Nothing is claimed yet. This number only moves when we type in real orders.";
+
+    } else if (STATE === "soldout") {
+      badgeText.textContent = "Sold out";
+      heading.textContent   = dropName + " is sold out";
+      sub.textContent = "All " + total + " boxes are claimed. The waitlist is still open and still free.";
+      cTitle.textContent = dropName + " is sold out";
+      cText.textContent  = dropName + " is sold out — join the waitlist and you get first access to " + nextDropName + ".";
+      note.textContent = "Every one of these " + total + " boxes is spoken for.";
+
+    } else { /* closed */
+      badgeText.textContent = "Closed";
+      heading.textContent   = dropName + " is closed";
+      sub.textContent = closeTxt
+        ? "The pre-order window closed on " + closeTxt + ". The waitlist below never closes."
+        : "The pre-order window is closed. The waitlist below never closes.";
+      cTitle.textContent = dropName + " is closed";
+      cText.textContent  = dropName + " is closed — join the waitlist and you get first access to " + nextDropName + ".";
+      note.textContent = "Final count for " + dropName + ".";
+    }
+
+    // hero button + waitlist intro line follow the state
+    $$("[data-cta]").forEach(function (b) {
+      if (STATE === "open") { b.textContent = (MODE === "waitlist" ? "Reserve my box" : "Get my box"); b.setAttribute("href", "#preorder"); }
+      else { b.textContent = "Join the waitlist"; b.setAttribute("href", "#waitlist"); }
+    });
+    var wl = $("#wlLede");
+    if (wl && STATE !== "open") {
+      wl.textContent = "One list, every drop. Free, no payment, and it never closes. Since " + dropName +
+                       " is " + (STATE === "soldout" ? "sold out" : (STATE === "before" ? "not open yet" : "closed")) +
+                       ", this is the way in.";
+    }
+    paintCounter();
+  }
+
+  /* ---------------------------------------------------------------
+     6. THE PAYMENT-MODE SWITCH  (CONFIG.PAYMENT_MODE)
+        Only ever affects the PRE-ORDER form. The waitlist takes no money.
+     --------------------------------------------------------------- */
+  var MODE = String(C.PAYMENT_MODE || "waitlist").toLowerCase();
+  if (["waitlist", "upi", "razorpay"].indexOf(MODE) === -1) { MODE = "waitlist"; }
+
+  var upiPanel  = $("#upiPanel");
+  var rzpPanel  = $("#razorpayPanel");
+  var payrefFld = $("#payrefField");
+  var payrefIn  = $("#p-payref");
+  var preSubmit = $("#preSubmit");
+  var upiLink   = "";
+
+  function refreshUpiLink(amount) {
+    upiLink = "upi://pay?pa=" + encodeURIComponent(C.UPI_ID) +
+              "&pn=" + encodeURIComponent(C.UPI_NAME) +
+              "&am=" + encodeURIComponent(amount) +
+              "&cu=INR&tn=" + encodeURIComponent(C.BRAND + " " + dropName);
+    var openBtn = $("#upiOpenBtn");
+    if (openBtn) { openBtn.href = upiLink; openBtn.textContent = "Open my UPI app and pay ₹" + amount; }
+  }
+
+  function applyMode() {
+    if (MODE === "waitlist") {
+      /* ---- WAITLIST MODE: the pre-order reserves a box, no money moves ---- */
+      preSubmit.textContent = "Reserve my box";
+      $("#faqPay").textContent = "Not on this page. The waitlist is always free, and while " + dropName +
+        " is in “reserve” mode the pre-order holds a box for you and we take payment in person on delivery.";
+
+    } else if (MODE === "upi") {
+      /* ---- UPI MODE: pay in your own UPI app, then tell us the ref ---- */
+      $("#faqPay").textContent = "Yes, if you pre-order. You pay by UPI and paste your payment reference number into the form so we can match it to you. The waitlist is still free.";
+      upiPanel.hidden = false;
+      payrefFld.hidden = false;
+      payrefIn.setAttribute("required", "required");
+      $("#upiIdText").textContent = C.UPI_ID;
+
+      // The QR box. Set CONFIG.UPI_QR_FILE to the name of your QR screenshot
+      // (e.g. "upi-qr.png", saved next to index.html) to show a QR code.
+      // Left empty - or if the file is missing - we show an "open UPI app"
+      // button instead, which works on every phone.
+      var qr = $("#upiQr");
+      qr.innerHTML = "";
+      function upiButtonFallback() {
+        qr.style.background = "transparent";
+        qr.style.width = "100%";
+        qr.innerHTML = '<a class="btn" id="upiOpenBtn" style="width:100%" href="#">Open my UPI app and pay</a>' +
+          '<p class="hint" style="text-align:center;margin-top:10px">On a phone this opens GPay / PhonePe / Paytm.</p>';
+        refreshUpiLink(currentPack().amount);
+      }
+      var qrFile = String(C.UPI_QR_FILE || "").trim();
+      if (qrFile && qrFile.indexOf("[") === -1) {
+        var img = new Image();
+        img.alt = "UPI QR code - scan with any UPI app to pay";
+        img.onload  = function () { qr.appendChild(img); };
+        img.onerror = upiButtonFallback;
+        img.src = qrFile;
+      } else {
+        upiButtonFallback();
+      }
+
+      $("#copyUpi").addEventListener("click", function () { copyText(C.UPI_ID, this, "Copied"); });
+
+    } else if (MODE === "razorpay") {
+      /* ---- RAZORPAY MODE: real card/UPI checkout ----
+         ============================================================
+         HOW TO TURN RAZORPAY ON (do these in order):
+         1. Make a free account at razorpay.com and finish KYC.
+         2. Dashboard > Settings > API Keys > Generate Key.
+            Copy ONLY the "Key ID" (it starts with rzp_).
+            NEVER put the "Key Secret" in this file.
+         3. Paste the Key ID into CONFIG.RAZORPAY_KEY_ID at the top.
+         4. Add this line just above this script tag in the HTML:
+            <script src="https://checkout.razorpay.com/v1/checkout.js"><\/script>
+         5. Delete the word "false &&" from the line marked STEP 5 below.
+         6. Set CONFIG.PAYMENT_MODE to "razorpay".
+         Note: a plain key-only checkout collects money but does NOT verify
+         the payment on a server. For a real shop you also want a tiny free
+         serverless function to verify the signature. Ask your dev agent.
+         ============================================================ */
+      $("#faqPay").textContent = "Yes, if you pre-order. You pay at checkout by card, UPI or netbanking. The waitlist is still free.";
+      rzpPanel.hidden = false;
+      $("#rzpNote").textContent = "Placeholder checkout. It is switched OFF until the Razorpay Key ID is filled in - see the comment in the code marked STEP 5.";
+
+      $("#rzpBtn").addEventListener("click", function () {
+        var p = currentPack();
+        // ---- STEP 5: delete the words  false &&  on the next line to go live ----
+        if (false && window.Razorpay && String(C.RAZORPAY_KEY_ID).indexOf("rzp_") === 0) {
+          new window.Razorpay({
+            key: C.RAZORPAY_KEY_ID,
+            amount: p.amount * 100,               // Razorpay counts in paise
+            currency: "INR",
+            name: C.BRAND,
+            description: dropName + " - " + p.label,
+            prefill: { name: val("p-name"), email: val("p-email"), contact: val("p-phone") },
+            notes:   { area: val("p-area"), variant: checkedVariant() },
+            theme:   { color: "#ff2d78" },
+            handler: function (res) { showThanks("pre", "Payment ID: " + res.razorpay_payment_id); }
+          }).open();
+        } else {
+          alert("Razorpay is not switched on yet.\n\nOpen index.html, find the comment that says STEP 5, and follow the 6 steps above it.");
+        }
+      });
+    }
+  }
+
+  function val(id) { var el = document.getElementById(id); return el ? String(el.value || "").trim() : ""; }
+  function checkedVariant() { var r = $('input[name="variant"]:checked'); return r ? r.value : ""; }
+
+  function copyText(text, btn, doneLabel) {
+    var old = btn.textContent;
+    var done = function () { btn.textContent = doneLabel; setTimeout(function () { btn.textContent = old; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+    } else { fallbackCopy(text); done(); }
+  }
+  function fallbackCopy(text) {
+    var t = document.createElement("textarea");
+    t.value = text; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.left = "-9999px";
+    document.body.appendChild(t); t.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(t);
+  }
+
+  applyMode();
+  buildPacks();
+  applyState();
+
+  /* ---------------------------------------------------------------
+     7. VALIDATION  (shared by both forms)
+     --------------------------------------------------------------- */
+  function mark(prefix, key, bad) {
+    var input = document.getElementById(prefix + "-" + key);
+    var err   = document.getElementById("e" + prefix + "-" + key);
+    if (err)   { err.classList.toggle("show", !!bad); }
+    if (input) { input.setAttribute("aria-invalid", bad ? "true" : "false"); }
+    return !bad;
+  }
+  function phoneOk(raw) {
+    var d = String(raw || "").replace(/[^0-9]/g, "");
+    if (d.length === 12 && d.indexOf("91") === 0) { d = d.slice(2); }
+    else if (d.length === 11 && d.charAt(0) === "0") { d = d.slice(1); }
+    return /^[6-9][0-9]{9}$/.test(d) ? d : "";
+  }
+  function emailOkOptional(v) { return v === "" || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+
+  /* ---------------------------------------------------------------
+     8. SAVE + SEND
+     --------------------------------------------------------------- */
+  var LS_KEY = "signups_v1";
+
+  function saveLocal(entry) {
+    try {
+      var list = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+      list.push(entry);
+      localStorage.setItem(LS_KEY, JSON.stringify(list));
+      return true;
+    } catch (e) { return false; }   // private browsing / storage blocked
+  }
+
+  function sendRemote(entry) {
+    var service = String(C.FORM_SERVICE || "none").toLowerCase();
+
+    if (service === "google") {
+      var url = C.GOOGLE_FORM_URL;
+      if (!url || url.indexOf("[") > -1) { return Promise.reject(new Error("Google Form not set up yet")); }
+      var f = C.GOOGLE_FIELDS || {};
+      var body = new URLSearchParams();
+      Object.keys(f).forEach(function (k) {
+        if (f[k] && f[k].indexOf("[") === -1 && entry[k] != null) { body.append(f[k], entry[k]); }
+      });
+      // Google does not send CORS headers, so we fire-and-forget with no-cors.
+      // The row still lands in the Sheet; we just cannot read a reply back.
+      return fetch(url, { method: "POST", mode: "no-cors", body: body });
+    }
+
+    if (service === "formspree") {
+      var fsUrl = C.FORMSPREE_URL;
+      if (!fsUrl || fsUrl.indexOf("[") > -1) { return Promise.reject(new Error("Formspree not set up yet")); }
+      return fetch(fsUrl, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(entry)
+      }).then(function (r) { if (!r.ok) { throw new Error("Formspree said no"); } return r; });
+    }
+
+    return Promise.reject(new Error("No form service set up yet"));
+  }
+
+  function submitEntry(which, entry, btn) {
+    saveLocal(entry);                       // ALWAYS save on the device first
+    btn.disabled = true;
+    var was = btn.textContent;
+    btn.textContent = "Sending…";
+    sendRemote(entry)
+      .then(function () { showThanks(which); })
+      ["catch"](function (err) {
+        // Endpoint not wired up yet (or offline). The signup is still saved
+        // on this device, so we thank them rather than losing them.
+        if (window.console) { console.warn("[signup] not sent to a service:", err && err.message); }
+        showThanks(which);
+      })
+      .then(function () { btn.disabled = false; btn.textContent = was; });
+  }
+
+  /* ---------------------------------------------------------------
+     9. THE PRE-ORDER FORM  (only on the page when the drop is open)
+     --------------------------------------------------------------- */
+  var preForm  = $("#preForm");
+  var gateSel  = $("#p-city");
+  var gateOut  = $("#gateOut");
+  var preFields = $("#preFields");
+
+  function applyGate() {
+    var v = gateSel.value;
+    gateOut.hidden   = (v !== "Outside Pune");
+    preFields.hidden = (v !== "Pune");
+    if (v) { mark("p", "city", false); }
+  }
+  gateSel.addEventListener("change", applyGate);
+  $("#gateOutBtn").addEventListener("click", function () {
+    setTimeout(function () { var n = $("#w-name"); if (n) { n.focus(); } }, 400);
+  });
+  var packSel = $("#p-pack");
+  packSel.addEventListener("change", updateTotal);
+
+  preForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    $("#ep-form").classList.remove("show");
+    if (preForm.querySelector('[name="_gotcha"]').value) { return; }   // bot
+
+    var city = gateSel.value;
+    if (!city) { mark("p", "city", true); gateSel.focus(); return; }
+    if (city !== "Pune") {                                  // never sell what we cannot deliver
+      applyGate();
+      var w = $("#waitlist");
+      if (w && w.scrollIntoView) { w.scrollIntoView({ behavior: "smooth", block: "start" }); }
+      var n = $("#w-name"); if (n) { n.focus({ preventScroll: true }); }
+      return;
+    }
+
+    var ok = true, first = null;
+    var phone = phoneOk(val("p-phone"));
+    if (!mark("p", "name",  val("p-name").length < 2))            { ok = false; first = first || "p-name"; }
+    if (!mark("p", "phone", !phone))                               { ok = false; first = first || "p-phone"; }
+    if (!mark("p", "email", !emailOkOptional(val("p-email"))))     { ok = false; first = first || "p-email"; }
+    if (!mark("p", "area",  val("p-area").length < 2))             { ok = false; first = first || "p-area"; }
+    if (!mark("p", "pack",  !packSel.value))                       { ok = false; first = first || "p-pack"; }
+    if (MODE === "upi") {
+      if (!mark("p", "payref", val("p-payref").length < 4))        { ok = false; first = first || "p-payref"; }
+    }
+    if (!ok) { document.getElementById(first).focus(); return; }
+
+    var p = currentPack();
+    submitEntry("pre", {
+      list:    "preorder",
+      name:    val("p-name"),
+      phone:   phone,
+      email:   val("p-email"),
+      city:    "Pune",
+      area:    val("p-area"),
+      pack:    p.label,
+      boxes:   p.boxes,
+      amount:  p.amount,
+      variant: checkedVariant(),
+      payref:  MODE === "upi" ? val("p-payref") : "",
+      mode:    MODE,
+      drop:    dropName,
+      brand:   C.BRAND,
+      time:    new Date().toISOString()
+    }, preSubmit);
+  });
+
+  /* ---------------------------------------------------------------
+     10. THE WAITLIST FORM  (always on the page, in every state)
+     --------------------------------------------------------------- */
+  var wlForm   = $("#wlForm");
+  var wlSubmit = $("#wlSubmit");
+
+  wlForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    $("#ew-form").classList.remove("show");
+    if (wlForm.querySelector('[name="_gotcha2"]').value) { return; }   // bot
+
+    var ok = true, first = null;
+    var phone = phoneOk(val("w-phone"));
+    if (!mark("w", "name",  val("w-name").length < 2))         { ok = false; first = first || "w-name"; }
+    if (!mark("w", "phone", !phone))                            { ok = false; first = first || "w-phone"; }
+    if (!mark("w", "email", !emailOkOptional(val("w-email"))))  { ok = false; first = first || "w-email"; }
+    if (!mark("w", "city",  val("w-city").length < 2))          { ok = false; first = first || "w-city"; }
+    if (!ok) { document.getElementById(first).focus(); return; }
+
+    submitEntry("wl", {
+      list:    "waitlist",
+      name:    val("w-name"),
+      phone:   phone,
+      email:   val("w-email"),
+      city:    val("w-city"),
+      area:    "",
+      pack:    "",
+      boxes:   0,
+      amount:  0,
+      variant: "",
+      payref:  "",
+      mode:    "waitlist",
+      drop:    dropName + " (" + STATE + ")",
+      brand:   C.BRAND,
+      time:    new Date().toISOString()
+    }, wlSubmit);
+  });
+
+  /* ---------------------------------------------------------------
+     11. THANK YOU + SHARE
+     --------------------------------------------------------------- */
+  function showThanks(which, extra) {
+    var isPre = (which === "pre");
+    var form  = isPre ? preForm : wlForm;
+    var box   = isPre ? $("#preThanks") : $("#wlThanks");
+    form.hidden = true;
+    if (isPre) {
+      if (upiPanel) { upiPanel.hidden = true; }
+      if (rzpPanel) { rzpPanel.hidden = true; }
+    }
+    box.classList.add("show");
+
+    var line;
+    if (isPre) {
+      line = (MODE === "waitlist")
+        ? "Your box is reserved for " + dropName + ". We will WhatsApp you to fix a delivery time in " + C.SHIP_CITY + "."
+        : "Payment noted. We will WhatsApp you to confirm your box number and a delivery time in " + C.SHIP_CITY + ".";
+    } else {
+      line = "You are on the " + C.BRAND + " list. We will WhatsApp you before the next drop opens — and you get the link first.";
+    }
+    if (extra) { line += " " + extra; }
+    $(isPre ? "#preThanksLine" : "#wlThanksLine").textContent = line;
+
+    var url  = location.href.split("#")[0];
+    var text = C.BRAND + " - " + dropName + ", only " + total + " collectible matchboxes. " +
+               (isPre ? "I just grabbed mine. " : "I just joined the list. ") + url;
+    $(isPre ? "#preShareWa" : "#wlShareWa").href = "https://wa.me/?text=" + encodeURIComponent(text);
+
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    box.setAttribute("tabindex", "-1");
+    box.focus({ preventScroll: true });
+  }
+
+  $("#preShareCopy").addEventListener("click", function () { copyText(location.href.split("#")[0], this, "Link copied"); });
+  $("#wlShareCopy").addEventListener("click",  function () { copyText(location.href.split("#")[0], this, "Link copied"); });
+
+  $("#preAgain").addEventListener("click", function () {
+    preForm.reset();
+    preForm.hidden = false;
+    $("#preThanks").classList.remove("show");
+    if (MODE === "upi") { upiPanel.hidden = false; }
+    if (MODE === "razorpay") { rzpPanel.hidden = false; }
+    applyGate(); updateTotal();
+    gateSel.focus();
+  });
+  $("#wlAgain").addEventListener("click", function () {
+    wlForm.reset();
+    wlForm.hidden = false;
+    $("#wlThanks").classList.remove("show");
+    $("#w-name").focus();
+  });
+
+  /* ---------------------------------------------------------------
+     12. BACKUP HATCH - see every signup saved on this device.
+         Add  #signups  to the end of the web address and press enter.
+     --------------------------------------------------------------- */
+  window.showSignups = function () {
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) {}
+    if (!list.length) { alert("No signups saved on this device yet."); return []; }
+    var head = "list,name,phone,email,city,area,pack,boxes,amount,variant,payref,mode,drop,time";
+    var rows = list.map(function (r) {
+      return head.split(",").map(function (k) { return '"' + String(r[k] == null ? "" : r[k]).replace(/"/g, '""') + '"'; }).join(",");
+    });
+    var csv = head + "\n" + rows.join("\n");
+    if (window.console) { console.log(csv); }
+    window.prompt("Copy this and paste it into a spreadsheet (" + list.length + " signups):", csv);
+    return list;
+  };
+  function hashHatch() { if (location.hash === "#signups") { window.showSignups(); } }
+  window.addEventListener("hashchange", hashHatch);
+  hashHatch();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "total": 20000,
+  "currency": "INR",
+  "lines": [
+    {
+      "item": "First 500 boxes (product + printing)",
+      "agent": "supplier",
+      "planned": 7500,
+      "committed": 0,
+      "note": "RESIZED for the two-part box. 600 plain trays + freight = 4,200 (ONE-OFF, covers Drop 01 and Drop 02). 300 printed outers at 11 = 3,300 (PER DROP). Drop 01 is now 300 boxes, not 500 - at 18 rupees landed, 500 boxes does not fit inside 20,000."
+    },
+    {
+      "item": "GST / Udyam / legal basics",
+      "agent": "legal",
+      "planned": 1000,
+      "committed": 0,
+      "note": "Cut from 3000. Week 1 is free. Only real cost now is the 500 rupee Legal Metrology packer registration. Trademark 4500 is a separate decision (D-004)."
+    },
+    {
+      "item": "Pune-only ads (after launch)",
+      "agent": "launch",
+      "planned": 3000,
+      "committed": 0,
+      "note": "Do not spend until pre-orders prove demand."
+    },
+    {
+      "item": "Website + domain",
+      "agent": "website",
+      "planned": 500,
+      "committed": 0,
+      "note": "Target: free hosting, only pay for domain."
+    },
+    {
+      "item": "Reserve (do not touch)",
+      "agent": "finance",
+      "planned": 5400,
+      "committed": 0,
+      "note": "Raised from 4,500. The box costs twice what it did, so the cushion matters more. Danger line is now 8,000, not 11,000."
+    },
+    {
+      "item": "Packaging, mailers + delivery money",
+      "agent": "finance",
+      "planned": 2600,
+      "committed": 0,
+      "note": "1,600 for mailers, sleeves and tape bought upfront for 300 boxes. 1,000 float for Borzo rider drops (Pune from 40-45)."
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "agents": [
+    {
+      "id": "master",
+      "name": "Master (me)",
+      "color": "#94a3b8",
+      "status": "waiting",
+      "doing": "Office rebuilt and tested. Waiting on your 4 answers.",
+      "lastUpdate": "2026-09-12T18:33:45.797Z"
+    },
+    {
+      "id": "supplier",
+      "name": "Supplier Scout",
+      "color": "#f59e0b",
+      "status": "done",
+      "doing": "Handed sourcing over to Production & Ops. Files stay on the board.",
+      "lastUpdate": "2026-09-12T17:28:22.127Z"
+    },
+    {
+      "id": "prodops",
+      "name": "Production & Ops",
+      "color": "#E0714B",
+      "status": "waiting",
+      "doing": "Done. Waiting on D-011 (how many trays) and on you making the calls on Monday.",
+      "lastUpdate": "2026-09-12T18:26:28.124Z"
+    },
+    {
+      "id": "legal",
+      "name": "Legal & Setup",
+      "color": "#3b82f6",
+      "status": "waiting",
+      "doing": "Done. 3 files delivered. Waiting on D-004 (trademark spend) and D-005 (address on the box)",
+      "lastUpdate": "2026-09-12T17:33:16.023Z"
+    },
+    {
+      "id": "brand",
+      "name": "Brand & Content",
+      "color": "#ec4899",
+      "status": "waiting",
+      "doing": "All 4 brand deliverables done - waiting on your name decision (D-002)",
+      "lastUpdate": "2026-09-12T17:32:19.194Z"
+    },
+    {
+      "id": "website",
+      "name": "Website Builder",
+      "color": "#8b5cf6",
+      "status": "waiting",
+      "doing": "Waiting for you to check the site and decide the real open and close dates for Drop 01",
+      "lastUpdate": "2026-09-12T18:29:51.804Z"
+    },
+    {
+      "id": "launch",
+      "name": "Sales & PR",
+      "color": "#22c55e",
+      "status": "waiting",
+      "doing": "Four files delivered. Waiting on the 3-box set price (D-010) and on the brand name and payment decisions.",
+      "lastUpdate": "2026-09-12T18:26:27.084Z"
+    },
+    {
+      "id": "finance",
+      "name": "Finance",
+      "color": "#14b8a6",
+      "status": "waiting",
+      "doing": "Done. Waiting on decision D-009 - Drop 01 at 300 boxes and 99 rupees.",
+      "lastUpdate": "2026-09-12T18:23:51.600Z"
+    }
+  ]
+}
