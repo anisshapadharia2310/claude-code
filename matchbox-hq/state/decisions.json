@@ -1,0 +1,323 @@
+{
+  "decisions": [
+    {
+      "id": "D-001",
+      "title": "How do we take money on day one?",
+      "why": "The website cannot be finished until this is settled. It changes what we build and what paperwork we need.",
+      "options": [
+        {
+          "label": "A. Waitlist first, no money",
+          "detail": "People just leave name + phone. Zero paperwork, live today. You learn demand before spending a rupee."
+        },
+        {
+          "label": "B. UPI QR pre-order",
+          "detail": "People pay you directly on your UPI ID and send a screenshot. Free, works now, but manual and messy after ~50 orders."
+        },
+        {
+          "label": "C. Razorpay checkout",
+          "detail": "Proper card/UPI checkout. Needs PAN, bank account, and ideally GST. Takes a few days to approve, 2% fee per order."
+        }
+      ],
+      "recommendation": "A now, C later. Collect a waitlist this week, and only switch on real payments once we have 100+ names and a supplier quote. It keeps all 20,000 rupees in your pocket until demand is proven.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T12",
+        "T13"
+      ],
+      "created": "2026-09-12T17:20:19Z",
+      "priority": "now"
+    },
+    {
+      "id": "D-002",
+      "title": "Which brand name do we lock?",
+      "why": "Everything downstream is frozen until this is decided - the domain, the Instagram handle, the trademark filing (T6), and most of all the box artwork going to print. Renaming after 500 boxes are printed costs the whole run.",
+      "raisedBy": "brand",
+      "options": [
+        {
+          "label": "A. KAADEPETI",
+          "detail": "Marathi for matchbox. Most Pune, most ownable, cleanest availability signal. Nothing found using it."
+        },
+        {
+          "label": "B. DECCAN MATCHWORKS",
+          "detail": "Heritage factory story, lets you number the drops (No.01, No.02) which drives collecting. Longer handle."
+        },
+        {
+          "label": "C. PINKHEAD",
+          "detail": "Blunt English, literally describes the pink head on a black stick. Best recall, weakest trademark."
+        }
+      ],
+      "recommendation": "KAADEPETI. It is the product name in Pune's own language, it looked free in every check I could run, and PINKHEAD survives as the name of the flagship box in Drop 01. Confirm on a registrar + the Instagram app before printing.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T6",
+        "T8"
+      ],
+      "created": "2026-09-12T17:27:28.709Z",
+      "priority": "now"
+    },
+    {
+      "id": "D-009",
+      "title": "Drop 01 shrinks to 300 boxes, and the price is 99",
+      "why": "The box now costs 13.50 to 23 landed instead of 9. 500 boxes no longer fits inside 20,000 without killing the reserve, and 79 rupees stops covering a rider delivery. Both the drop size and the price have to move together - this is one decision, not two.",
+      "raisedBy": "finance",
+      "options": [
+        {
+          "label": "A. 300 boxes at 99, buy 600 trays",
+          "detail": "RECOMMENDED. Costs 10,600 to launch, leaves 9,400 in the bank. Break-even 204 of 300. Drop 02's trays are already paid for, so Drop 02 breaks even at 73 boxes."
+        },
+        {
+          "label": "B. 500 boxes at 99, buy 500 trays",
+          "detail": "Costs 14,750 to launch, leaves 5,250 - under the danger line before you sell anything, no reserve, and no trays left over so Drop 02 pays full price again."
+        },
+        {
+          "label": "C. 300 boxes at 79",
+          "detail": "Break-even 303 boxes out of a 300-box drop. You sell out and are still short. A rider delivery keeps minus 90 paise. Do not do this."
+        }
+      ],
+      "recommendation": "A - 300 boxes at 99 rupees, 600 trays bought once. It is the only option that survives a high supplier quote AND leaves Drop 02 cheap.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "F1"
+      ],
+      "created": "2026-09-12T18:23:42.403Z",
+      "priority": "now"
+    },
+    {
+      "id": "D-011",
+      "title": "How many plain trays in the first bulk order?",
+      "why": "Trays are the reusable half of the model. Freight from Sivakasi costs the same whether you ship 500 or 2000, so buying small means paying 7 rupees a tray landed instead of 5.50. But every extra tray is cash locked in matches before you have sold anything. This is the single biggest cheque of the whole launch.",
+      "raisedBy": "prodops",
+      "options": [
+        {
+          "label": "A. 500 trays",
+          "detail": "2,500 goods + 1,000 freight = 3,500. Landed 7.00 per tray. Covers Drop 01 only. Lowest risk, worst price."
+        },
+        {
+          "label": "B. 1,000 trays",
+          "detail": "4,500 goods + 1,000 freight = 5,500. Landed 5.50 per tray. Covers Drop 01 AND Drop 02. Re-buy during Drop 02."
+        },
+        {
+          "label": "C. 2,000 trays",
+          "detail": "8,400 goods + 1,200 freight = 9,600. Landed 4.80 per tray. Covers four drops. Locks up nearly half your total budget in matches."
+        }
+      ],
+      "recommendation": "B - 1,000 trays for about 5,500. Going 500 to 1,000 cuts your landed cost 21 percent for 3,000 more cash. Going 1,000 to 2,000 cuts it only another 13 percent for 3,900 more. 1,000 is the knee in the curve and it leaves 7,500 free.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "P3"
+      ],
+      "created": "2026-09-12T18:26:14.362Z",
+      "priority": "now"
+    },
+    {
+      "id": "D-003",
+      "title": "First run: 500 boxes is below most factory minimums",
+      "why": "(Mostly answered by the newer trays decision below. Left here for the record.) Sivakasi factories private-label from about 5,000 boxes upward, and 50,000 is common. Pink and black match heads mean a special chemical batch, and black sticks mean a separate dyeing run. No factory will do that for 500 boxes. Your 8000 rupee budget is fine - the quantity is what blocks you. This decides whether you spend money now or wait.",
+      "raisedBy": "supplier",
+      "options": [
+        {
+          "label": "A. Plain boxes plus your own printed sleeve",
+          "detail": "Buy 500 plain Sivakasi boxes (try to get black heads, one maker already sells them) and print wrap-around sleeves in Pune. Roughly 2000 to 4000 rupees all in. No pink heads. You can test the market this month."
+        },
+        {
+          "label": "B. Wait and order 5000 custom boxes",
+          "detail": "Real factory-made pink and black heads on black sticks. Estimated 8 to 18 rupees a box, so roughly 40000 to 90000 rupees. Ten times your current budget and a longer wait."
+        },
+        {
+          "label": "C. Pay the small-run penalty for 500 custom boxes",
+          "detail": "Ask a few factories to break their minimum. Likely 25 to 60 rupees a box, so 12500 to 30000 rupees, and most will simply say no."
+        }
+      ],
+      "recommendation": "Go with A. Get 500 boxes on Pune shelves this month for under 4000 rupees and find out if people actually pay 49 to 99 for this. If they do, option B pays for itself. Pink heads are the only thing a sleeve cannot fake, so launch on black heads first.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T4"
+      ],
+      "created": "2026-09-12T17:28:16.809Z",
+      "priority": "later"
+    },
+    {
+      "id": "D-004",
+      "title": "Do we spend 4,500 rupees on the trademark now, or later?",
+      "why": "Matches are trademark Class 34 and the fee is 4,500 per class with your Udyam registration. That is 22 percent of your entire 20,000 capital. But the free name search must happen BEFORE you print 500 boxes either way.",
+      "raisedBy": "legal",
+      "options": [
+        {
+          "label": "A. Free search only, file later",
+          "detail": "Run the free IP India search on your 5 names this week. Print boxes with a small TM. File TM-A only after you have sold around 500 boxes. Cost now: 0."
+        },
+        {
+          "label": "B. File TM-A now",
+          "detail": "Lock the name immediately for 4,500. Safest against copycats, but it takes 12-18 months anyway and eats money you need for stock."
+        },
+        {
+          "label": "C. Skip trademark entirely for now",
+          "detail": "Do not even search. Cheapest and by far the most dangerous - you could print 500 boxes with a name you are not allowed to use."
+        }
+      ],
+      "recommendation": "A. Do the free search this week - it is non-negotiable before printing. Hold the 4,500 until Drop 01 has actually sold. Do your free Udyam registration now, because that is what keeps the fee at 4,500 instead of 9,000.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T6"
+      ],
+      "created": "2026-09-12T17:32:03.472Z",
+      "priority": "later"
+    },
+    {
+      "id": "D-005",
+      "title": "Whose address goes on the back of every matchbox?",
+      "why": "The law makes you print a complete postal address with PIN code as 'Marketed by'. There is no way around it if your brand is on the box. This means your address is on every box in every cafe in Pune, and it is the address the 500 rupee Legal Metrology registration is tied to. Changing it later means reprinting.",
+      "raisedBy": "legal",
+      "options": [
+        {
+          "label": "A. Your home address",
+          "detail": "Free and honest. But your home address is then public on 500+ boxes and on every marketplace listing."
+        },
+        {
+          "label": "B. A parent's or relative's address",
+          "detail": "Same cost, keeps your own flat private. Needs their OK, and a bill or NOC for the Shops and Establishment filing."
+        },
+        {
+          "label": "C. A cheap co-working or virtual office address in Pune",
+          "detail": "Most professional and most private. Costs roughly 500-1500 per month, which your 20,000 budget cannot really carry yet."
+        }
+      ],
+      "recommendation": "B if a relative agrees, otherwise A. Do not pay for a virtual office at this stage - it is a recurring cost on a one-time problem. Pick the address BEFORE the artwork goes to the printer, because it is printed on the box.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T7"
+      ],
+      "created": "2026-09-12T17:32:16.010Z",
+      "priority": "later"
+    },
+    {
+      "id": "D-006",
+      "title": "The budget was missing packaging and delivery money",
+      "why": "Mailers and rider drops are the single biggest cost per box - bigger than the box itself - and there was no line for them. Right now that money is being taken out of your reserve, which is the money that protects you if something goes wrong.",
+      "raisedBy": "finance",
+      "options": [
+        {
+          "label": "A. Take it from the box budget",
+          "detail": "Cut the 500-box line from 8,000 to 5,000. My costing says 500 boxes land at about 9 rupees each = 4,500, so 5,000 is enough. Reserve goes back up to 7,500."
+        },
+        {
+          "label": "B. Take it from the reserve",
+          "detail": "Leave the box budget at 8,000 and run on a 4,500 reserve. Works, but one bad print run or a batch of refunds and you are at the danger line."
+        },
+        {
+          "label": "C. Order fewer boxes",
+          "detail": "Order 300 instead of 500. Costs about 2,700, frees 5,300, but break-even eats a much bigger share of the drop and you lose the collectible-set feeling."
+        }
+      ],
+      "recommendation": "A. The 8,000 box line was a guess made before anyone priced a box. My costing says 500 boxes land at about 9 rupees each. Cut it to 5,000, put 3,000 into packaging and delivery where the money actually goes, and keep a 7,500 reserve. Total stays at exactly 20,000.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T17",
+        "T18"
+      ],
+      "created": "2026-09-12T17:33:09.115Z",
+      "priority": "later"
+    },
+    {
+      "id": "D-007",
+      "title": "Matches are dangerous goods - how do we ship outside Pune?",
+      "why": "Safety matches are UN 1944 Class 4.1 flammable solids. Shiprocket lists matchboxes as prohibited, Blue Dart bans IATA dangerous goods on all services, and India Post bans inflammable substances. Hand delivery inside Pune is fine, but every channel after Instagram - rest-of-India orders, Amazon, Flipkart, Blinkit, Zepto - is blocked until this is answered. It decides whether Drop 02 can be national.",
+      "raisedBy": "launch",
+      "options": [
+        {
+          "label": "A. Stay Pune-only for Drop 01 and 02",
+          "detail": "Hand delivery and cafe pickup only. Costs nothing, zero legal risk, and the 500 boxes do not need couriers. Decide again at Drop 03."
+        },
+        {
+          "label": "B. Get a surface courier to accept UN 1944 in writing",
+          "detail": "Email 3 surface couriers the exact question before promising anyone delivery. Free to ask. Unknown if any will say yes. Could unlock rest-of-India."
+        },
+        {
+          "label": "C. Ship the collectible box empty or striker-only outside Pune",
+          "detail": "Legal and cheap to ship. Pune buyers get the filled box by hand. Says so honestly on the site. Risks feeling like a lesser product."
+        }
+      ],
+      "recommendation": "A now, B in parallel because asking costs nothing. Do not promise anyone outside Pune a delivery date until a courier says yes in writing. Keep C as the Drop 02 answer if couriers all say no.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T16"
+      ],
+      "created": "2026-09-12T17:33:19.752Z",
+      "priority": "later"
+    },
+    {
+      "id": "D-008",
+      "title": "Ads must point at a 249-rupee 3-box set, not a 99-rupee box",
+      "why": "At 99 rupees a single box leaves only about 56 rupees of contribution after product, packaging, delivery and gateway fees. No Meta campaign in India reliably delivers orders at 56 rupees, so ads on a single box lose money on every sale. A 3-box set at 249 lifts break-even cost-per-order to about 170 rupees - a 3x wider margin. This needs to exist on the site before the 3,000 is unlocked.",
+      "raisedBy": "launch",
+      "options": [
+        {
+          "label": "A. Create a 3-box set at 249 before any ad spend",
+          "detail": "Same delivery effort, 3x the contribution. Recommended."
+        },
+        {
+          "label": "B. Run ads on the single 99 box anyway",
+          "detail": "Almost certainly loses money per order."
+        },
+        {
+          "label": "C. Do not run ads at all, keep the 3,000",
+          "detail": "Valid. Cafes and hand-selling may simply be the better channel."
+        }
+      ],
+      "recommendation": "A. Build the 249 set now - it costs nothing to create and it is the only version where the ad maths works. If the set does not exist by the time 150 boxes are sold, choose C and keep the money.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [
+        "T14"
+      ],
+      "created": "2026-09-12T17:33:19.807Z",
+      "priority": "later"
+    },
+    {
+      "id": "D-010",
+      "title": "What should the 3-box set cost?",
+      "why": "Finance's revised file now prices it at 297 (three boxes at full price). Every WhatsApp message I wrote uses that number. A set at full price may not feel like a set - and the 3-box set is the only thing that makes a delivery affordable, because one rider drop carries three boxes instead of one.",
+      "raisedBy": "launch",
+      "options": [
+        {
+          "label": "A. 297",
+          "detail": "Three at full price. Finance's current number. Keeps every rupee of margin. Risk: nobody feels they got a deal, so nobody upgrades."
+        },
+        {
+          "label": "B. 279",
+          "detail": "18 off. Reads as a real set, stays under the 300 line that matters on Amazon later. Costs you 18 a set."
+        },
+        {
+          "label": "C. 249",
+          "detail": "48 off. Strongest gift offer for Diwali. Costs you 48 a set but a delivered set still keeps about 135."
+        }
+      ],
+      "recommendation": "B. 279 - it is visibly a set, it is still under 300, and 18 is a cheap price to pay for turning one-box orders into three-box orders.",
+      "status": "open",
+      "answer": null,
+      "answeredAt": null,
+      "blocks": [],
+      "created": "2026-09-12T18:26:13.730Z",
+      "priority": "later"
+    }
+  ]
+}

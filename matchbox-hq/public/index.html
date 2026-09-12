@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matchbox HQ</title>
+<style>
+  :root{
+    --bg:#0d0d10; --card:#17171c; --card2:#1e1e25; --line:#2a2a33;
+    --text:#f4f4f5; --dim:#a1a1aa; --pink:#ff3d7f; --ok:#22c55e; --warn:#f59e0b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    padding:0 16px 64px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto}
+  header{padding-block:24px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between}
+  h1{font-size:30px;margin:0;letter-spacing:-.5px}
+  h1 span{color:var(--pink)}
+  .sub{color:var(--dim);font-size:15px}
+  h2{font-size:20px;margin:0 0 14px;letter-spacing:-.2px}
+  section{margin-bottom:34px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:900px){.grid2,.grid4{grid-template-columns:1fr}}
+
+  /* kanban */
+  .col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:90px}
+  .col h3{margin:0 0 12px;font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--dim)}
+  .col h3 b{color:var(--text);font-weight:600}
+  .task{background:var(--card2);border-left:5px solid #555;border-radius:10px;padding:12px 13px;margin-bottom:10px}
+  .task .t{font-weight:600;font-size:16px}
+  .task .n{color:var(--dim);font-size:14px;margin-top:5px}
+  .who{font-size:12px;text-transform:uppercase;letter-spacing:.6px;margin-top:8px;opacity:.85}
+
+  /* agents */
+  .agent{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+  .agent:last-child{border-bottom:0}
+  .dot{width:12px;height:12px;border-radius:50%;margin-top:7px;flex:none}
+  .agent .nm{font-weight:600}
+  .agent .dg{color:var(--dim);font-size:15px}
+  .agent .tm{color:#6b7280;font-size:13px;margin-top:2px}
+
+  /* feed */
+  .feed{max-height:340px;overflow:auto}
+  .ev{padding:10px 0;border-bottom:1px solid var(--line);font-size:16px}
+  .ev:last-child{border-bottom:0}
+  .ev .tm{color:#6b7280;font-size:13px}
+
+  /* decisions */
+  .dec{border:2px solid var(--pink);background:#1b1016;border-radius:14px;padding:18px;margin-bottom:14px}
+  .dec h3{margin:0 0 6px;font-size:19px}
+  .dec .why{color:var(--dim);font-size:15px;margin-bottom:12px}
+  .opt{background:#111117;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px}
+  .opt b{display:block;margin-bottom:3px}
+  .opt span{color:var(--dim);font-size:15px}
+  .rec{background:#0f1a12;border:1px solid #1f4d2c;border-radius:10px;padding:12px;margin:10px 0 14px;font-size:15px}
+  .rec b{color:var(--ok)}
+  .answered{border-color:#2f7a45;background:#0f1a12}
+
+  /* budget */
+  .bar{height:16px;background:#26262e;border-radius:99px;overflow:hidden;display:flex;margin:6px 0 14px}
+  .bar i{display:block;height:100%}
+  .brow{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:16px}
+  .brow:last-child{border-bottom:0}
+  .brow .n{color:var(--dim);font-size:14px}
+  .big{font-size:30px;font-weight:700;letter-spacing:-.5px}
+  .stat{flex:1;min-width:140px}
+  .stat .l{color:var(--dim);font-size:14px}
+
+  /* form */
+  textarea{width:100%;background:#111117;color:var(--text);border:1px solid var(--line);
+    border-radius:10px;padding:14px;font:inherit;min-height:110px;resize:vertical}
+  button{background:var(--pink);color:#fff;border:0;border-radius:10px;padding:14px 22px;
+    font:600 17px inherit;cursor:pointer;margin-top:10px}
+  button.ghost{background:#26262e;color:var(--text);padding:10px 16px;font-size:15px;margin:0 8px 0 0}
+  .msg{color:var(--ok);font-size:15px;margin-top:8px;min-height:20px}
+  a{color:var(--pink)}
+  .file{padding:11px 0;border-bottom:1px solid var(--line)}
+  .file:last-child{border-bottom:0}
+  .file .p{color:var(--dim);font-size:14px;word-break:break-all}
+  .empty{color:var(--dim);font-size:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Matchbox <span>HQ</span></h1>
+      <div class="sub" id="tagline">Pune · Drop 01 · 500 boxes</div>
+    </div>
+    <div class="sub">Updated <span id="stamp">…</span> · refreshes on its own</div>
+  </header>
+
+  <section id="decSec">
+    <h2>🔴 Decisions needed from you</h2>
+    <div id="decisions"></div>
+  </section>
+
+  <section>
+    <h2>✍️ Send instructions to the team</h2>
+    <div class="card">
+      <textarea id="req" placeholder="Type anything — a change, an idea, a correction. I read this at the start of every cycle."></textarea>
+      <button id="send">Send to team</button>
+      <div class="msg" id="reqMsg"></div>
+      <div id="reqList" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>📋 The board</h2>
+    <div class="grid4" id="board"></div>
+  </section>
+
+  <div class="grid2">
+    <section>
+      <h2>👥 Who is doing what</h2>
+      <div class="card" id="agents"></div>
+    </section>
+    <section>
+      <h2>📣 What just happened</h2>
+      <div class="card feed" id="feed"></div>
+    </section>
+  </div>
+
+  <section>
+    <h2>💰 Money</h2>
+    <div class="card">
+      <div style="display:flex;flex-wrap:wrap;gap:18px;margin-bottom:8px" id="money"></div>
+      <div class="bar" id="bar"></div>
+      <div id="blines"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>📦 Everything the team has made</h2>
+    <div class="card" id="files"></div>
+  </section>
+</div>
+
+<script>
+const COLS = [['todo','To do'],['inprogress','In progress'],['review','Review'],['done','Done']];
+let AGENTS = {};
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rupee = n => '₹' + Number(n || 0).toLocaleString('en-IN');
+
+function ago(iso){
+  if(!iso) return '';
+  const s = Math.floor((Date.now() - new Date(iso)) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + ' min ago';
+  if (s < 86400) return Math.floor(s/3600) + ' hr ago';
+  return Math.floor(s/86400) + ' days ago';
+}
+
+async function load(){
+  let s;
+  try { s = await (await fetch('/api/state')).json(); } catch(e){ return; }
+  AGENTS = {};
+  (s.agents?.agents || []).forEach(a => AGENTS[a.id] = a);
+  document.getElementById('stamp').textContent = new Date(s.now).toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+  board(s.tasks?.tasks || []);
+  agents(s.agents?.agents || []);
+  feed(s.activity?.events || []);
+  decisions(s.decisions?.decisions || []);
+  budget(s.budget || {total:20000, lines:[]});
+  files(s.deliverables?.files || []);
+  reqs(s.requests?.requests || []);
+}
+
+function board(tasks){
+  document.getElementById('board').innerHTML = COLS.map(([k, label]) => {
+    const list = tasks.filter(t => t.status === k);
+    return '<div class="col"><h3>' + label + ' · <b>' + list.length + '</b></h3>' +
+      (list.length ? list.map(t => {
+        const a = AGENTS[t.agent] || {name: t.agent, color: '#666'};
+        return '<div class="task" style="border-left-color:' + esc(a.color) + '">' +
+          '<div class="t">' + esc(t.title) + '</div>' +
+          (t.note ? '<div class="n">' + esc(t.note) + '</div>' : '') +
+          '<div class="who" style="color:' + esc(a.color) + '">' + esc(a.name) + '</div></div>';
+      }).join('') : '<div class="empty">—</div>') + '</div>';
+  }).join('');
+}
+
+function agents(list){
+  document.getElementById('agents').innerHTML = list.map(a =>
+    '<div class="agent"><span class="dot" style="background:' + esc(a.color) + '"></span><div>' +
+    '<div class="nm">' + esc(a.name) + '</div>' +
+    '<div class="dg">' + esc(a.doing || 'Waiting') + '</div>' +
+    '<div class="tm">' + esc(a.status) + ' · ' + ago(a.lastUpdate) + '</div></div></div>').join('');
+}
+
+function feed(evs){
+  document.getElementById('feed').innerHTML = evs.length ? evs.slice(0, 60).map(e => {
+    const a = AGENTS[e.agent] || {name: e.agent, color: '#a1a1aa'};
+    return '<div class="ev">' + esc(e.text) +
+      '<div class="tm"><span style="color:' + esc(a.color) + '">' + esc(a.name) + '</span> · ' + ago(e.time) + '</div></div>';
+  }).join('') : '<div class="empty">Nothing yet.</div>';
+}
+
+function decisions(list){
+  const open = list.filter(d => d.status === 'open');
+  const done = list.filter(d => d.status !== 'open');
+  const el = document.getElementById('decisions');
+  if(!list.length){ el.innerHTML = '<div class="card empty">Nothing needs your decision right now. 👍</div>'; return; }
+  el.innerHTML = open.map(d =>
+    '<div class="dec"><h3>' + esc(d.title) + '</h3><div class="why">' + esc(d.why) + '</div>' +
+    (d.options||[]).map(o => '<div class="opt"><b>' + esc(o.label) + '</b><span>' + esc(o.detail) + '</span></div>').join('') +
+    '<div class="rec"><b>My advice:</b> ' + esc(d.recommendation) + '</div>' +
+    (d.options||[]).map(o => '<button class="ghost" data-d="' + esc(d.id) + '" data-a="' + esc(o.label) + '">Choose ' + esc(o.label.split('.')[0]) + '</button>').join('') +
+    '</div>').join('') +
+    done.map(d => '<div class="dec answered"><h3>✅ ' + esc(d.title) + '</h3>' +
+      '<div class="why">You chose: <b style="color:#22c55e">' + esc(d.answer) + '</b> · ' + ago(d.answeredAt) + '</div></div>').join('');
+  el.querySelectorAll('button[data-d]').forEach(b => b.onclick = async () => {
+    b.textContent = 'Saving…';
+    await fetch('/api/decision', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({id: b.dataset.d, answer: b.dataset.a})});
+    load();
+  });
+}
+
+function budget(b){
+  const total = b.total || 20000;
+  const lines = b.lines || [];
+  const committed = lines.reduce((s,l) => s + (+l.committed||0), 0);
+  const planned = lines.reduce((s,l) => s + (+l.planned||0), 0);
+  const left = total - committed;
+  document.getElementById('money').innerHTML =
+    '<div class="stat"><div class="l">You have</div><div class="big">' + rupee(total) + '</div></div>' +
+    '<div class="stat"><div class="l">Actually spent</div><div class="big" style="color:#f59e0b">' + rupee(committed) + '</div></div>' +
+    '<div class="stat"><div class="l">Set aside (a plan, not spent)</div><div class="big" style="color:#a1a1aa">' + rupee(planned) + '</div></div>' +
+    '<div class="stat"><div class="l">Still in your pocket</div><div class="big" style="color:#22c55e">' + rupee(left) + '</div></div>';
+  document.getElementById('bar').innerHTML =
+    '<i style="width:' + (committed/total*100) + '%;background:#f59e0b"></i>' +
+    '<i style="width:' + (Math.max(0, planned-committed)/total*100) + '%;background:#4b5563"></i>';
+  document.getElementById('blines').innerHTML = lines.map(l => {
+    const a = AGENTS[l.agent] || {color:'#666'};
+    return '<div class="brow"><div><b style="color:' + esc(a.color) + '">●</b> ' + esc(l.item) +
+      '<div class="n">' + esc(l.note||'') + '</div></div>' +
+      '<div style="text-align:right;white-space:nowrap">' + rupee(l.planned) +
+      '<div class="n">spent ' + rupee(l.committed) + '</div></div></div>';
+  }).join('');
+}
+
+function files(list){
+  document.getElementById('files').innerHTML = list.length ? list.map(f => {
+    const a = AGENTS[f.agent] || {name:f.agent, color:'#666'};
+    return '<div class="file"><b>' + esc(f.name) + '</b> — ' + esc(f.desc||'') +
+      '<div class="p" style="color:' + esc(a.color) + '">' + esc(a.name) + ' · ' + esc(f.path) + '</div></div>';
+  }).join('') : '<div class="empty">Nothing finished yet.</div>';
+}
+
+function reqs(list){
+  document.getElementById('reqList').innerHTML = list.length
+    ? '<div class="sub" style="margin-bottom:6px">You have sent ' + list.length + ' instruction(s):</div>' +
+      list.slice(0,5).map(r => '<div class="ev">' + esc(r.text) +
+        '<div class="tm">' + ago(r.time) + ' · ' + esc(r.status) + '</div></div>').join('')
+    : '';
+}
+
+document.getElementById('send').onclick = async () => {
+  const t = document.getElementById('req');
+  if(!t.value.trim()) return;
+  await fetch('/api/request', {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({text: t.value})});
+  t.value = '';
+  document.getElementById('reqMsg').textContent = 'Saved. The team will pick this up on the next cycle.';
+  setTimeout(() => document.getElementById('reqMsg').textContent = '', 6000);
+  load();
+};
+
+load();
+setInterval(load, 5000);
+</script>
+</body>
+</html>

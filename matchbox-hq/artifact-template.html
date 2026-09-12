@@ -1,0 +1,321 @@
+<title>Matchbox HQ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F6F1E9; --panel:#FFFDF9; --panel2:#EDE6D9; --ink:#1A1714; --dim:#6E6458;
+  --rule:#DDD3C3; --pink:#D4145A; --pinkbg:#FDEDF2; --ember:#A8620A; --green:#16744A;
+  --strike:#5A4652; --shadow:0 1px 0 rgba(26,23,20,.06);
+  --f-disp:"Archivo Black","Arial Black",system-ui,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#131114; --panel:#1C191E; --panel2:#252129; --ink:#F4EFE8; --dim:#9A9089;
+  --rule:#332E37; --pink:#FF3D7F; --pinkbg:#2A1220; --ember:#F5A524; --green:#35C46F;
+  --strike:#6B5364; --shadow:none;
+}}
+:root[data-theme="dark"]{
+  --ground:#131114; --panel:#1C191E; --panel2:#252129; --ink:#F4EFE8; --dim:#9A9089;
+  --rule:#332E37; --pink:#FF3D7F; --pinkbg:#2A1220; --ember:#F5A524; --green:#35C46F;
+  --strike:#6B5364; --shadow:none;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 72px}
+.strike{height:14px;background:
+  repeating-linear-gradient(58deg,var(--strike) 0 2px,transparent 2px 5px),
+  linear-gradient(var(--panel2),var(--panel2));
+  opacity:.85}
+header{padding-block:26px 20px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--ink)}
+h1{font-family:var(--f-disp);font-size:clamp(30px,7vw,46px);margin:0;letter-spacing:-.02em;line-height:.95;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--pink)}
+.drop{font-family:var(--f-num);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:8px}
+.stamp{font-family:var(--f-num);font-size:12px;color:var(--dim);text-align:right;letter-spacing:.04em}
+h2{font-family:var(--f-disp);font-size:15px;letter-spacing:.13em;text-transform:uppercase;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:var(--rule)}
+section{margin-top:40px}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:5px;padding:20px;box-shadow:var(--shadow)}
+.two{display:grid;grid-template-columns:1.05fr .95fr;gap:22px}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:860px){.two,.four{grid-template-columns:1fr}}
+
+/* board */
+.col{background:var(--panel);border:1px solid var(--rule);border-radius:5px;padding:12px}
+.colh{font-family:var(--f-num);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);display:flex;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid var(--rule);margin-bottom:11px}
+.colh b{color:var(--ink);font-family:var(--f-num)}
+.task{padding:11px 0;border-bottom:1px dashed var(--rule)}
+.task:last-child{border-bottom:0;padding-bottom:2px}
+.task .t{font-weight:600;line-height:1.3}
+.task .n{color:var(--dim);font-size:14px;margin-top:4px}
+.tag{font-family:var(--f-num);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;margin-top:7px}
+.pip{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.none{color:var(--dim);font-size:14px;padding:6px 0}
+
+/* agents */
+.ag{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.ag:first-child{padding-top:0}.ag:last-child{border-bottom:0;padding-bottom:0}
+.ag .pip{margin-top:7px}
+.ag .nm{font-weight:700}
+.ag .dg{color:var(--dim);font-size:15px;line-height:1.4}
+.ag .mt{font-family:var(--f-num);font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+.live{color:var(--green)}
+
+/* feed */
+.feed{max-height:360px;overflow:auto}
+.ev{padding:11px 0;border-bottom:1px solid var(--rule);font-size:15px;line-height:1.45}
+.ev:first-child{padding-top:0}.ev:last-child{border-bottom:0}
+.ev .mt{font-family:var(--f-num);font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+
+/* decisions */
+.dec{background:var(--pinkbg);border:1.5px solid var(--pink);border-radius:5px;padding:20px;margin-bottom:14px}
+.dec h3{font-family:var(--f-body);font-weight:700;font-size:21px;margin:0 0 4px;line-height:1.25;text-wrap:balance}
+.dec .why{color:var(--dim);font-size:15px;margin-bottom:14px}
+.opt{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:12px 13px;margin-bottom:8px}
+.opt b{display:block;font-size:15px}
+.opt span{color:var(--dim);font-size:14.5px}
+.rec{border-left:3px solid var(--green);padding:2px 0 2px 13px;margin:14px 0;font-size:15px}
+.rec b{font-family:var(--f-num);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:2px}
+.picks{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-num);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:9px}
+.chip.now{background:var(--pink);color:#fff}
+.chip.later{background:var(--panel2);color:var(--dim)}
+details.later{background:var(--panel);border:1px solid var(--rule);border-radius:5px;padding:14px 18px;margin-top:6px}
+details.later summary{cursor:pointer;font-weight:700;font-size:15px}
+details.later summary::marker{color:var(--pink)}
+details.later .dec{margin-top:14px}
+.done-dec{border-color:var(--green);background:transparent}
+.done-dec h3{font-size:17px}
+
+/* money */
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr 1fr}}
+.stat .l{font-family:var(--f-num);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.stat .v{font-family:var(--f-num);font-weight:600;font-size:clamp(20px,4.4vw,27px);font-variant-numeric:tabular-nums;margin-top:2px}
+.bar{height:14px;display:flex;background:var(--panel2);border-radius:2px;overflow:hidden;margin:20px 0 4px}
+.bar i{height:100%}
+.key{font-family:var(--f-num);font-size:11px;letter-spacing:.06em;color:var(--dim);display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.key span{display:flex;align-items:center;gap:6px}
+.key i{width:10px;height:10px;border-radius:2px}
+.brow{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.brow:last-child{border-bottom:0;padding-bottom:0}
+.brow .n{color:var(--dim);font-size:13.5px;margin-top:2px}
+.brow .amt{font-family:var(--f-num);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;font-weight:600}
+.brow .amt small{display:block;font-weight:400;color:var(--dim);font-size:11.5px;letter-spacing:.05em}
+
+/* form */
+textarea{width:100%;background:var(--ground);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:13px;font:inherit;min-height:104px;resize:vertical}
+textarea:focus-visible,button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+button{font-family:var(--f-body);font-weight:700;font-size:15px;border:0;border-radius:4px;padding:12px 20px;cursor:pointer;background:var(--pink);color:#fff}
+button.pick{background:var(--panel);color:var(--ink);border:1px solid var(--ink);font-size:14px;padding:10px 16px}
+button.pick:hover{background:var(--ink);color:var(--ground)}
+button[disabled]{opacity:.5;cursor:default}
+.note{font-size:14px;color:var(--dim);margin-top:10px;min-height:20px}
+.note.ok{color:var(--green)}
+.sent{margin-top:16px;border-top:1px solid var(--rule);padding-top:12px}
+
+/* files */
+.file{padding:12px 0;border-bottom:1px solid var(--rule)}
+.file:first-child{padding-top:0}.file:last-child{border-bottom:0;padding-bottom:0}
+.file .p{font-family:var(--f-num);font-size:12px;color:var(--dim);word-break:break-all;margin-top:3px}
+footer{margin-top:48px;border-top:2px solid var(--ink);padding-top:14px;font-family:var(--f-num);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);display:flex;flex-wrap:wrap;gap:6px 22px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="strike"></div>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Matchbox <em>HQ</em></h1>
+      <div class="drop" id="drop">Pune · Drop 01 · 500 boxes · 6 agents working</div>
+    </div>
+    <div class="stamp" id="stamp"></div>
+  </header>
+
+  <section>
+    <h2 style="color:var(--pink)">Decisions needed from you</h2>
+    <div id="decisions"></div>
+  </section>
+
+  <section>
+    <h2>Send instructions to the team</h2>
+    <div class="panel">
+      <label for="req" style="display:block;margin-bottom:8px;color:var(--dim);font-size:15px">Type anything — a change, an idea, a correction. Claude reads this at the start of every cycle.</label>
+      <textarea id="req" placeholder="e.g. Drop the pink, go all black. Or: find me cheaper boxes."></textarea>
+      <div style="margin-top:10px"><button id="send">Send to team</button></div>
+      <div class="note" id="note"></div>
+      <div class="sent" id="sent" hidden></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The board</h2>
+    <div class="four" id="board"></div>
+  </section>
+
+  <div class="two">
+    <section>
+      <h2>Who is doing what</h2>
+      <div class="panel" id="agents"></div>
+    </section>
+    <section>
+      <h2>What just happened</h2>
+      <div class="panel feed" id="feed"></div>
+    </section>
+  </div>
+
+  <section>
+    <h2>Money</h2>
+    <div class="panel">
+      <div class="mgrid" id="money"></div>
+      <div class="bar" id="bar"></div>
+      <div class="key">
+        <span><i style="background:var(--ember)"></i> actually spent</span>
+        <span><i style="background:var(--panel2);border:1px solid var(--rule)"></i> set aside, not spent</span>
+        <span><i style="background:var(--green)"></i> free cash</span>
+      </div>
+      <div id="blines"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Everything the team has made</h2>
+    <div class="panel" id="files"></div>
+  </section>
+
+  <footer>
+    <span>Matchbox HQ</span><span id="fstamp"></span><span>Budget ceiling ₹20,000</span><span>Pune only</span>
+  </footer>
+</div>
+
+<script>
+const STATE = __STATE__;
+const A = {}; (STATE.agents?.agents || []).forEach(a => A[a.id] = a);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rupee = n => '₹' + Number(n || 0).toLocaleString('en-IN');
+function ago(iso){ if(!iso) return '';
+  const s = Math.floor((Date.now() - new Date(iso))/1000);
+  if (s < 90) return 'just now';
+  if (s < 5400) return Math.round(s/60) + ' min ago';
+  if (s < 172800) return Math.round(s/3600) + ' hr ago';
+  return Math.round(s/86400) + ' days ago'; }
+const who = id => A[id] || {name:id, color:'#8A8078'};
+
+document.getElementById('stamp').textContent = 'Snapshot ' + new Date(STATE.now).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+document.getElementById('fstamp').textContent = new Date(STATE.now).toLocaleDateString('en-IN',{dateStyle:'medium'});
+
+/* board */
+document.getElementById('board').innerHTML = [['todo','To do'],['inprogress','In progress'],['review','Ready for you'],['done','Done']]
+  .map(([k,label]) => { const list = (STATE.tasks?.tasks||[]).filter(t => t.status === k);
+    return '<div class="col"><div class="colh"><span>'+label+'</span><b>'+list.length+'</b></div>' +
+      (list.length ? list.map(t => { const a = who(t.agent);
+        return '<div class="task"><div class="t">'+esc(t.title)+'</div>' +
+          (t.note ? '<div class="n">'+esc(t.note)+'</div>' : '') +
+          '<div class="tag" style="color:'+esc(a.color)+'"><i class="pip" style="background:'+esc(a.color)+'"></i>'+esc(a.name)+'</div></div>';
+      }).join('') : '<div class="none">nothing here</div>') + '</div>'; }).join('');
+
+/* agents */
+document.getElementById('agents').innerHTML = (STATE.agents?.agents||[]).map(a =>
+  '<div class="ag"><i class="pip" style="background:'+esc(a.color)+'"></i><div><div class="nm">'+esc(a.name)+'</div>' +
+  '<div class="dg">'+esc(a.doing||'Waiting for instructions')+'</div>' +
+  '<div class="mt"><span class="'+(a.status==='working'?'live':'')+'">'+esc(a.status)+'</span> · '+ago(a.lastUpdate)+'</div></div></div>').join('');
+
+/* feed */
+const evs = STATE.activity?.events || [];
+document.getElementById('feed').innerHTML = evs.length ? evs.slice(0,50).map(e => { const a = who(e.agent);
+  return '<div class="ev">'+esc(e.text)+'<div class="mt"><span style="color:'+esc(a.color)+'">'+esc(a.name)+'</span> · '+ago(e.time)+'</div></div>';
+}).join('') : '<div class="none">Nothing yet.</div>';
+
+/* money */
+const B = STATE.budget || {total:20000, lines:[]};
+const spent = B.lines.reduce((s,l)=>s+(+l.committed||0),0);
+const planned = B.lines.reduce((s,l)=>s+(+l.planned||0),0);
+const free = B.total - planned;
+document.getElementById('money').innerHTML =
+  '<div class="stat"><div class="l">You have</div><div class="v">'+rupee(B.total)+'</div></div>' +
+  '<div class="stat"><div class="l">Actually spent</div><div class="v" style="color:var(--ember)">'+rupee(spent)+'</div></div>' +
+  '<div class="stat"><div class="l">Set aside</div><div class="v" style="color:var(--dim)">'+rupee(planned)+'</div></div>' +
+  '<div class="stat"><div class="l">Still in pocket</div><div class="v" style="color:var(--green)">'+rupee(B.total-spent)+'</div></div>';
+document.getElementById('bar').innerHTML =
+  '<i style="width:'+(spent/B.total*100)+'%;background:var(--ember)"></i>' +
+  '<i style="width:'+(Math.max(0,planned-spent)/B.total*100)+'%;background:var(--panel2)"></i>' +
+  '<i style="width:'+(Math.max(0,free)/B.total*100)+'%;background:var(--green)"></i>';
+document.getElementById('blines').innerHTML = B.lines.map(l => { const a = who(l.agent);
+  return '<div class="brow"><div><i class="pip" style="background:'+esc(a.color)+'"></i> '+esc(l.item) +
+    '<div class="n">'+esc(l.note||'')+'</div></div>' +
+    '<div class="amt">'+rupee(l.planned)+'<small>spent '+rupee(l.committed)+'</small></div></div>'; }).join('');
+
+/* files */
+const F = STATE.deliverables?.files || [];
+document.getElementById('files').innerHTML = F.length ? F.map(f => { const a = who(f.agent);
+  return '<div class="file"><b>'+esc(f.name)+'</b> — '+esc(f.desc||'') +
+    '<div class="p" style="color:'+esc(a.color)+'">'+esc(a.name)+' · '+esc(f.path)+'</div></div>'; }).join('')
+  : '<div class="none">Nothing finished yet — the team started minutes ago.</div>';
+
+/* decisions + live input via db */
+let DB = null;
+const answers = {};
+function card(d, compact){
+  const ans = answers[d.id] || d.answer;
+  if (ans) return '<div class="dec done-dec"><h3>&#10003; '+esc(d.title)+'</h3><div class="why">You chose <b style="color:var(--green)">'+esc(ans)+'</b> — Claude picks this up next cycle.</div></div>';
+  return '<div class="dec"><span class="chip '+(d.priority==='later'?'later':'now')+'">'+(d.priority==='later'?'can wait':'answer now')+'</span>' +
+    '<h3>'+esc(d.title)+'</h3><div class="why">'+esc(d.why)+'</div>' +
+    (d.options||[]).map(o => '<div class="opt"><b>'+esc(o.label)+'</b><span>'+esc(o.detail)+'</span></div>').join('') +
+    '<div class="rec"><b>Claude recommends</b>'+esc(d.recommendation)+'</div>' +
+    '<div class="picks">' + (d.options||[]).map(o =>
+      '<button class="pick" data-id="'+esc(d.id)+'" data-ans="'+esc(o.label)+'">Choose '+esc(o.label.split('.')[0].trim())+'</button>').join('') +
+    '</div></div>';
+}
+function renderDecisions(){
+  const list = STATE.decisions?.decisions || [];
+  const el = document.getElementById('decisions');
+  if(!list.length){ el.innerHTML = '<div class="panel none">Nothing needs your decision right now.</div>'; return; }
+  const isOpen = d => !(answers[d.id] || d.answer);
+  const now = list.filter(d => d.priority !== 'later' || !isOpen(d));
+  const later = list.filter(d => d.priority === 'later' && isOpen(d));
+  el.innerHTML = now.map(d => card(d)).join('') +
+    (later.length ? '<details class="later"><summary>'+later.length+' more that can wait — open when you have a calm 10 minutes</summary>' +
+      later.map(d => card(d)).join('') + '</details>' : '');
+  el.querySelectorAll('button[data-id]').forEach(b => b.onclick = () => choose(b));
+}
+async function choose(b){
+  const id = b.dataset.id, ans = b.dataset.ans;
+  b.textContent = 'Saving…'; b.disabled = true;
+  if(!DB){ answers[id] = ans + ' (tell Claude in chat — saving is off here)'; renderDecisions(); return; }
+  try{
+    await DB.doc('decisions/' + id).set({ decision: id, answer: ans, at: new Date().toISOString(), status: 'answered' });
+    answers[id] = ans;
+  }catch(e){ answers[id] = ans + ' (not saved — tell Claude in chat)'; }
+  renderDecisions();
+}
+renderDecisions();
+
+const note = document.getElementById('note'), sentBox = document.getElementById('sent');
+function renderSent(rows){
+  if(!rows.length){ sentBox.hidden = true; return; }
+  sentBox.hidden = false;
+  sentBox.innerHTML = '<div class="l" style="font-family:var(--f-num);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:6px">Your instructions · '+rows.length+'</div>' +
+    rows.slice(0,6).map(r => '<div class="ev">'+esc(r.text)+'<div class="mt">'+ago(r.at)+' · '+esc(r.status||'new')+'</div></div>').join('');
+}
+document.getElementById('send').onclick = async () => {
+  const ta = document.getElementById('req'); const text = ta.value.trim();
+  if(!text) { note.textContent = 'Type something first.'; note.className = 'note'; return; }
+  if(!DB){ note.textContent = 'Saving is off in this view — paste it to Claude in chat instead.'; note.className = 'note'; return; }
+  const id = 'i' + Date.now();
+  try{
+    await DB.doc('instructions/' + id).set({ id, text, at: new Date().toISOString(), status: 'new' });
+    ta.value = ''; note.textContent = 'Saved. Claude reads this at the start of the next cycle.'; note.className = 'note ok';
+  }catch(e){ note.textContent = 'Could not save. Paste it to Claude in chat instead.'; note.className = 'note'; }
+};
+(async () => {
+  DB = await window.claude?.use?.('db');
+  if(!DB) return;
+  DB.collection('instructions').orderBy('at','desc').onSnapshot(snap => {
+    renderSent(snap.docs ? snap.docs.map(d => d.data ? d.data() : d) : []);
+  }, () => {});
+  DB.collection('decisions').onSnapshot(snap => {
+    const rows = snap.docs ? snap.docs.map(d => d.data ? d.data() : d) : [];
+    rows.forEach(r => { if(r && r.decision && r.answer) answers[r.decision] = r.answer; });
+    renderDecisions();
+  }, () => {});
+})();
+</script>

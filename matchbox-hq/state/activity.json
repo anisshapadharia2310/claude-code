@@ -1,0 +1,449 @@
+{
+  "events": [
+    {
+      "time": "2026-09-12T18:33:45.762Z",
+      "agent": "master",
+      "text": "All 6 desks reported. 4 decisions really matter now, the rest can wait."
+    },
+    {
+      "time": "2026-09-12T18:29:51.765Z",
+      "agent": "website",
+      "text": "Tested all four drop states in a real browser: 75 checks, none failed, no errors and no sideways scrolling on phone or laptop."
+    },
+    {
+      "time": "2026-09-12T18:29:08.830Z",
+      "agent": "website",
+      "text": "Rewrote the founder guide: a new Part 3 covers opening a drop, closing it, updating the claimed count and reusing the site for Drop 02."
+    },
+    {
+      "time": "2026-09-12T18:26:28.091Z",
+      "agent": "prodops",
+      "text": "All four things are done. Buy 1,000 plain trays and 500 printed outers for about 12,500 rupees total. Your boxes would be in hand around 24 October."
+    },
+    {
+      "time": "2026-09-12T18:26:27.006Z",
+      "agent": "launch",
+      "text": "One thing needs you: the price of the 3-box set. I recommend 279."
+    },
+    {
+      "time": "2026-09-12T18:26:26.885Z",
+      "agent": "launch",
+      "text": "Redid all the numbers after Finance cut Drop 01 to 300 boxes - the pre-order gate is still 60 paid, which is now a fifth of the whole drop."
+    },
+    {
+      "time": "2026-09-12T18:26:26.788Z",
+      "agent": "launch",
+      "text": "Four files delivered: the daily sales pipeline, the customer WhatsApp messages, the press and creator plan, and the drop calendar."
+    },
+    {
+      "time": "2026-09-12T18:25:19.849Z",
+      "agent": "prodops",
+      "text": "Sample plan done - order 50 boxes each from 3 vendors, about 1,500 rupees, with a 30-point scoring sheet. Writing the calendar now."
+    },
+    {
+      "time": "2026-09-12T18:24:27.111Z",
+      "agent": "website",
+      "text": "The site now has an always-open waitlist and a drop pre-order that opens and closes on dates you set."
+    },
+    {
+      "time": "2026-09-12T18:23:57.155Z",
+      "agent": "prodops",
+      "text": "Your vendor sheet is updated: EXAMPLE row gone, real contacts in, vendors ranked 1 to 8, seven Pune printers added and a new Stock tab."
+    },
+    {
+      "time": "2026-09-12T18:23:51.560Z",
+      "agent": "finance",
+      "text": "New numbers: sell at 99, Drop 01 is 300 boxes, you get your money back at box 204, and Drop 02 only needs 73."
+    },
+    {
+      "time": "2026-09-12T18:22:50.258Z",
+      "agent": "finance",
+      "text": "Trays are a one-off buy and printed outers repeat every drop, so Drop 02 breaks even at 73 boxes instead of 204."
+    },
+    {
+      "time": "2026-09-12T18:21:17.397Z",
+      "agent": "finance",
+      "text": "A box now costs about 18 rupees landed instead of 9, so 79 rupees stops working and I am recommending 99."
+    },
+    {
+      "time": "2026-09-12T18:20:40.524Z",
+      "agent": "prodops",
+      "text": "Found working numbers for Asia Match, Bhish, Tritaon and Geewin, plus seven real Pune printers. Writing it all into your sheet now."
+    },
+    {
+      "time": "2026-09-12T18:19:44.104Z",
+      "agent": "launch",
+      "text": "Customer messages written - the big one is never giving a non-Pune buyer a delivery date."
+    },
+    {
+      "time": "2026-09-12T18:18:21.588Z",
+      "agent": "launch",
+      "text": "Sales pipeline page is done - it starts at zero on every line, which is honest."
+    },
+    {
+      "time": "2026-09-12T18:17:22.922Z",
+      "agent": "prodops",
+      "text": "Vendor contacts are mostly found. Now searching for Pune printers who will print small batches of outer boxes."
+    },
+    {
+      "time": "2026-09-12T18:17:22.181Z",
+      "agent": "launch",
+      "text": "Checked the numbers in the Drop 01 plan, cafe pitch and finance files so the pipeline matches them."
+    },
+    {
+      "time": "2026-09-12T18:17:19.150Z",
+      "agent": "finance",
+      "text": "Founder switched to reusable trays plus printed outer boxes, so I am rebuilding every number from scratch."
+    },
+    {
+      "time": "2026-09-12T18:16:59.832Z",
+      "agent": "website",
+      "text": "Started rebuilding the site so it has both an always-open waitlist and a drop pre-order with a live claimed counter."
+    },
+    {
+      "time": "2026-09-12T18:16:42.614Z",
+      "agent": "prodops",
+      "text": "Found real contact details for Asia Match, Bhish Exports, Tritaon and Epoch so far - company sites are blocked here so I am using search listings."
+    },
+    {
+      "time": "2026-09-12T18:16:28.593Z",
+      "agent": "launch",
+      "text": "Starting on the daily sales pipeline, customer messages, press outreach and drop calendar."
+    },
+    {
+      "time": "2026-09-12T18:16:12.266Z",
+      "agent": "prodops",
+      "text": "Opened your vendor spreadsheet to see exactly what is already in it before I add anything."
+    },
+    {
+      "time": "2026-09-12T18:15:30.860Z",
+      "agent": "prodops",
+      "text": "Got your vendor sheet - 8 Sivakasi vendors, a call script and a Pune printers tab."
+    },
+    {
+      "time": "2026-09-12T18:15:30.818Z",
+      "agent": "master",
+      "text": "Team changed: Launch is now Sales and PR, and a new Production and Ops desk joined."
+    },
+    {
+      "time": "2026-09-12T17:39:17.782Z",
+      "agent": "website",
+      "text": "Website and guide are done - drag the website folder to netlify.com/drop and it is live in 4 minutes for zero rupees"
+    },
+    {
+      "time": "2026-09-12T17:38:33.598Z",
+      "agent": "website",
+      "text": "Wrote the step-by-step guide for putting the site online free and switching on payments later"
+    },
+    {
+      "time": "2026-09-12T17:35:02.351Z",
+      "agent": "master",
+      "text": "Launch and Sales finished. Couriers refuse matchboxes - Pune hand-delivery is the only way for now."
+    },
+    {
+      "time": "2026-09-12T17:34:52.951Z",
+      "agent": "website",
+      "text": "Checked colours for readability and made the page tiny (17 KB) so it loads instantly on phone data"
+    },
+    {
+      "time": "2026-09-12T17:34:52.541Z",
+      "agent": "master",
+      "text": "Finance finished. 99 rupees is the price that works. 49 rupees loses money on delivery."
+    },
+    {
+      "time": "2026-09-12T17:34:12.751Z",
+      "agent": "finance",
+      "text": "Correction to my earlier note: break-even is 150 boxes, not 140 - Legal confirmed a small registration cost I had not counted."
+    },
+    {
+      "time": "2026-09-12T17:34:09.837Z",
+      "agent": "launch",
+      "text": "Checked my numbers against the finance agent's - a rider drop in Pune costs about 50 rupees, so hand-delivery and the 3-box set matter more than I first wrote. Both documents updated."
+    },
+    {
+      "time": "2026-09-12T17:34:03.332Z",
+      "agent": "finance",
+      "text": "Three files are ready: what you keep per box, the break-even number, and a money tracker you can keep updating."
+    },
+    {
+      "time": "2026-09-12T17:34:03.295Z",
+      "agent": "finance",
+      "text": "Raised a decision: the budget had no line at all for mailers and delivery, and that is the biggest cost per box. I have parked 3,000 there for now."
+    },
+    {
+      "time": "2026-09-12T17:33:47.673Z",
+      "agent": "master",
+      "text": "Legal finished. Real cost to start selling legally: about 500 rupees, not 3000."
+    },
+    {
+      "time": "2026-09-12T17:33:25.415Z",
+      "agent": "launch",
+      "text": "Raised two things for you to decide - how we ship outside Pune, and building a 249 three-box set before any ads run."
+    },
+    {
+      "time": "2026-09-12T17:33:25.375Z",
+      "agent": "launch",
+      "text": "The rule to remember: do not pay the 8,000 for boxes until 60 are pre-paid, and do not touch the 3,000 ad money until 150 boxes are sold."
+    },
+    {
+      "time": "2026-09-12T17:33:25.343Z",
+      "agent": "launch",
+      "text": "All four documents are ready: the 500-box plan, the cafe pitch, the marketplace roadmap and the ads plan."
+    },
+    {
+      "time": "2026-09-12T17:33:15.980Z",
+      "agent": "legal",
+      "text": "Legal work is finished. Total realistic cost to start selling legally in Pune: 500 rupees."
+    },
+    {
+      "time": "2026-09-12T17:33:08.862Z",
+      "agent": "legal",
+      "text": "Checked the 10 brand names for obvious trademark trouble - drop Burn Book (Mean Girls / Paramount) and Phuljhadi (existing brand plus it means a firework)."
+    },
+    {
+      "time": "2026-09-12T17:32:47.583Z",
+      "agent": "master",
+      "text": "Brand and Content finished - 10 names checked, 4 were already taken, 3 survive."
+    },
+    {
+      "time": "2026-09-12T17:32:22.752Z",
+      "agent": "legal",
+      "text": "All three legal files are ready. The one thing to do this week: free Udyam registration at udyamregistration.gov.in - it takes 15 minutes and halves your future trademark fee."
+    },
+    {
+      "time": "2026-09-12T17:32:19.230Z",
+      "agent": "brand",
+      "text": "Brand work done: 10 names with availability checked, 6 box designs, 30 days of Instagram, and a Pune seeding plan. I need you to pick the name before anything goes to print."
+    },
+    {
+      "time": "2026-09-12T17:32:19.161Z",
+      "agent": "brand",
+      "text": "Synced my box back-panel with what Legal found - the words Safety Matches also have to go on the FRONT of every box."
+    },
+    {
+      "time": "2026-09-12T17:32:16.057Z",
+      "agent": "legal",
+      "text": "Raised a decision you must answer before printing: whose postal address goes on the back of every box, because the law requires a real one."
+    },
+    {
+      "time": "2026-09-12T17:32:06.357Z",
+      "agent": "finance",
+      "text": "The number that matters: you need to sell about 140 boxes to get your launch money back. If all 500 sell, the whole twenty thousand comes back and then some."
+    },
+    {
+      "time": "2026-09-12T17:32:03.514Z",
+      "agent": "legal",
+      "text": "Cut the legal budget from 3,000 to 1,000 - almost everything you need in week 1 is free, which frees about 2,000 rupees for boxes."
+    },
+    {
+      "time": "2026-09-12T17:31:56.455Z",
+      "agent": "brand",
+      "text": "Seeding plan done - 60 boxes out of the first 500, scripts for cafes and chai corners, and a tracking sheet."
+    },
+    {
+      "time": "2026-09-12T17:31:33.795Z",
+      "agent": "finance",
+      "text": "Answer on price: sell at 99 rupees. At 49 rupees a delivered box loses you 21 rupees, because the rider alone costs 50."
+    },
+    {
+      "time": "2026-09-12T17:30:42.537Z",
+      "agent": "finance",
+      "text": "Verified the real numbers: matches are taxed at 5 percent, Amazon charges no commission under 1,000 rupees, and a Pune rider drop costs about 45 rupees. Now doing the maths."
+    },
+    {
+      "time": "2026-09-12T17:30:32.090Z",
+      "agent": "legal",
+      "text": "Label rules done - there is a ready-to-use box template your designer can work from, and the legal text must be at least 1mm tall."
+    },
+    {
+      "time": "2026-09-12T17:30:24.007Z",
+      "agent": "brand",
+      "text": "Thirty days of Instagram is written - captions ready to paste, and a hard no-tobacco rule at the top so we do not get into trouble."
+    },
+    {
+      "time": "2026-09-12T17:30:20.810Z",
+      "agent": "website",
+      "text": "The website works: form validates, saves a backup copy, and shows a thank-you and share prompt"
+    },
+    {
+      "time": "2026-09-12T17:30:18.725Z",
+      "agent": "launch",
+      "text": "Cafe pitch written. Push the 60-rupee wholesale deal, 20 boxes, 1200 rupees cash."
+    },
+    {
+      "time": "2026-09-12T17:29:13.250Z",
+      "agent": "legal",
+      "text": "Legal checklist is done - the whole week-1 list is free, and the only real licence is a 500 rupee Legal Metrology packer registration."
+    },
+    {
+      "time": "2026-09-12T17:29:01.246Z",
+      "agent": "master",
+      "text": "Supplier Scout is done. Big finding: 500 custom boxes is below what Sivakasi factories will make."
+    },
+    {
+      "time": "2026-09-12T17:28:46.100Z",
+      "agent": "launch",
+      "text": "Drop 01 plan done. Now writing exactly what to say when you walk into a Pune cafe."
+    },
+    {
+      "time": "2026-09-12T17:28:43.975Z",
+      "agent": "brand",
+      "text": "Six box designs written with exact hex codes and free Canva fonts. I say print three: Kaadepeti Classic, Pinkhead, Loadshedding."
+    },
+    {
+      "time": "2026-09-12T17:28:22.089Z",
+      "agent": "supplier",
+      "text": "All three files are ready, and I have raised one decision for you: 500 boxes is below what most factories will accept, so you need to choose between a sticker-sleeve test run or saving up for 5000 custom boxes."
+    },
+    {
+      "time": "2026-09-12T17:28:21.362Z",
+      "agent": "finance",
+      "text": "Big one: matchboxes count as flammable goods, so normal couriers and India Post officially refuse them - that changes the whole delivery cost picture and I am pricing local Pune hand-delivery instead."
+    },
+    {
+      "time": "2026-09-12T17:27:50.988Z",
+      "agent": "finance",
+      "text": "Important: matchboxes are not taxed at 18 percent. All matches were put on one low rate in 2021 and the low slab moved lower again in the Sept 2025 GST overhaul - I am nailing the exact figure."
+    },
+    {
+      "time": "2026-09-12T17:27:41.681Z",
+      "agent": "legal",
+      "text": "Good news: a reseller of ordinary safety matches does not need an explosives licence - that is the factory's problem, not yours."
+    },
+    {
+      "time": "2026-09-12T17:27:33.366Z",
+      "agent": "brand",
+      "text": "Raised decision D-002 - you choose the name. My pick is Kaadepeti. Now writing 6 box designs you can build in Canva tonight."
+    },
+    {
+      "time": "2026-09-12T17:27:28.161Z",
+      "agent": "launch",
+      "text": "Bad news found early: matchboxes are on courier prohibited lists in India, so normal parcel delivery outside Pune is mostly blocked. Writing the plan around that."
+    },
+    {
+      "time": "2026-09-12T17:27:10.002Z",
+      "agent": "master",
+      "text": "Dashboard published as a private web link - you can open it on your phone."
+    },
+    {
+      "time": "2026-09-12T17:27:09.525Z",
+      "agent": "supplier",
+      "text": "Shortlist of 10 Sivakasi makers is written, with a source link for every contact detail."
+    },
+    {
+      "time": "2026-09-12T17:27:05.308Z",
+      "agent": "legal",
+      "text": "Confirmed: matches sit in trademark Class 34, and a brand owner who gets boxes packed by a factory still has label duties."
+    },
+    {
+      "time": "2026-09-12T17:26:56.612Z",
+      "agent": "finance",
+      "text": "Good news for Amazon later: Amazon India now charges zero commission on items under 1,000 rupees, only a small fixed fee - I am checking the exact 2026 numbers."
+    },
+    {
+      "time": "2026-09-12T17:26:05.063Z",
+      "agent": "brand",
+      "text": "Ten names done. Four of them are already taken by real brands - good news, I found that out before you printed 500 boxes."
+    },
+    {
+      "time": "2026-09-12T17:25:48.203Z",
+      "agent": "supplier",
+      "text": "Have enough names and numbers - now writing the three files for you."
+    },
+    {
+      "time": "2026-09-12T17:25:24.591Z",
+      "agent": "launch",
+      "text": "Checking whether matchboxes count as dangerous goods - this decides if Amazon, Flipkart and quick-commerce are even possible."
+    },
+    {
+      "time": "2026-09-12T17:25:10.199Z",
+      "agent": "legal",
+      "text": "Found that selling online can force GST registration even below the 40 lakh limit - checking the exact rule now."
+    },
+    {
+      "time": "2026-09-12T17:25:00.014Z",
+      "agent": "supplier",
+      "text": "Got phone numbers for several Sivakasi match factories, including one called Sri Ramesh Colour Match Works."
+    },
+    {
+      "time": "2026-09-12T17:24:54.772Z",
+      "agent": "finance",
+      "text": "Starting the money model - checking the real GST rate on matchboxes before I do any maths, because it is unusually low."
+    },
+    {
+      "time": "2026-09-12T17:24:34.826Z",
+      "agent": "brand",
+      "text": "Heads up: I cannot open WHOIS or Instagram directly from here, so every availability call is search-evidence only and I say so in the file - you must confirm on a registrar before printing anything."
+    },
+    {
+      "time": "2026-09-12T17:24:29.781Z",
+      "agent": "launch",
+      "text": "Started work on the 500-box sell-through plan, cafe pitch and marketplace roadmap."
+    },
+    {
+      "time": "2026-09-12T17:24:23.071Z",
+      "agent": "supplier",
+      "text": "Found a Sivakasi maker already selling matches with black heads - good sign for our look."
+    },
+    {
+      "time": "2026-09-12T17:24:06.250Z",
+      "agent": "brand",
+      "text": "Started on brand names - 10 options coming, and I am actually checking domains before I claim anything is free."
+    },
+    {
+      "time": "2026-09-12T17:24:02.370Z",
+      "agent": "website",
+      "text": "Starting on the pre-order website - first checking which free form tools work without a backend"
+    },
+    {
+      "time": "2026-09-12T17:23:58.312Z",
+      "agent": "supplier",
+      "text": "Found a big warning early: most Sivakasi factories only take orders of 50,000 boxes and up, not 500."
+    },
+    {
+      "time": "2026-09-12T17:23:54.853Z",
+      "agent": "legal",
+      "text": "Checking whether someone who only SELLS safety matches needs an explosives licence, or only the factory that makes them."
+    },
+    {
+      "time": "2026-09-12T17:23:40.395Z",
+      "agent": "supplier",
+      "text": "Company websites are blocked on this machine, so I am gathering everything from search results and marking clearly what still needs a phone call."
+    },
+    {
+      "time": "2026-09-12T17:23:05.339Z",
+      "agent": "legal",
+      "text": "Starting work on the legal checklist, packaging label rules, and trademark notes."
+    },
+    {
+      "time": "2026-09-12T17:22:42.073Z",
+      "agent": "supplier",
+      "text": "Started hunting for real matchstick makers in Sivakasi."
+    },
+    {
+      "time": "2026-09-12T17:22:01.689Z",
+      "agent": "master",
+      "text": "Shared state helper installed - all 6 agents can now report progress safely."
+    },
+    {
+      "time": "2026-09-12T17:20:19Z",
+      "agent": "master",
+      "text": "Matchbox HQ dashboard is built and running."
+    },
+    {
+      "time": "2026-09-12T17:20:19Z",
+      "agent": "master",
+      "text": "Budget loaded: 20,000 rupees total. Nothing spent yet."
+    },
+    {
+      "time": "2026-09-12T17:20:19Z",
+      "agent": "master",
+      "text": "All 6 team members briefed and started."
+    },
+    {
+      "time": "2026-09-12T17:20:19Z",
+      "agent": "master",
+      "text": "First decision is waiting for you: how we take money on day one."
+    }
+  ]
+}

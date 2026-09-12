@@ -1,0 +1,24 @@
+{
+  "_readme": "Drop state for the office dashboard. The website reads its numbers from the CONFIG block inside index.html; this file is the copy the dashboard reads. Keep the two identical. See deliverables/website-guide.md PART 3.",
+  "brand": "[YOUR BRAND NAME]",
+  "updated": "2026-09-12",
+  "drop": {
+    "name": "DROP 01",
+    "total": 500,
+    "claimed": 0,
+    "left": 500,
+    "open": "2026-09-22",
+    "close": "2026-10-26",
+    "price": 99,
+    "price_set3": 249,
+    "currency": "INR",
+    "force_state": "auto",
+    "state": "before",
+    "ship_city": "Pune",
+    "ship_note": "Pune only, hand-delivered. Matches are UN 1944 Class 4.1 flammable solids and couriers refuse them."
+  },
+  "waitlist": {
+    "always_open": true,
+    "collects": ["name", "whatsapp", "email (optional)", "city"]
+  }
+}
